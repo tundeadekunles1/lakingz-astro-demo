@@ -1,0 +1,190 @@
+---
+---
+<section class="about-section section-padding" id="about">
+  <div class="container about-grid">
+
+    <!-- Left: Editorial Story Copy -->
+    <div class="about-copy">
+      <span class="about-kicker" data-reveal style="--reveal-index: 0">Our Story</span>
+      <h2 class="about-title" data-reveal style="--reveal-index: 1">
+        Built for the journey<br />you're <em>already on.</em>
+      </h2>
+      <p class="about-lead" data-reveal style="--reveal-index: 2">
+        Lakingz Services was founded in 2018 by Oluwakemi Olobade — a Chartered Accountant who saw firsthand how Canada's tax system creates unnecessary barriers for newcomers who simply haven't had time to learn it yet.
+      </p>
+      <p class="about-body" data-reveal style="--reveal-index: 3">
+        What began as a part-time practice in Brampton has grown into a year-round accounting firm serving over 100 active clients across Ontario. Nearly all of our growth comes through referrals — clients recommending us to family members, friends, and colleagues who need the same clarity they found here.
+      </p>
+      <p class="about-body" data-reveal style="--reveal-index: 4">
+        We started by serving Black immigrant families and small business owners, and have since expanded to support newcomers from across the world — Asian, Filipino, and many other communities — all navigating the same unfamiliar system, all deserving the same quality of support.
+      </p>
+    </div>
+
+    <!-- Right: Company Fact Sheet Card -->
+    <div class="about-datacard" data-reveal="right" style="--reveal-index: 2">
+
+      <div class="datacard-entry">
+        <span class="dc-index">01</span>
+        <div class="dc-body">
+          <span class="dc-value">Est. 2018</span>
+          <span class="dc-label">Founded in Brampton, Ontario — grown from a one-person practice to a year-round firm</span>
+        </div>
+      </div>
+
+      <div class="dc-divider"></div>
+
+      <div class="datacard-entry">
+        <span class="dc-index">02</span>
+        <div class="dc-body">
+          <span class="dc-value">100+</span>
+          <span class="dc-label">Active clients across Ontario, with most new clients arriving through word-of-mouth referrals</span>
+        </div>
+      </div>
+
+      <div class="dc-divider"></div>
+
+      <div class="datacard-entry">
+        <span class="dc-index">03</span>
+        <div class="dc-body">
+          <span class="dc-value">98.2%</span>
+          <span class="dc-label">Client retention — our relationships don't end after tax season</span>
+        </div>
+      </div>
+
+      <div class="dc-divider"></div>
+
+      <div class="datacard-entry">
+        <span class="dc-index">04</span>
+        <div class="dc-body">
+          <span class="dc-value">Multi-community</span>
+          <span class="dc-label">Serving Black, Asian, Filipino, and diverse newcomer communities across the GTA and Ontario</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .about-section {
+    background-color: var(--bg-surface);
+    border-top: var(--sheet-border);
+    border-bottom: var(--sheet-border);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  /* ── Left Copy ─────────────────────────── */
+  .about-kicker {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent-mint);
+    margin-bottom: var(--space-xs);
+  }
+
+  .about-title {
+    font-size: var(--fs-2xl);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin-bottom: var(--space-md);
+  }
+
+  .about-title em {
+    font-style: italic;
+    color: var(--accent-mint);
+  }
+
+  .about-lead {
+    font-size: var(--fs-base);
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: var(--space-sm);
+    max-width: 56ch;
+  }
+
+  .about-body {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: var(--space-xs);
+    max-width: 56ch;
+  }
+
+  /* ── Right Data Card ──────────────────── */
+  .about-datacard {
+    background-color: var(--bg-canvas);
+    border: var(--sheet-border);
+    border-radius: 24px;
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .datacard-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 0;
+  }
+
+  .dc-index {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--accent-mint);
+    padding-top: 7px;
+    flex-shrink: 0;
+    min-width: 20px;
+  }
+
+  .dc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .dc-value {
+    font-family: var(--font-heading);
+    font-size: var(--fs-lg);
+    color: var(--text-main);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .dc-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .dc-divider {
+    height: 1px;
+    background-color: oklch(90% 0.006 150);
+    margin: 0;
+  }
+
+  /* ── Responsive ───────────────────────── */
+  @media (max-width: 968px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .about-lead,
+    .about-body {
+      max-width: 100%;
+    }
+  }
+</style>

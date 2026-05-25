@@ -233,46 +233,44 @@
     background-color: var(--color-mint);
   }
 
-  /* Timeline Node */
-  .timeline-node {
+  /* Timeline Node — created at runtime via JS so they never receive
+     Astro's scoped attribute. :global() ensures these rules match
+     dynamically inserted elements. */
+  :global(.timeline-node) {
     display: flex;
     gap: var(--space-md);
     position: relative;
     transition: var(--transition-smooth);
   }
 
-  .node-dot {
+  :global(.node-dot) {
     position: absolute;
     left: -23px;
     top: 8px;
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: var(--bg-surface);
+    background-color: var(--accent-mint);
     border: 2px solid var(--color-mint);
+    box-shadow: 0 0 10px var(--color-mint);
     z-index: 2;
     transition: var(--transition-smooth);
   }
 
-  .timeline-node.active .node-dot {
-    background-color: var(--accent-mint);
-    box-shadow: 0 0 10px var(--color-mint);
-  }
-
-  .node-content {
+  :global(.node-content) {
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
 
-  .node-title {
+  :global(.node-title) {
     font-family: var(--font-body);
     font-size: var(--fs-sm);
     font-weight: 600;
     color: var(--text-main);
   }
 
-  .node-desc {
+  :global(.node-desc) {
     font-family: var(--font-body);
     font-size: var(--fs-sm);
     color: var(--text-muted);
@@ -484,7 +482,7 @@
       timelineFlow.innerHTML = '';
       data.nodes.forEach((node) => {
         const nodeDiv = document.createElement('div');
-        nodeDiv.className = `timeline-node ${node.active ? 'active' : ''}`;
+        nodeDiv.className = 'timeline-node';
         
         nodeDiv.innerHTML = `
           <div class="node-dot"></div>
