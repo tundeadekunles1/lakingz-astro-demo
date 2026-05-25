@@ -1,0 +1,548 @@
+---
+---
+<section class="tax-tool-section section-padding" id="navigator">
+  <div class="container">
+    
+    <div class="tool-intro text-center">
+      <span class="tool-kicker" data-reveal style="--reveal-index: 0">Interactive Advisory</span>
+      <h2 class="tool-title" data-reveal style="--reveal-index: 1">The Ontario Newcomer Tax Navigator</h2>
+      <p class="tool-desc" data-reveal style="--reveal-index: 2">
+        Select your profile below to customize your tax roadmap. Understand your key CRA filing milestones, unlock exclusive credits, and estimate your benefits in real-time.
+      </p>
+    </div>
+
+    <!-- Interface Shell: Sheet Layered -->
+    <div class="navigator-shell sheet-layered" data-reveal style="--reveal-index: 3">
+      
+      <!-- Tactile Profile Selection Tab-bar -->
+      <div class="profile-tabs" role="tablist" aria-label="Select your Canadian profile">
+        <button class="profile-tab active" role="tab" aria-selected="true" aria-controls="profile-panel" data-profile="pr">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tab-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Permanent Resident</span>
+        </button>
+        <button class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel" data-profile="student">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tab-icon"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+          <span>International Graduate</span>
+        </button>
+        <button class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel" data-profile="self-employed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tab-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="m16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Self-Employed / Gig Worker</span>
+        </button>
+        <button class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel" data-profile="business">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tab-icon"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>Small Business Owner</span>
+        </button>
+      </div>
+
+      <!-- Main Panel Grid -->
+      <div class="navigator-grid" id="profile-panel">
+        
+        <!-- Left: Interactive Roadmap Timeline -->
+        <div class="timeline-column">
+          <h3 class="panel-subtitle">Your Tax Timeline</h3>
+          
+          <div class="interactive-timeline" id="timeline-flow">
+            <!-- Timeline nodes injected dynamically via script -->
+          </div>
+        </div>
+
+        <!-- Right: Benefit Estimator & Compliance Actions -->
+        <div class="calculator-column">
+          
+          <!-- Interactive Estimator -->
+          <div class="estimator-box">
+            <h3 class="panel-subtitle">Ontario Benefit Estimator</h3>
+            <p class="estimator-desc">Approximate quarterly tax-free credits (GST/HST credit & Climate Action Incentive).</p>
+            
+            <div class="calculator-form">
+              <div class="input-group">
+                <label for="marital-status">Marital Status</label>
+                <select id="marital-status" class="calc-input">
+                  <option value="single">Single</option>
+                  <option value="couple">Married / Common-Law</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label for="children-count">Number of Children (under 19)</label>
+                <select id="children-count" class="calc-input">
+                  <option value="0">None</option>
+                  <option value="1">1 Child</option>
+                  <option value="2">2 Children</option>
+                  <option value="3">3+ Children</option>
+                </select>
+              </div>
+
+              <div class="output-block">
+                <span class="output-label">Estimated Quarterly Benefit</span>
+                <span class="output-val" id="quarterly-payout">$214.00</span>
+                <span class="output-note">Subject to CRA income assessments. Lakingz guarantees audit-ready optimization.</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .tax-tool-section {
+    background-color: var(--bg-canvas);
+    border-bottom: var(--sheet-border);
+  }
+
+  .tool-intro {
+    max-width: 700px;
+    margin: 0 auto var(--space-xl) auto;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .tool-kicker {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent-mint);
+    margin-bottom: var(--space-xs);
+    display: inline-block;
+  }
+
+  .tool-title {
+    font-size: var(--fs-2xl);
+    line-height: 1.15;
+    margin-bottom: var(--space-sm);
+    letter-spacing: -0.02em;
+  }
+
+  .tool-desc {
+    color: var(--text-muted);
+    font-size: var(--fs-base);
+  }
+
+  /* Shell styles */
+  .navigator-shell {
+    background-color: var(--bg-surface);
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* Profile selector tab-bar */
+  .profile-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: var(--sheet-border);
+    background-color: oklch(99.4% 0.002 145);
+  }
+
+  .profile-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    padding: var(--space-md) var(--space-xs);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+    border-right: var(--sheet-border);
+    position: relative;
+  }
+
+  .profile-tab:last-child {
+    border-right: none;
+  }
+
+  .tab-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+  }
+
+  .profile-tab:hover {
+    color: var(--text-main);
+    background-color: oklch(98% 0.005 145);
+  }
+
+  .profile-tab.active {
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+  }
+
+  .profile-tab.active .tab-icon {
+    color: var(--accent-mint);
+  }
+
+  .profile-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-mint);
+  }
+
+  /* Navigator Grid */
+  .navigator-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-xl);
+    padding: var(--space-xl);
+  }
+
+  .panel-subtitle {
+    font-family: var(--font-heading);
+    font-size: var(--fs-lg);
+    margin-bottom: var(--space-md);
+    color: var(--text-main);
+  }
+
+  /* Interactive Timeline Layout */
+  .interactive-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    position: relative;
+    padding-left: var(--space-md);
+  }
+
+  .interactive-timeline::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 7px;
+    width: 1px;
+    height: calc(100% - 20px);
+    background-color: var(--color-mint);
+  }
+
+  /* Timeline Node */
+  .timeline-node {
+    display: flex;
+    gap: var(--space-md);
+    position: relative;
+    transition: var(--transition-smooth);
+  }
+
+  .node-dot {
+    position: absolute;
+    left: -23px;
+    top: 8px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--bg-surface);
+    border: 2px solid var(--color-mint);
+    z-index: 2;
+    transition: var(--transition-smooth);
+  }
+
+  .timeline-node.active .node-dot {
+    background-color: var(--accent-mint);
+    box-shadow: 0 0 10px var(--color-mint);
+  }
+
+  .node-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .node-title {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .node-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Right Estimator styling */
+  .calculator-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .estimator-box {
+    background-color: oklch(99.4% 0.002 145);
+    border: var(--sheet-border);
+    border-radius: 16px;
+    padding: var(--space-md);
+  }
+
+  .estimator-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .calculator-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .input-group label {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--text-main);
+  }
+
+  .calc-input {
+    padding: 0.8em;
+    border-radius: 10px;
+    border: var(--sheet-border);
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .calc-input:focus {
+    outline: none;
+    border-color: var(--accent-mint);
+  }
+
+  /* Payout Display */
+  .output-block {
+    margin-top: var(--space-xs);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--color-teal);
+    border-radius: 12px;
+    padding: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+  }
+
+  .output-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .output-val {
+    font-family: var(--font-heading);
+    font-size: var(--fs-xl);
+    color: var(--accent-blue);
+    line-height: 1.1;
+  }
+
+  .output-note {
+    font-family: var(--font-body);
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* Strategy tips box wrapper */
+
+
+  /* Responsive styles */
+  @media (max-width: 968px) {
+    .profile-tabs {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .profile-tab {
+      border-bottom: var(--sheet-border);
+    }
+    
+    .profile-tab:nth-child(even) {
+      border-right: none;
+    }
+
+    .navigator-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      padding: var(--space-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .profile-tabs {
+      grid-template-columns: 1fr;
+    }
+    .profile-tab {
+      border-right: none;
+      padding: var(--space-sm);
+    }
+  }
+</style>
+
+<script>
+  // Roadmap Timeline content mapping
+  interface TimelineNode {
+    title: string;
+    desc: string;
+    active: boolean;
+  }
+
+  interface ProfileRoadmap {
+    nodes: TimelineNode[];
+    gstBase: number;
+    childrenMultiplier: number;
+  }
+
+  const roadmapData: Record<string, ProfileRoadmap> = {
+    pr: {
+      nodes: [
+        { title: "Arrival Date Setting", desc: "Formally set your Canadian entry date to split tax years and establish residency status correctly.", active: true },
+        { title: "First-Year Filing", desc: "File your initial personal return to register your foreign assets and activate key credits.", active: true },
+        { title: "Unlock GST/HST & OTB", desc: "Ensure your newcomer applications (RC151) are completed to trigger quarterly benefit deposits.", active: true },
+        { title: "CRA Direct Deposit Setup", desc: "Uplink banking to your CRA account for instant, secure direct-benefit transfers.", active: false }
+      ],
+      gstBase: 154,
+      childrenMultiplier: 84
+    },
+    student: {
+      nodes: [
+        { title: "Tuition Carry-Over Filing", desc: "Report T2202 tuition slips to bank massive non-refundable tax credits for future income years.", active: true },
+        { title: "T4 Receipt & Filing", desc: "File your earnings from co-op or part-time work, ensuring maximum deductions for studies.", active: true },
+        { title: "Climate Action Incentives", desc: "Activate quarterly rural or standard climate action rebate claims (CAIP) inside Ontario.", active: false },
+        { title: "Work Permit Transition Plan", desc: "Map your carry-over credits to offset massive tax brackets as you transition to full-time work.", active: false }
+      ],
+      gstBase: 122,
+      childrenMultiplier: 42
+    },
+    "self-employed": {
+      nodes: [
+        { title: "Write-off Strategy Review", desc: "Audit and categorize your auto, home office, mobile phone, and equipment receipts.", active: true },
+        { title: "HST Threshold Checklist", desc: "Monitor your gross revenue to register for HST immediately once exceeding $30,000.", active: true },
+        { title: "Annual Tax Filing Deadline", desc: "Enjoy an extended filing deadline of June 15th, but make sure all taxes owed are settled by April 30th.", active: false },
+        { title: "CPP Self-Employed Balancing", desc: "Calculate and balance your double-sided CPP contributions (both employer & employee shares).", active: false }
+      ],
+      gstBase: 188,
+      childrenMultiplier: 68
+    },
+    business: {
+      nodes: [
+        { title: "Incorporation & Setup", desc: "Incorporate provincially (Ontario) or federally, secure name approvals, and issue initial shares.", active: true },
+        { title: "Corporate Account Openings", desc: "Link corporate bylaws to open local bank accounts, secure lines of credit, and register a CRA business number.", active: true },
+        { title: "Payroll & GST/HST Registrations", desc: "Establish compliant payroll registers for employees and register for HST collection platforms.", active: false },
+        { title: "T2 Corporate Annual Filing", desc: "Prepare professional corporate financial statements and file your annual T2 return within 6 months of year-end.", active: false }
+      ],
+      gstBase: 245,
+      childrenMultiplier: 95
+    }
+  };
+
+  // DOM Elements
+  const timelineFlow = document.getElementById('timeline-flow');
+  const tabs = document.querySelectorAll('.profile-tab');
+  const maritalSelect = document.getElementById('marital-status') as HTMLSelectElement;
+  const childrenSelect = document.getElementById('children-count') as HTMLSelectElement;
+  const payoutDisplay = document.getElementById('quarterly-payout');
+
+  let currentProfileKey = 'pr';
+
+  // Function to render Timeline & Strategy Tip based on profile
+  function renderProfile(profileKey: string) {
+    const data = roadmapData[profileKey];
+    if (!data) return;
+
+    currentProfileKey = profileKey;
+
+    // Render timeline
+    if (timelineFlow) {
+      timelineFlow.innerHTML = '';
+      data.nodes.forEach((node) => {
+        const nodeDiv = document.createElement('div');
+        nodeDiv.className = `timeline-node ${node.active ? 'active' : ''}`;
+        
+        nodeDiv.innerHTML = `
+          <div class="node-dot"></div>
+          <div class="node-content">
+            <span class="node-title">${node.title}</span>
+            <span class="node-desc">${node.desc}</span>
+          </div>
+        `;
+        timelineFlow.appendChild(nodeDiv);
+      });
+    }
+
+    calculatePayout();
+  }
+
+  // Live Benefits Calculator logic
+  function calculatePayout() {
+    const data = roadmapData[currentProfileKey];
+    if (!data || !maritalSelect || !childrenSelect || !payoutDisplay) return;
+
+    const isCouple = maritalSelect.value === 'couple';
+    const childrenCount = parseInt(childrenSelect.value);
+
+    // Calculate GST + Trillium quarterly estimation
+    let payout = data.gstBase;
+    
+    if (isCouple) {
+      payout += 64; // Additional allowance for spouse
+    }
+
+    payout += childrenCount * data.childrenMultiplier;
+
+    payoutDisplay.textContent = `$${payout.toFixed(2)}`;
+  }
+
+  // Setup event listeners for profile tabs
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t) => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      
+      const profile = tab.getAttribute('data-profile');
+      if (profile) {
+        renderProfile(profile);
+      }
+    });
+  });
+
+  // Setup calculator event listeners
+  if (maritalSelect && childrenSelect) {
+    maritalSelect.addEventListener('change', calculatePayout);
+    childrenSelect.addEventListener('change', calculatePayout);
+  }
+
+  // Initial render on boot
+  renderProfile('pr');
+</script>

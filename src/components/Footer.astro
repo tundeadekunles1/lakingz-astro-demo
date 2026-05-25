@@ -1,0 +1,432 @@
+---
+---
+<footer class="footer-element">
+  <div class="container footer-editorial-grid">
+    
+    <!-- Large Hook & Minimal Newsletter CTA -->
+    <div class="footer-hero-block" data-reveal="left">
+      <h3 class="footer-hero-title">
+        Start your financial journey with CPA precision.
+      </h3>
+      <p class="footer-hero-desc">
+        Receive curated tax strategies and regulatory updates for Ontario newcomers and small businesses directly in your inbox. No spam, ever.
+      </p>
+      
+      <!-- Minimalist Newsletter Form (Fixed Layout) -->
+      <form class="footer-newsletter-form" onsubmit="event.preventDefault();">
+        <label for="footer-email" class="sr-only">Email Address</label>
+        <input 
+          type="email" 
+          id="footer-email" 
+          placeholder="your.email@domain.ca" 
+          class="newsletter-input" 
+          required 
+        />
+        <button type="submit" class="newsletter-submit-btn" aria-label="Subscribe">
+          <span>Subscribe</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="newsletter-arrow"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Brand & Contacts Box -->
+    <div class="footer-identity-block" data-reveal="right">
+      <div class="logo-container">
+        <img src="/LKZlogo.webp" alt="Lakingz Services Logo" class="logo-image" />
+      </div>
+      
+      <p class="brand-pitch">
+        Bespoke accounting & tax solutions. Culturally aware, CPA-governed excellence supporting Ontario's newcomers and growing businesses.
+      </p>
+
+      <div class="footer-contacts">
+        <a href="mailto:info@lakingzservices.ca" class="contact-link">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">info@lakingzservices.ca</span>
+        </a>
+        <a href="tel:+19055550199" class="contact-link">
+          <span class="contact-label">Phone</span>
+          <span class="contact-value">+1 (905) 555-0199</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Middle Link Columns (Asymmetrical Grid) -->
+  <div class="container footer-links-section">
+    <div class="links-grid">
+      
+      <div class="links-col" data-reveal style="--reveal-index: 0">
+        <h4 class="col-title">Practice Areas</h4>
+        <ul class="col-links">
+          <li><a href="#services" class="footer-nav-link">Corporate Tax Preparation (T2)</a></li>
+          <li><a href="#services" class="footer-nav-link">Newcomer Personal Tax (T1)</a></li>
+          <li><a href="#services" class="footer-nav-link">Full Bookkeeping & Financials</a></li>
+          <li><a href="#services" class="footer-nav-link">Business Incorporation & Structuring</a></li>
+        </ul>
+      </div>
+
+      <div class="links-col" data-reveal style="--reveal-index: 1">
+        <h4 class="col-title">Navigation</h4>
+        <ul class="col-links">
+          <li><a href="#about" class="footer-nav-link">Our Story</a></li>
+          <li><a href="#services" class="footer-nav-link">Core Expertise</a></li>
+          <li><a href="#navigator" class="footer-nav-link">Interactive Tax Navigator</a></li>
+          <li><a href="#contact" class="footer-nav-link">Book Consultation</a></li>
+        </ul>
+      </div>
+
+      <div class="links-col compliance-col" data-reveal style="--reveal-index: 2">
+        <h4 class="col-title">Ontario Compliance</h4>
+        <p class="compliance-text">
+          Operated in accordance with Canadian accounting guidelines and Chartered Professional Accountant standards. Supported by qualified CPA Canada practitioners.
+        </p>
+        <div class="location-print">
+          <span class="loc-head">Brampton HQ</span>
+          <span class="loc-addr">16 Langholm Court, Brampton, ON</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Giant Editorial Serif Watermark -->
+  <div class="huge-watermark-container" aria-hidden="true">
+    <span class="watermark-text">LAKINGZ</span>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container bottom-wrapper">
+      <span class="copyright">© {new Date().getFullYear()} Lakingz Services. All rights reserved.</span>
+      <span class="designer-tag">Bespoke CPA governance for Ontario’s newcomer & business community.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Fully light mode background integrated with main canvas */
+  .footer-element {
+    background-color: var(--bg-canvas); /* Crisp warm-minty white background of the site */
+    color: var(--text-muted);
+    padding: var(--space-2xl) 0 0 0;
+    border-top: var(--sheet-border); /* Thin light divider border */
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Asymmetric Top Grid */
+  .footer-editorial-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid oklch(90% 0.006 145);
+  }
+
+  .footer-hero-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .footer-hero-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-lg);
+    line-height: 1.25;
+    color: var(--text-main);
+    margin-bottom: var(--space-xs);
+    max-width: 25ch;
+  }
+
+  .footer-hero-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+    max-width: 48ch;
+  }
+
+  /* Fixed Newsletter CTA Input Styling */
+  .footer-newsletter-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 440px;
+    background-color: var(--bg-surface);
+    border: var(--sheet-border);
+    border-radius: 14px;
+    overflow: hidden;
+    padding: 6px;
+    gap: 8px;
+    transition: var(--transition-fast);
+  }
+
+  .footer-newsletter-form:focus-within {
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 12px oklch(50% 0.10 195 / 8%);
+  }
+
+  .newsletter-input {
+    flex-grow: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--text-main);
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+  }
+
+  .newsletter-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
+
+  .newsletter-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background-color: var(--text-main);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    flex-shrink: 0;
+  }
+
+  .newsletter-submit-btn:hover {
+    background-color: var(--accent-teal);
+    color: var(--text-inverse);
+  }
+
+  .newsletter-arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s var(--ease-expo);
+  }
+
+  .newsletter-submit-btn:hover .newsletter-arrow {
+    transform: translateX(3px);
+  }
+
+  /* Identity Block */
+  .footer-identity-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-image {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .brand-pitch {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 320px;
+  }
+
+  .footer-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .contact-link {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .contact-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .contact-value {
+    font-size: var(--fs-xs);
+    color: var(--text-main);
+    font-weight: 500;
+    transition: var(--transition-fast);
+  }
+
+  .contact-link:hover .contact-value {
+    color: var(--accent-teal);
+  }
+
+  /* Asymmetric link blocks */
+  .footer-links-section {
+    padding: var(--space-lg) 0;
+  }
+
+  .links-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1.2fr;
+    gap: var(--space-lg);
+  }
+
+  .col-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-sm);
+    color: var(--text-main);
+    margin-bottom: var(--space-sm);
+    font-weight: 400;
+  }
+
+  .col-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-nav-link {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+    display: inline-block;
+  }
+
+  .footer-nav-link:hover {
+    color: var(--text-main);
+    transform: translateX(3px);
+  }
+
+  /* Compliance & Address Layout (No box, clean editorial flow) */
+  .compliance-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .compliance-text {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+  }
+
+  .location-print {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-top: var(--sheet-border);
+    padding-top: var(--space-xs);
+  }
+
+  .loc-head {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-mint);
+  }
+
+  .loc-addr {
+    font-size: 11px;
+    color: var(--text-main);
+    font-weight: 500;
+  }
+
+  /* Giant backdrop watermark */
+  .huge-watermark-container {
+    user-select: none;
+    pointer-events: none;
+    text-align: center;
+    padding-top: var(--space-md);
+    margin-bottom: -15px;
+  }
+
+  .watermark-text {
+    font-family: var(--font-heading);
+    font-size: clamp(3.5rem, 15.5vw, 11rem);
+    font-weight: 400;
+    color: oklch(20% 0.018 160 / 6%);
+    letter-spacing: 0.28em;
+    line-height: 0.9;
+    display: inline-block;
+  }
+
+  /* Bottom Bar */
+  .footer-bottom {
+    border-top: var(--sheet-border);
+    padding: var(--space-md) 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .bottom-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .copyright, .designer-tag {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.8;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 968px) {
+    .footer-editorial-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    
+    .links-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+
+    .compliance-col {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .links-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .compliance-col {
+      grid-column: span 1;
+    }
+
+    .bottom-wrapper {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+  }
+</style>

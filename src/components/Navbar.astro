@@ -1,0 +1,244 @@
+---
+---
+<header class="header-nav" id="main-header">
+  <div class="container nav-wrapper">
+    <a href="#" class="logo-container" aria-label="Lakingz Services Home">
+      <img src="/LKZlogo.webp" alt="Lakingz Services Logo" class="logo-image" />
+      <span class="brand-name">Lakingz <span class="brand-name-accent">Services</span></span>
+    </a>
+
+    <!-- Hamburger menu toggle -->
+    <button class="menu-toggle" id="menu-btn" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle Navigation Menu">
+      <span class="toggle-bar"></span>
+      <span class="toggle-bar"></span>
+      <span class="toggle-bar"></span>
+    </button>
+
+    <nav class="nav-menu-container" id="nav-menu" aria-hidden="true">
+      <ul class="nav-links">
+        <li><a href="#about" class="nav-link">Our Story</a></li>
+        <li><a href="#services" class="nav-link">Expertise</a></li>
+        <li><a href="#navigator" class="nav-link">Tax Navigator</a></li>
+        <li><a href="#team" class="nav-link">People</a></li>
+      </ul>
+      <div class="nav-cta-wrapper">
+        <a href="#contact" class="btn btn-primary nav-cta">Book Consultation</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: oklch(98.8% 0.003 145 / 85%);
+    backdrop-filter: blur(12px); /* Premium subtle blur */
+    border-bottom: 1px solid oklch(93% 0.005 145);
+    transition: var(--transition-smooth);
+  }
+
+  .nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+  }
+
+  /* Logo Styling */
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    z-index: 101;
+  }
+
+  .logo-image {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .brand-name {
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .brand-name-accent {
+    color: var(--accent-mint);
+  }
+
+  /* Menu Links */
+  .nav-menu-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .nav-link {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 400;
+    color: var(--text-muted);
+    position: relative;
+    padding: var(--space-2xs) 0;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background-color: var(--accent-mint);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease-expo);
+  }
+
+  .nav-link:hover {
+    color: var(--text-main);
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .nav-cta {
+    padding: 0.7em 1.6em;
+  }
+
+  /* Hamburger Toggle */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 101;
+  }
+
+  .toggle-bar {
+    width: 24px;
+    height: 2px;
+    background-color: var(--text-main);
+    transition: var(--transition-fast);
+    transform-origin: center;
+  }
+
+  /* Responsive styling */
+  @media (max-width: 860px) {
+    .menu-toggle {
+      display: flex;
+    }
+
+    .brand-name {
+      font-size: 1.2rem;
+    }
+
+    .nav-menu-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: var(--bg-surface);
+      flex-direction: column;
+      justify-content: center;
+      gap: var(--space-xl);
+      padding: var(--space-2xl);
+      transform: translateX(100%);
+      transition: transform 0.5s var(--ease-expo);
+      z-index: 100;
+      border-left: var(--sheet-border);
+    }
+
+    .nav-menu-container[aria-hidden="false"] {
+      transform: translateX(0);
+    }
+
+    .nav-links {
+      flex-direction: column;
+      gap: var(--space-lg);
+      width: 100%;
+      text-align: center;
+    }
+
+    .nav-link {
+      font-size: var(--fs-md);
+    }
+
+    /* Menu open toggle button transform */
+    .menu-toggle[aria-expanded="true"] .toggle-bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .menu-toggle[aria-expanded="true"] .toggle-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle[aria-expanded="true"] .toggle-bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+</style>
+
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const navMenu = document.getElementById('nav-menu');
+
+  if (menuBtn && navMenu) {
+    menuBtn.addEventListener('click', () => {
+      const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', (!isExpanded).toString());
+      navMenu.setAttribute('aria-hidden', isExpanded.toString());
+    });
+
+    // Close menu when clicking link
+    const links = navMenu.querySelectorAll('.nav-link, .nav-cta');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        menuBtn.setAttribute('aria-expanded', 'false');
+        navMenu.setAttribute('aria-hidden', 'true');
+      });
+    });
+  }
+
+  // Header background shadow transition on scroll
+  const header = document.getElementById('main-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      header?.classList.add('scrolled');
+    } else {
+      header?.classList.remove('scrolled');
+    }
+  });
+</script>
+
+<style is:global>
+  .header-nav.scrolled {
+    box-shadow: var(--shadow-subtle);
+    background-color: oklch(98.8% 0.003 145 / 96%);
+    height: 72px;
+  }
+  .header-nav.scrolled .nav-wrapper {
+    height: 72px;
+  }
+</style>

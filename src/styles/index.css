@@ -1,0 +1,304 @@
+/* Global CSS Stylesheet for Lakingz Services */
+
+/* --- Modern Fonts (Prata & Lexend) --- */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Prata&display=swap');
+
+/* --- Design Tokens / Theme --- */
+:root {
+  /* OKLCH Colors - Drawn from screenshot translucent layers */
+  --bg-canvas: oklch(98.8% 0.003 145);      /* Softest warm minty white */
+  --bg-surface: oklch(99.4% 0.002 145);     /* Very light sheet white */
+  
+  --text-main: oklch(20% 0.018 160);         /* Deep forest-charcoal (high-trust, premium) */
+  --text-muted: oklch(42% 0.012 160);        /* Calming, legible mid-charcoal */
+  --text-inverse: oklch(98% 0.003 145);      /* Clean white */
+
+  /* Translucent Brand Palette Layer Tokens */
+  --color-mint: oklch(88% 0.08 145);         /* Mint green: fresh, growth */
+  --color-teal: oklch(82% 0.06 195);         /* Soft teal/cyan: clarity, accuracy */
+  --color-blue: oklch(80% 0.07 240);         /* Cornflower blue: trust, security */
+
+  /* Saturated Focus Accents */
+  --accent-mint: oklch(55% 0.12 145);
+  --accent-teal: oklch(50% 0.10 195);
+  --accent-blue: oklch(48% 0.14 240);
+  --accent-gold: oklch(75% 0.08 85);         /* Advisor gold highlight */
+
+  /* Deep Surfaces */
+  --bg-footer: oklch(14% 0.012 160);        /* Rich, immersive charcoal */
+  --bg-footer-card: oklch(18% 0.015 160);
+
+  /* Spacing Grid (asymmetrical and modular) */
+  --space-2xs: clamp(0.5rem, 0.45vw + 0.35rem, 0.75rem);
+  --space-xs: clamp(0.75rem, 0.6vw + 0.55rem, 1.1rem);
+  --space-sm: clamp(1rem, 0.8vw + 0.75rem, 1.5rem);
+  --space-md: clamp(1.5rem, 1.2vw + 1.1rem, 2.2rem);
+  --space-lg: clamp(2.2rem, 1.8vw + 1.6rem, 3.3rem);
+  --space-xl: clamp(3.3rem, 2.7vw + 2.4rem, 5rem);
+  --space-2xl: clamp(5rem, 4vw + 3.6rem, 7.5rem);
+  --space-3xl: clamp(7.5rem, 6vw + 5.4rem, 11rem);
+
+  /* Typography Scales */
+  --font-heading: 'Prata', serif;
+  --font-body: 'Lexend', sans-serif;
+
+  /* Font Sizes - Responsive clamping */
+  --fs-xs: clamp(0.72rem, 0.1vw + 0.69rem, 0.8rem);
+  --fs-sm: clamp(0.85rem, 0.15vw + 0.8rem, 0.95rem);
+  --fs-base: clamp(0.98rem, 0.2vw + 0.93rem, 1.1rem);
+  --fs-md: clamp(1.2rem, 0.4vw + 1.1rem, 1.45rem);
+  --fs-lg: clamp(1.5rem, 0.6vw + 1.35rem, 1.95rem);
+  --fs-xl: clamp(1.9rem, 1vw + 1.65rem, 2.6rem);
+  --fs-2xl: clamp(2.4rem, 1.6vw + 2rem, 3.5rem);
+  --fs-3xl: clamp(3rem, 2.8vw + 2.3rem, 4.8rem);
+
+  /* Elevation (No plain shadows, elegant sheets) */
+  --sheet-border: 1px solid oklch(90% 0.006 150);
+  --sheet-border-dark: 1px solid oklch(24% 0.01 160);
+  --shadow-subtle: 0 4px 30px oklch(0% 0 0 / 1.5%);
+  --shadow-medium: 0 10px 40px oklch(0% 0 0 / 2.5%);
+
+  /* Animation Curves */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: all 0.5s var(--ease-expo);
+  --transition-fast: all 0.25s var(--ease-expo);
+}
+
+/* --- Base Reset & Setup --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.65; /* Generous breathing room for legibility, especially light type */
+}
+
+body {
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* --- Scrollbar Customization --- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(85% 0.005 150);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(75% 0.01 150);
+}
+
+/* --- Typography Defaults --- */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--text-main);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+}
+
+h1 { font-size: var(--fs-3xl); }
+h2 { font-size: var(--fs-2xl); }
+h3 { font-size: var(--fs-xl); }
+h4 { font-size: var(--fs-lg); }
+
+p {
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+  max-width: 72ch; /* Keep line length optimal for readability */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* --- Reusable Layout Utilities --- */
+.container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* Section Pacing (Rhythmical spacing) */
+.section-padding {
+  padding: var(--space-2xl) 0;
+}
+
+.asymmetric-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+@media (max-width: 968px) {
+  .asymmetric-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+/* Modern Accessible Text Hide */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Interactive Elements --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: 0.9em 2.2em;
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  border: none;
+}
+
+/* Sovereign Deep Slate Button */
+.btn-primary {
+  background-color: var(--text-main);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid var(--text-main);
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: oklch(100% 0 0 / 8%);
+  transform: translateY(101%);
+  transition: var(--transition-smooth);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+  border-color: var(--accent-mint);
+}
+.btn-primary:hover::after {
+  transform: translateY(0);
+}
+
+/* Calming Secondary Button */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-main);
+  border: 1px solid oklch(70% 0.01 160);
+}
+.btn-secondary:hover {
+  border-color: var(--text-main);
+  background-color: oklch(94% 0.005 160);
+  transform: translateY(-2px);
+}
+
+/* Interactive sheets styling for backgrounds */
+.sheet-layered {
+  background-color: var(--bg-surface);
+  border: var(--sheet-border);
+  box-shadow: var(--shadow-subtle);
+  border-radius: 20px;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.sheet-layered:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-medium);
+}
+
+/* --- Scroll & Load Reveal System ---
+   Any element tagged with [data-reveal] starts slightly faded and offset,
+   then animates into place when it scrolls into view (above-the-fold
+   elements animate on load). A JS observer adds .is-visible to trigger it.
+
+   Safety rails:
+   - The hidden state only applies under `html.js` (set by an inline script
+     before paint), so if JS is disabled the content is never hidden.
+   - The whole block is wrapped in prefers-reduced-motion: no-preference, so
+     motion-sensitive users always see fully-rendered content immediately.
+
+   Stagger: set `--reveal-index` on an element to delay it (index * 80ms),
+   which is how the cascading "choreography" between siblings is created.
+   Direction: data-reveal="left" | "right" | "scale" change the entrance. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.7s var(--ease-expo),
+      transform 0.7s var(--ease-expo);
+    transition-delay: calc(var(--reveal-index, 0) * 80ms);
+  }
+
+  html.js [data-reveal="left"]  { transform: translateX(-40px); }
+  html.js [data-reveal="right"] { transform: translateX(40px); }
+  html.js [data-reveal="scale"] { transform: scale(0.94); }
+
+  html.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- Reduced-Motion Accessibility Override ---
+   Honour the OS-level "reduce motion" setting by neutralising transitions
+   and animations site-wide for users who need a calmer experience. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,127 @@
+---
+import '../styles/index.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Lakingz Services | Bespoke Accounting & Tax Firm Ontario",
+  description = "Empathetic, expert, and culturally aware accounting and tax solutions tailored for newcomers and immigrant small business owners in Brampton and Ontario. Book a CPA-level consultation today."
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://lakingzservices.ca');
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Core Meta -->
+    <meta charset="utf-8" />
+    <!-- Flags JS as available before paint so the reveal system can hide
+         elements up front without a flash; no-JS users keep static content. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/lkzfavicon.png" />
+    <link rel="apple-touch-icon" href="/lkzfavicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO / AEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Lakingz Services" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+
+    <!-- Structured Data (JSON-LD) for Local CPA & Financial Services SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "AccountingService",
+        "name": "Lakingz Services",
+        "description": "Bespoke accounting and tax firm providing tailored services supporting immigrants navigating Canada's tax and financial systems.",
+        "url": "https://lakingzservices.ca",
+        "telephone": "+1-905-555-0199",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "16 Langholm Court",
+          "addressLocality": "Brampton",
+          "addressRegion": "ON",
+          "postalCode": "L6S",
+          "addressCountry": "CA"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "43.7315",
+          "longitude": "-79.7139"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "09:00",
+          "closes": "18:00"
+        },
+        "sameAs": [
+          "https://linkedin.com/company/lakingz-services"
+        ],
+        "founder": {
+          "@type": "Person",
+          "name": "Oluwakemi Olobade",
+          "jobTitle": "Founder & Lead Accountant"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Scroll & load reveal engine.
+      // Watches every [data-reveal] element and adds .is-visible once it
+      // enters the viewport, which triggers the CSS transition. Each element
+      // is unobserved after revealing so it never re-animates on scroll-back.
+      const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
+
+      if (revealEls.length) {
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  obs.unobserve(entry.target);
+                }
+              });
+            },
+            // Trigger a touch before the element is fully on screen so the
+            // motion feels anticipatory rather than late.
+            { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+          );
+
+          revealEls.forEach((el) => observer.observe(el));
+        } else {
+          // No observer support: reveal everything immediately.
+          revealEls.forEach((el) => el.classList.add('is-visible'));
+        }
+      }
+    </script>
+  </body>
+</html>

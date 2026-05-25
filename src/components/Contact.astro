@@ -1,0 +1,1110 @@
+---
+---
+<section class="contact-section section-padding" id="contact">
+  <div class="container asymmetric-grid contact-grid">
+    
+    <!-- Left Column: Editorial High-Trust Copy (No Cards, No Generic Icons) -->
+    <div class="contact-info">
+      <span class="contact-kicker" data-reveal style="--reveal-index: 0">Secure Onboarding</span>
+      <h2 class="contact-title" data-reveal style="--reveal-index: 1">Let’s secure your tax clarity.</h2>
+      <p class="contact-desc" data-reveal style="--reveal-index: 2">
+        Take the first step toward stress-free compliance. Complete our 60-second secure intake and our senior CPA advisors will review your situation and call you within 24 hours.
+      </p>
+
+      <!-- Typographic Trust Details -->
+      <div class="trust-editorial-stack" data-reveal style="--reveal-index: 3">
+        <div class="trust-block">
+          <h5>Bank-Grade Security</h5>
+          <p>Your documents and private financial data are secured with enterprise-grade AES-256 encryption protocols.</p>
+        </div>
+
+        <div class="trust-block">
+          <h5>CPA Oversight</h5>
+          <p>Every calculation and optimization is personally reviewed by ex-Big 4 tax consultants to maximize returns.</p>
+        </div>
+      </div>
+
+      <!-- Minimal, understated address line -->
+      <div class="office-location-text" data-reveal style="--reveal-index: 4">
+        <span class="office-label">Ontario Headquarters</span>
+        <span class="office-addr">16 Langholm Court, Brampton, ON</span>
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive Form Card (Light Mode Elegant Wizard) -->
+    <div class="form-container-box light-wizard-panel sheet-layered" id="form-shell" data-reveal="right" style="--reveal-index: 1">
+      
+      <!-- Micro-Progress Indicator -->
+      <div class="wizard-progress-container">
+        <div class="wizard-progress-bar">
+          <div class="progress-fill" id="wizard-progress-fill" style="width: 25%;"></div>
+        </div>
+        <div class="wizard-header">
+          <span class="wizard-step-label" id="wizard-step-label">Step 1 of 4</span>
+          <span class="wizard-step-title" id="wizard-step-title">Personal Details</span>
+        </div>
+      </div>
+
+      <form id="intake-form" class="intake-form-element" novalidate>
+        
+        <!-- STEP 1: Personal Details -->
+        <div class="wizard-step active" data-step="1">
+          <div class="step-intro">
+            <h4>Tell us who you are</h4>
+            <p>Let's start with your basic contact information to establish your secure profile.</p>
+          </div>
+          
+          <div class="form-group">
+            <label for="intake-name">Full Name <span class="req" aria-hidden="true">*</span></label>
+            <input 
+              type="text" 
+              id="intake-name" 
+              name="name" 
+              required 
+              placeholder="e.g. Oluwaseun A." 
+              class="form-input"
+              aria-required="true"
+            />
+            <span class="err-msg" id="name-error" aria-live="polite">Please enter your full name.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="intake-email">Email Address <span class="req" aria-hidden="true">*</span></label>
+            <input 
+              type="email" 
+              id="intake-email" 
+              name="email" 
+              required 
+              placeholder="e.g. name@domain.com" 
+              class="form-input"
+              aria-required="true"
+            />
+            <span class="err-msg" id="email-error" aria-live="polite">Please enter a valid email address.</span>
+          </div>
+        </div>
+
+        <!-- STEP 2: Residency & Profile (Tiles with Premium Minimal Icons) -->
+        <div class="wizard-step" data-step="2">
+          <div class="step-intro">
+            <h4>Select your profile</h4>
+            <p>We tailor your tax strategies based on your unique status in Canada.</p>
+          </div>
+
+          <!-- Hidden Native Selects for Backwards Compatibility & Form Data -->
+          <select id="intake-profile" name="profile" required class="sr-only" aria-required="true">
+            <option value="">-- Select Profile --</option>
+            <option value="Permanent Resident">New Permanent Resident</option>
+            <option value="International Graduate">International Graduate</option>
+            <option value="Self-Employed">Self-Employed / Gig Worker</option>
+            <option value="Small Business Owner">Small Business Owner</option>
+          </select>
+
+          <!-- Beautiful Custom Interactive Tiles (Minimalist Light-Mode Icons) -->
+          <div class="profile-tiles-grid">
+            <button type="button" class="tile-button" data-value="Permanent Resident">
+              <div class="tile-icon-box bg-mint-subtle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="tile-content">
+                <h6>Permanent Resident</h6>
+                <p>Newcomer or established PR</p>
+              </div>
+            </button>
+
+            <button type="button" class="tile-button" data-value="International Graduate">
+              <div class="tile-icon-box bg-blue-subtle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2.5 3 6 3s6-1 6-3v-5"/></svg>
+              </div>
+              <div class="tile-content">
+                <h6>Int'l Graduate</h6>
+                <p>Post-grad work permit holders</p>
+              </div>
+            </button>
+
+            <button type="button" class="tile-button" data-value="Self-Employed">
+              <div class="tile-icon-box bg-gold-subtle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <div class="tile-content">
+                <h6>Self-Employed</h6>
+                <p>Contractors or gig workers</p>
+              </div>
+            </button>
+
+            <button type="button" class="tile-button" data-value="Small Business Owner">
+              <div class="tile-icon-box bg-teal-subtle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/></svg>
+              </div>
+              <div class="tile-content">
+                <h6>Business Owner</h6>
+                <p>Incorporated or sole proprietor</p>
+              </div>
+            </button>
+          </div>
+          <span class="err-msg" id="profile-error" aria-live="polite">Please select your profile.</span>
+
+          <!-- Years in Canada (Interactive Pills) -->
+          <div class="form-group mt-md">
+            <label class="light-field-label">How long have you filed in Canada? <span class="req" aria-hidden="true">*</span></label>
+            <select id="intake-years" name="years" required class="sr-only" aria-required="true">
+              <option value="">-- Select Option --</option>
+              <option value="First Year">Filing First Return in Canada</option>
+              <option value="1-3 Years">Filing 1-3 Years in Canada</option>
+              <option value="3+ Years">Filing 3+ Years in Canada</option>
+            </select>
+            
+            <div class="pills-container">
+              <button type="button" class="pill-button" data-value="First Year">Filing First Year</button>
+              <button type="button" class="pill-button" data-value="1-3 Years">1 - 3 Years</button>
+              <button type="button" class="pill-button" data-value="3+ Years">3+ Years</button>
+            </div>
+            <span class="err-msg" id="years-error" aria-live="polite">Please select your residency range.</span>
+          </div>
+        </div>
+
+        <!-- STEP 3: Service Requested (Interactive Chips) -->
+        <div class="wizard-step" data-step="3">
+          <div class="step-intro">
+            <h4>Primary service needed</h4>
+            <p>Select the main area you want our CPAs to analyze for optimal savings.</p>
+          </div>
+
+          <select id="intake-service" name="service" required class="sr-only" aria-required="true">
+            <option value="">-- Select Service --</option>
+            <option value="Personal Tax Prep">Personal Tax Preparation (T1)</option>
+            <option value="Corporate Tax Prep">Corporate Tax Preparation (T2)</option>
+            <option value="Bookkeeping">Full Bookkeeping & Financial Reporting</option>
+            <option value="Business Incorporation">Business Incorporation & Licensing</option>
+            <option value="GST/HST Filing">GST, HST or PST Filing</option>
+            <option value="Payroll Management">Payroll Management (T4 Slips)</option>
+            <option value="Audit Support">Audit Preparation Support</option>
+          </select>
+
+          <div class="services-chips-grid">
+            <button type="button" class="chip-button" data-value="Personal Tax Prep">
+              <span class="chip-dot dot-personal"></span>
+              <span>Personal Tax Preparation (T1)</span>
+            </button>
+            <button type="button" class="chip-button" data-value="Corporate Tax Prep">
+              <span class="chip-dot dot-corporate"></span>
+              <span>Corporate Tax Preparation (T2)</span>
+            </button>
+            <button type="button" class="chip-button" data-value="Bookkeeping">
+              <span class="chip-dot dot-bookkeeping"></span>
+              <span>Bookkeeping & Financials</span>
+            </button>
+            <button type="button" class="chip-button" data-value="Business Incorporation">
+              <span class="chip-dot dot-incorporation"></span>
+              <span>Incorporation & Licensing</span>
+            </button>
+            <button type="button" class="chip-button" data-value="GST/HST Filing">
+              <span class="chip-dot dot-gst"></span>
+              <span>GST / HST Filings</span>
+            </button>
+            <button type="button" class="chip-button" data-value="Payroll Management">
+              <span class="chip-dot dot-payroll"></span>
+              <span>Payroll Management (T4s)</span>
+            </button>
+            <button type="button" class="chip-button" data-value="Audit Support">
+              <span class="chip-dot dot-audit"></span>
+              <span>Audit & CRA Response Support</span>
+            </button>
+          </div>
+          <span class="err-msg" id="service-error" aria-live="polite">Please select the service required.</span>
+        </div>
+
+        <!-- STEP 4: Details & Submission -->
+        <div class="wizard-step" data-step="4">
+          <div class="step-intro">
+            <h4>Tell us more (Optional)</h4>
+            <p>Share any specific deadlines, outstanding questions, or letters you've received from the CRA.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="intake-message">Additional notes or questions</label>
+            <textarea 
+              id="intake-message" 
+              name="message" 
+              rows="4" 
+              placeholder="E.g., I recently moved from Germany; have T4 slips and moving expenses to declare..." 
+              class="form-input form-textarea"
+            ></textarea>
+          </div>
+
+          <!-- Final Submit Button -->
+          <button type="submit" class="btn btn-primary form-submit-btn glowing-btn">
+            <span>Securely Book Advisor Session</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="submit-arrow"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <!-- Navigation Buttons footer -->
+        <div class="wizard-nav-footer">
+          <button type="button" class="btn-wizard-back" id="wizard-back-btn" style="visibility: hidden;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-arrow-icon"><path d="m15 18-6-6 6-6"/></svg>
+            <span>Back</span>
+          </button>
+          
+          <button type="button" class="btn-wizard-next" id="wizard-next-btn">
+            <span>Continue</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-arrow-icon"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Beautiful Dynamic Success Panel -->
+      <div id="success-panel" class="success-panel-content" aria-hidden="true">
+        <div class="success-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="success-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m22 4-10 10.01-3-3"/></svg>
+        </div>
+        <h3 class="success-title">Intake Form Secured</h3>
+        <p class="success-desc">
+          Thank you for trusting Lakingz Services. Your profile has been securely compiled. A CPA advisor will contact you within **24 hours** to schedule your consultation.
+        </p>
+        <div class="success-checklist">
+          <h6>What happens next?</h6>
+          <ul>
+            <li>
+              <span class="num">1</span>
+              <span><strong>Ontario-newcomer Checklist:</strong> Sent immediately to your email address.</span>
+            </li>
+            <li>
+              <span class="num">2</span>
+              <span><strong>Secure Document Portal:</strong> You'll receive an encrypted link to upload slips, T4s, T2202, and CRA files.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .contact-section {
+    background-color: var(--bg-canvas);
+    border-bottom: var(--sheet-border);
+  }
+
+  .contact-grid {
+    align-items: stretch;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .contact-kicker {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent-teal);
+    margin-bottom: var(--space-xs);
+    display: inline-block;
+  }
+
+  .contact-title {
+    font-size: var(--fs-2xl);
+    line-height: 1.15;
+    margin-bottom: var(--space-sm);
+    letter-spacing: -0.02em;
+  }
+
+  .contact-desc {
+    color: var(--text-muted);
+    font-size: var(--fs-base);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Editorial Trust Stack (Pure Typographical, No Cards, No Generic Icons) */
+  .trust-editorial-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    width: 100%;
+    margin-bottom: var(--space-lg);
+  }
+
+  .trust-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: var(--space-xs);
+    border-left: 1px solid oklch(80% 0.02 160);
+  }
+
+  .trust-block h5 {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .trust-block p {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 50ch;
+  }
+
+  /* Minimal understated address block */
+  .office-location-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: var(--space-sm);
+    border-top: 1px solid oklch(92% 0.005 145);
+    width: 100%;
+  }
+
+  .office-label {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .office-addr {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    color: var(--text-main);
+    font-weight: 500;
+  }
+
+  /* Elegant Light Mode Wizard Box */
+  .light-wizard-panel {
+    background-color: var(--bg-surface);
+    border: var(--sheet-border);
+    border-radius: 28px;
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .wizard-progress-container {
+    margin-bottom: var(--space-md);
+  }
+
+  .wizard-progress-bar {
+    height: 4px;
+    background-color: oklch(94% 0.005 145);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: var(--space-xs);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-teal) 0%, var(--accent-mint) 100%);
+    transition: width 0.4s var(--ease-expo);
+    box-shadow: 0 0 10px oklch(55% 0.12 145 / 30%);
+  }
+
+  .wizard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .wizard-step-label {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-teal);
+  }
+
+  .wizard-step-title {
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  /* Form Elements */
+  .intake-form-element {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    gap: var(--space-md);
+    transition: opacity 0.3s ease-out;
+  }
+
+  .wizard-step {
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease-out, transform 0.35s var(--ease-expo);
+  }
+
+  .wizard-step.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .step-intro {
+    margin-bottom: var(--space-sm);
+  }
+
+  .step-intro h4 {
+    font-family: var(--font-heading);
+    font-size: var(--fs-md);
+    color: var(--text-main);
+    margin-bottom: 4px;
+  }
+
+  .step-intro p {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    max-width: 100%;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: var(--space-sm);
+  }
+
+  .form-group.mt-md {
+    margin-top: var(--space-md);
+  }
+
+  .light-field-label {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--text-main);
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 0.9em 1.2em;
+    background-color: oklch(98.8% 0.003 145);
+    border: var(--sheet-border);
+    color: var(--text-main);
+    border-radius: 14px;
+    font-size: var(--fs-sm);
+    transition: var(--transition-fast);
+  }
+
+  .form-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--accent-teal);
+    background-color: var(--bg-surface);
+    box-shadow: 0 0 12px oklch(50% 0.10 195 / 8%);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  /* Custom Grid for Profile Tiles with Light-mode Premium Icons */
+  .profile-tiles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+  }
+
+  .tile-button {
+    background: oklch(98.8% 0.003 145);
+    border: var(--sheet-border);
+    border-radius: 16px;
+    padding: var(--space-xs);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+  }
+
+  .tile-button:hover {
+    background: oklch(97.5% 0.005 145);
+    border-color: oklch(75% 0.01 145);
+    transform: translateY(-2px);
+  }
+
+  .tile-button.active {
+    background: oklch(93.5% 0.04 145);
+    border-color: var(--accent-teal);
+    box-shadow: inset 0 0 8px oklch(50% 0.10 195 / 5%);
+  }
+
+  .tile-icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--transition-fast);
+  }
+
+  .tile-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .bg-mint-subtle {
+    background-color: oklch(88% 0.08 145 / 15%);
+    color: var(--accent-mint);
+  }
+  .bg-blue-subtle {
+    background-color: oklch(80% 0.07 240 / 15%);
+    color: var(--accent-blue);
+  }
+  .bg-gold-subtle {
+    background-color: oklch(75% 0.08 85 / 15%);
+    color: var(--accent-gold);
+  }
+  .bg-teal-subtle {
+    background-color: oklch(82% 0.06 195 / 15%);
+    color: var(--accent-teal);
+  }
+
+  .tile-button.active .bg-mint-subtle,
+  .tile-button.active .bg-blue-subtle,
+  .tile-button.active .bg-gold-subtle,
+  .tile-button.active .bg-teal-subtle {
+    background-color: var(--accent-teal);
+    color: var(--text-inverse);
+  }
+
+  .tile-content h6 {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 2px;
+  }
+
+  .tile-content p {
+    font-size: 10px;
+    color: var(--text-muted);
+    line-height: 1.3;
+  }
+
+  /* Custom Residency Pills */
+  .pills-container {
+    display: flex;
+    gap: var(--space-2xs);
+    margin-top: 4px;
+  }
+
+  .pill-button {
+    flex: 1;
+    background: oklch(98.8% 0.003 145);
+    border: var(--sheet-border);
+    color: var(--text-muted);
+    border-radius: 30px;
+    padding: 0.7em var(--space-xs);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-align: center;
+  }
+
+  .pill-button:hover {
+    background: oklch(97.5% 0.005 145);
+    border-color: oklch(75% 0.01 145);
+  }
+
+  .pill-button.active {
+    background: var(--text-main);
+    border-color: var(--text-main);
+    color: var(--text-inverse);
+    box-shadow: var(--shadow-subtle);
+  }
+
+  /* Custom Service Chips */
+  .services-chips-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: var(--space-xs);
+  }
+
+  .chip-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: oklch(98.8% 0.003 145);
+    border: var(--sheet-border);
+    color: var(--text-main);
+    padding: 0.6em 1em;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .chip-button:hover {
+    background: oklch(97.5% 0.005 145);
+    border-color: oklch(75% 0.01 145);
+  }
+
+  .chip-button.active {
+    background: oklch(93.5% 0.04 145);
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 10px oklch(50% 0.10 195 / 5%);
+  }
+
+  .chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .dot-personal { background-color: var(--accent-mint); }
+  .dot-corporate { background-color: var(--accent-blue); }
+  .dot-bookkeeping { background-color: var(--accent-gold); }
+  .dot-incorporation { background-color: var(--accent-teal); }
+  .dot-gst { background-color: oklch(70% 0.1 200); }
+  .dot-payroll { background-color: oklch(65% 0.15 320); }
+  .dot-audit { background-color: oklch(65% 0.15 40); }
+
+  /* Error messages */
+  .err-msg {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: oklch(60% 0.15 20);
+    display: none;
+    margin-top: 2px;
+  }
+
+  .form-input.invalid-attempted ~ .err-msg,
+  select.invalid-attempted ~ .err-msg {
+    display: block;
+  }
+
+  /* Navigation Footer */
+  .wizard-nav-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid oklch(94% 0.005 145);
+    padding-top: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .btn-wizard-back {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5em 1em;
+    transition: var(--transition-fast);
+  }
+
+  .btn-wizard-back:hover {
+    color: var(--text-main);
+  }
+
+  .btn-wizard-next {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--text-main);
+    border: none;
+    color: var(--text-inverse);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 0.7em 1.5em;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+  }
+
+  .btn-wizard-next:hover {
+    background: var(--accent-teal);
+    color: var(--text-inverse);
+    box-shadow: 0 0 15px oklch(50% 0.10 195 / 20%);
+  }
+
+  .nav-arrow-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Glowing button for final step */
+  .glowing-btn {
+    width: 100%;
+    margin-top: var(--space-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    background: linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-mint) 100%);
+    color: var(--text-main);
+    border-color: var(--accent-teal);
+    font-weight: 600;
+  }
+
+  .glowing-btn:hover {
+    box-shadow: 0 0 20px oklch(55% 0.12 145 / 25%);
+    transform: translateY(-2px);
+  }
+
+  /* Success Panel */
+  .success-panel-content {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-md) 0;
+    animation: fadeIn 0.6s var(--ease-expo);
+  }
+
+  .success-panel-content[aria-hidden="false"] {
+    display: flex;
+  }
+
+  .success-icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: var(--color-mint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-mint);
+    margin-bottom: var(--space-md);
+  }
+
+  .success-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .success-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-xl);
+    color: var(--text-main);
+    margin-bottom: var(--space-xs);
+  }
+
+  .success-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    max-width: 340px;
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+  }
+
+  .success-checklist {
+    text-align: left;
+    background-color: oklch(98.8% 0.003 145);
+    border: var(--sheet-border);
+    border-radius: 16px;
+    padding: var(--space-md);
+    width: 100%;
+  }
+
+  .success-checklist h6 {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-main);
+    margin-bottom: var(--space-xs);
+    letter-spacing: 0.05em;
+  }
+
+  .success-checklist ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .success-checklist li {
+    display: flex;
+    gap: var(--space-2xs);
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .success-checklist .num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--color-blue);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  /* Responsive styles */
+  @media (max-width: 968px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .form-container-box {
+      max-width: 540px;
+      margin: 0 auto;
+      width: 100%;
+      min-height: unset;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .profile-tiles-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-container-box {
+      padding: var(--space-md);
+    }
+    
+    .pills-container {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  let currentStep = 1;
+  const totalSteps = 4;
+  
+  const stepTitles = [
+    "Personal Details",
+    "Profile & Residency",
+    "Primary Service Required",
+    "Additional Details"
+  ];
+
+  // DOM Elements
+  const form = document.getElementById('intake-form') as HTMLFormElement;
+  const formShell = document.getElementById('form-shell');
+  const successPanel = document.getElementById('success-panel');
+  const progressFill = document.getElementById('wizard-progress-fill');
+  const stepLabel = document.getElementById('wizard-step-label');
+  const stepTitle = document.getElementById('wizard-step-title');
+  const backBtn = document.getElementById('wizard-back-btn') as HTMLButtonElement;
+  const nextBtn = document.getElementById('wizard-next-btn') as HTMLButtonElement;
+
+  // Multi-step wrappers
+  const steps = document.querySelectorAll('.wizard-step');
+
+  // Input elements
+  const nameInput = document.getElementById('intake-name') as HTMLInputElement;
+  const emailInput = document.getElementById('intake-email') as HTMLInputElement;
+  const profileSelect = document.getElementById('intake-profile') as HTMLSelectElement;
+  const yearsSelect = document.getElementById('intake-years') as HTMLSelectElement;
+  const serviceSelect = document.getElementById('intake-service') as HTMLSelectElement;
+
+  // Custom component logic for step validation
+  function isStepValid(step: number): boolean {
+    if (step === 1) {
+      const isNameOk = nameInput.checkValidity();
+      const isEmailOk = emailInput.checkValidity();
+      
+      nameInput.classList.remove('invalid-attempted');
+      emailInput.classList.remove('invalid-attempted');
+      
+      if (!isNameOk) nameInput.classList.add('invalid-attempted');
+      if (!isEmailOk) emailInput.classList.add('invalid-attempted');
+      
+      return isNameOk && isEmailOk;
+    }
+    
+    if (step === 2) {
+      const isProfileOk = profileSelect.value !== "";
+      const isYearsOk = yearsSelect.value !== "";
+      
+      profileSelect.classList.remove('invalid-attempted');
+      yearsSelect.classList.remove('invalid-attempted');
+      
+      if (!isProfileOk) profileSelect.classList.add('invalid-attempted');
+      if (!isYearsOk) yearsSelect.classList.add('invalid-attempted');
+      
+      return isProfileOk && isYearsOk;
+    }
+    
+    if (step === 3) {
+      const isServiceOk = serviceSelect.value !== "";
+      serviceSelect.classList.remove('invalid-attempted');
+      if (!isServiceOk) serviceSelect.classList.add('invalid-attempted');
+      return isServiceOk;
+    }
+    
+    return true;
+  }
+
+  function updateWizardUI() {
+    // Update progress bar
+    if (progressFill) {
+      const percentage = (currentStep / totalSteps) * 100;
+      progressFill.style.width = `${percentage}%`;
+    }
+
+    // Update labels
+    if (stepLabel) stepLabel.innerText = `Step ${currentStep} of ${totalSteps}`;
+    if (stepTitle) stepTitle.innerText = stepTitles[currentStep - 1];
+
+    // Show/hide steps
+    steps.forEach((stepElement) => {
+      const stepNum = parseInt(stepElement.getAttribute('data-step') || '0', 10);
+      if (stepNum === currentStep) {
+        stepElement.classList.add('active');
+      } else {
+        stepElement.classList.remove('active');
+      }
+    });
+
+    // Control Back Button visibility
+    if (backBtn) {
+      backBtn.style.visibility = currentStep > 1 ? 'visible' : 'hidden';
+    }
+
+    // Control Next Button or Submit view
+    if (nextBtn) {
+      if (currentStep === totalSteps) {
+        nextBtn.style.display = 'none'; // Step 4 submits directly with its huge glowing submit button
+      } else {
+        nextBtn.style.display = 'flex';
+      }
+    }
+  }
+
+  // Next button click handler
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (isStepValid(currentStep)) {
+        if (currentStep < totalSteps) {
+          currentStep++;
+          updateWizardUI();
+        }
+      }
+    });
+  }
+
+  // Back button click handler
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateWizardUI();
+      }
+    });
+  }
+
+  // --- Interactive Tile Logic (Profile Selection) ---
+  const tileButtons = document.querySelectorAll('.tile-button');
+  tileButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const val = btn.getAttribute('data-value') || '';
+      if (profileSelect) {
+        profileSelect.value = val;
+        // Trigger select change validation reset
+        profileSelect.classList.remove('invalid-attempted');
+      }
+      // Toggle active states on buttons
+      tileButtons.forEach((t) => t.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // --- Interactive Pill Logic (Years Selection) ---
+  const pillButtons = document.querySelectorAll('.pill-button');
+  pillButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const val = btn.getAttribute('data-value') || '';
+      if (yearsSelect) {
+        yearsSelect.value = val;
+        yearsSelect.classList.remove('invalid-attempted');
+      }
+      pillButtons.forEach((p) => p.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // --- Interactive Service Chip Logic ---
+  const chipButtons = document.querySelectorAll('.chip-button');
+  chipButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const val = btn.getAttribute('data-value') || '';
+      if (serviceSelect) {
+        serviceSelect.value = val;
+        serviceSelect.classList.remove('invalid-attempted');
+      }
+      chipButtons.forEach((c) => c.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Form final submission handler
+  if (form && successPanel) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (isStepValid(currentStep)) {
+        // Success animation
+        form.style.opacity = '0';
+        
+        // Hide wizard progress indicator
+        const progressContainer = document.querySelector('.wizard-progress-container');
+        if (progressContainer) {
+          (progressContainer as HTMLElement).style.display = 'none';
+        }
+        
+        setTimeout(() => {
+          form.style.display = 'none';
+          successPanel.setAttribute('aria-hidden', 'false');
+          
+          // Scroll slightly into view
+          formShell?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
+    });
+  }
+</script>

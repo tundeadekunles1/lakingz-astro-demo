@@ -1,0 +1,15 @@
+echo ""
+echo "Running checks before saving your commit..."
+echo ""
+
+echo "[1/3] Linting code (eslint)..."
+npm run lint || { echo ""; echo "X  Lint found errors. Fix them above, then commit again."; exit 1; }
+
+echo "[2/3] Type-checking (astro check)..."
+npm run check || { echo ""; echo "X  Type check failed. Fix the errors above, then commit again."; exit 1; }
+
+echo "[3/3] Building the site (astro build)..."
+npm run build || { echo ""; echo "X  Build failed. Fix the errors above, then commit again."; exit 1; }
+
+echo ""
+echo "All checks passed. Saving your commit."
