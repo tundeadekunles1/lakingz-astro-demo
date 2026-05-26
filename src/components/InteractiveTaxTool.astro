@@ -216,21 +216,13 @@
 
   /* Interactive Timeline Layout */
   .interactive-timeline {
+    --timeline-track: 1.5rem;
+    --timeline-dot: 15px;
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
     position: relative;
-    padding-left: var(--space-md);
-  }
-
-  .interactive-timeline::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 7px;
-    width: 1px;
-    height: calc(100% - 20px);
-    background-color: var(--color-mint);
+    padding-left: calc(var(--timeline-track) + var(--space-sm));
   }
 
   /* Timeline Node — created at runtime via JS so they never receive
@@ -243,12 +235,25 @@
     transition: var(--transition-smooth);
   }
 
+  /* Connector segments — one per node, centered on the dot track */
+  :global(.timeline-node:not(:last-child))::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--timeline-dot) / 2);
+    left: calc(-1 * var(--space-sm) - var(--timeline-track) / 2);
+    width: 1px;
+    height: calc(100% + var(--space-md));
+    transform: translateX(-50%);
+    background-color: var(--color-mint);
+    z-index: 1;
+  }
+
   :global(.node-dot) {
     position: absolute;
-    left: -23px;
-    top: 8px;
-    width: 15px;
-    height: 15px;
+    left: calc(-1 * var(--space-sm) - var(--timeline-track) / 2 - var(--timeline-dot) / 2);
+    top: 0;
+    width: var(--timeline-dot);
+    height: var(--timeline-dot);
     border-radius: 50%;
     background-color: var(--accent-mint);
     border: 2px solid var(--color-mint);
