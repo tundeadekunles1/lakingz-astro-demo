@@ -1,0 +1,321 @@
+---
+const faqs = [
+  {
+    q: "I just arrived in Canada — when do I need to file my first tax return?",
+    a: "You must file a Canadian tax return for any year in which you were a resident of Canada, even for part of the year. For most newcomers, your first return is due April 30 of the year following your arrival. Filing promptly is important — it activates key credits including the GST/HST Credit and Ontario Trillium Benefit, which can deliver hundreds of dollars in tax-free quarterly payments directly to your account."
+  },
+  {
+    q: "I received a letter from the CRA — what should I do?",
+    a: "Don't ignore it. CRA letters range from routine confirmation notices to formal audit requests, and the required response varies significantly. Contact us as soon as possible with your letter — we will interpret the scope of the request, organize the required documentation, and communicate directly with the CRA on your behalf to resolve the matter efficiently and without penalty."
+  },
+  {
+    q: "When does my business need to register for HST?",
+    a: "HST registration becomes mandatory once your business earns more than $30,000 in a single calendar quarter or across four consecutive quarters. Failure to register on time can result in retroactive penalties and interest on uncollected tax. We recommend monitoring your revenue proactively — we can help you register before you reach the threshold so you are never caught off guard."
+  },
+  {
+    q: "I've been managing with TurboTax — do I need a professional accountant?",
+    a: "DIY software handles straightforward T4 employment income well. However, if your situation involves foreign income, moving expenses, business income, multiple slips, investment accounts, or newcomer credits you may not know you're entitled to — an accountant typically recovers far more than the cost of the service. More importantly, we protect you from errors that can trigger CRA reassessments years after you file."
+  },
+  {
+    q: "What happens if I haven't filed for one or more previous years?",
+    a: "It is fixable, but the sooner you act the better. Unfiled returns accumulate late-filing penalties — typically 5% of any balance owing, plus 1% per month for up to 12 months, with higher rates applied if the CRA has already contacted you about a prior missed year. Beyond penalties, every unfiled year is a year of refunds, credits, and RRSP contribution room you may have permanently forfeited. If the CRA files on your behalf through a notional assessment, the result is almost always inaccurate and unfavourable. Coming forward proactively through the CRA's Voluntary Disclosure Program before they contact you can significantly reduce or eliminate penalties. We regularly help clients bring multiple unfiled years into compliance, resolve outstanding balances, and recover what can still be claimed."
+  },
+  {
+    q: "Can I claim my moving expenses when I immigrated to Canada?",
+    a: "Yes, in many cases. If you moved to Canada to start working or to attend a full-time post-secondary program, eligible moving costs — including transportation, storage, temporary accommodation, and travel expenses — can be deducted from your Canadian employment or business income. The rules carry specific conditions, and we carefully audit each client's situation to ensure every legal deduction is claimed."
+  },
+  {
+    q: "What is the difference between a T1 and a T2 return?",
+    a: "A T1 is the personal income tax return filed by individuals, reporting employment income, investment income, and personal deductions. A T2 is the corporate income tax return filed by incorporated businesses, reporting the company's income, eligible expenses, and taxes owed. If you operate an incorporated business in Canada, you will typically need both — one for yourself personally, and one for your corporation."
+  },
+  {
+    q: "How do I file taxes if I only worked in Canada for part of the year?",
+    a: "Canada taxes you on your worldwide income from the date you became a resident. Your first return must correctly identify your entry date, split the tax year accordingly, and report foreign income earned before arrival — which may be reduced through applicable tax treaty credits. First-year returns are among the most technically complex filings we handle, and errors made here can affect years of future credits and benefits."
+  }
+];
+---
+
+<section class="faq-section section-padding" id="faq">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="faq-header">
+      <div class="faq-header-left">
+        <span class="faq-kicker" data-reveal style="--reveal-index: 0">Common Questions</span>
+        <h2 class="faq-title" data-reveal style="--reveal-index: 1">Answers for newcomers<br />navigating Canada's tax system.</h2>
+      </div>
+      <div class="faq-header-right" data-reveal style="--reveal-index: 2">
+        <p class="faq-intro">
+          The questions below are among the most common we hear from immigrants filing in Canada for the first time. If yours isn't here, our intake form is open year-round.
+        </p>
+        <a href="#contact" class="btn btn-primary faq-cta">Ask us directly</a>
+      </div>
+    </div>
+
+    <!-- Accordion -->
+    <div class="faq-list" id="faq-accordion">
+      {faqs.map((faq, idx) => (
+        <div class="faq-item" data-reveal style={`--reveal-index: ${idx % 3}`}>
+          <button
+            class="faq-trigger"
+            aria-expanded="false"
+            aria-controls={`faq-panel-${idx}`}
+          >
+            <span class="faq-q">{faq.q}</span>
+            <span class="faq-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-panel" id={`faq-panel-${idx}`} aria-hidden="true">
+            <div class="faq-panel-inner">
+              <p class="faq-a">{faq.a}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom prompt -->
+    <div class="faq-footer-note" data-reveal style="--reveal-index: 1">
+      <p>Still have questions? <a href="#contact" class="faq-inline-link">Book a free 15-minute intake call</a> — there's no obligation and no paperwork required to get started.</p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    background-color: var(--bg-surface);
+    border-top: var(--sheet-border);
+    border-bottom: var(--sheet-border);
+  }
+
+  /* ── Header ────────────────────────────── */
+  .faq-header {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-xl);
+    align-items: end;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
+    border-bottom: var(--sheet-border);
+  }
+
+  .faq-kicker {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent-blue);
+    margin-bottom: var(--space-xs);
+  }
+
+  .faq-title {
+    font-size: var(--fs-2xl);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .faq-intro {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+    max-width: 44ch;
+  }
+
+  .faq-cta {
+    font-size: var(--fs-xs);
+    padding: 0.8em 1.8em;
+  }
+
+  /* ── Accordion List ─────────────────────── */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    border-top: var(--sheet-border);
+  }
+
+  .faq-item {
+    border-bottom: var(--sheet-border);
+    transition: var(--transition-fast);
+  }
+
+  .faq-trigger {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: var(--space-md) 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .faq-q {
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    font-weight: 500;
+    color: var(--text-main);
+    line-height: 1.4;
+    transition: var(--transition-fast);
+    flex: 1;
+  }
+
+  .faq-trigger:hover .faq-q {
+    color: var(--accent-blue);
+  }
+
+  .faq-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform 0.4s var(--ease-expo), color 0.25s var(--ease-expo);
+    margin-top: 2px;
+  }
+
+  .faq-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .faq-item.active .faq-icon {
+    transform: rotate(180deg);
+    color: var(--accent-blue);
+  }
+
+  .faq-item.active .faq-q {
+    color: var(--text-main);
+  }
+
+  /* Panel expand via CSS grid trick — matches Services accordion pattern.
+     visibility: hidden ensures content is invisible (not just zero-height)
+     before the question is clicked. */
+  .faq-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows 0.4s var(--ease-expo),
+      visibility 0.4s var(--ease-expo),
+      opacity 0.2s var(--ease-expo);
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .faq-item.active .faq-panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* Direct grid child — must have min-height: 0 so the 0fr row
+     can collapse fully to zero height. overflow: hidden clips any
+     padding that would otherwise bleed outside the collapsed row. */
+  .faq-panel-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .faq-a {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.75;
+    padding-bottom: var(--space-md);
+    padding-right: var(--space-xl);
+    max-width: 80ch;
+  }
+
+  /* ── Footer note ────────────────────────── */
+  .faq-footer-note {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    text-align: center;
+    border-top: var(--sheet-border);
+  }
+
+  .faq-footer-note p {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    max-width: none;
+  }
+
+  .faq-inline-link {
+    color: var(--accent-blue);
+    font-weight: 500;
+    border-bottom: 1px solid oklch(70% 0.1 240 / 30%);
+    transition: var(--transition-fast);
+  }
+
+  .faq-inline-link:hover {
+    color: var(--text-main);
+    border-bottom-color: var(--text-main);
+  }
+
+  /* ── Responsive ─────────────────────────── */
+  @media (max-width: 968px) {
+    .faq-header {
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      align-items: start;
+    }
+
+    .faq-intro {
+      max-width: 100%;
+    }
+
+    .faq-a {
+      padding-right: var(--space-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .faq-q {
+      font-size: var(--fs-sm);
+    }
+
+    .faq-a {
+      padding-right: var(--space-xs);
+    }
+  }
+</style>
+
+<script>
+  const accordion = document.getElementById('faq-accordion');
+
+  if (accordion) {
+    const items = accordion.querySelectorAll('.faq-item');
+
+    items.forEach((item) => {
+      const trigger = item.querySelector('.faq-trigger');
+      const panel = item.querySelector('.faq-panel');
+
+      trigger?.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+
+        // Collapse all
+        items.forEach((i) => {
+          i.classList.remove('active');
+          i.querySelector('.faq-trigger')?.setAttribute('aria-expanded', 'false');
+          i.querySelector('.faq-panel')?.setAttribute('aria-hidden', 'true');
+        });
+
+        // Open clicked (if it wasn't already open)
+        if (!isActive) {
+          item.classList.add('active');
+          trigger.setAttribute('aria-expanded', 'true');
+          panel?.setAttribute('aria-hidden', 'false');
+        }
+      });
+    });
+  }
+</script>

@@ -2,37 +2,53 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
 import Services from '../components/Services.astro';
 import InteractiveTaxTool from '../components/InteractiveTaxTool.astro';
 import Team from '../components/Team.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import FAQ from '../components/FAQ.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
+import MobileCTA from '../components/MobileCTA.astro';
 ---
 
-<Layout 
+<Layout
   title="Lakingz Services | Bespoke Accounting & Tax Advisory in Ontario"
   description="Navigate Canada's tax systems with clarity and confidence. Empowering newcomers, permanent residents, graduates, and small businesses with CPA-governed excellence from ex-Deloitte and KPMG experts in Brampton, Ontario."
 >
   <!-- Main Nav -->
   <Navbar />
-  
+
   <main>
     <!-- Asymmetric Hero & Layered Art -->
     <Hero />
-    
+
+    <!-- Founding story, stats, and community reach -->
+    <About />
+
     <!-- Editorial staggered Services accordion -->
     <Services />
-    
+
     <!-- Dynamic Ontario Newcomer Tax Navigator -->
     <InteractiveTaxTool />
-    
+
     <!-- Ex-Big 4 Leadership & CPA Advisor profiles -->
     <Team />
-    
-    <!-- Secure accessible Client Intake intake form -->
+
+    <!-- 3-step onboarding process -->
+    <HowItWorks />
+
+    <!-- Newcomer FAQ accordion -->
+    <FAQ />
+
+    <!-- Secure accessible Client Intake form -->
     <Contact />
   </main>
 
-  <!-- Completedark footer -->
+  <!-- Footer -->
   <Footer />
+
+  <!-- Floating mobile CTA bar (auto-hides when Contact is in view) -->
+  <MobileCTA />
 </Layout>

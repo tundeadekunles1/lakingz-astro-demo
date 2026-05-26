@@ -1,0 +1,247 @@
+---
+const steps = [
+  {
+    num: "01",
+    title: "Complete your secure intake",
+    desc: "Fill out our 60-second intake form — your profile, residency status, and the service you need. No documents required at this stage.",
+    note: "Your information is encrypted and reviewed only by our CPA team."
+  },
+  {
+    num: "02",
+    title: "CPA review within 24 hours",
+    desc: "A senior advisor personally reviews your situation and contacts you within one business day to walk through your options, timeline, and pricing.",
+    note: "No automated replies. You speak directly with the person handling your file."
+  },
+  {
+    num: "03",
+    title: "Secure portal & accurate filing",
+    desc: "Receive encrypted access to your personal document portal. Upload your slips — we handle the rest: accurately, compliantly, and on time.",
+    note: "Every completed filing is delivered electronically with a clear summary of every deduction applied."
+  }
+];
+---
+
+<section class="hiw-section section-padding" id="how-it-works">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="hiw-header">
+      <div class="hiw-header-left">
+        <span class="hiw-kicker" data-reveal style="--reveal-index: 0">Simple & Transparent</span>
+        <h2 class="hiw-title" data-reveal style="--reveal-index: 1">From intake to<br />filed return —<br /><em>three steps.</em></h2>
+      </div>
+      <p class="hiw-intro-text" data-reveal style="--reveal-index: 2">
+        We designed our onboarding to be clear at every stage. No surprises, no jargon, no chasing your accountant for an update. Just structured, CPA-governed support from first contact to final filing.
+      </p>
+    </div>
+
+    <!-- Steps Grid -->
+    <div class="steps-grid">
+      {steps.map((step, idx) => (
+        <div class="step-card" data-reveal style={`--reveal-index: ${idx}`}>
+          <div class="step-top">
+            <span class="step-num">{step.num}</span>
+            {idx < steps.length - 1 && (
+              <span class="step-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 4 H20 M16 1 L20 4 L16 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            )}
+          </div>
+          <h3 class="step-title">{step.title}</h3>
+          <p class="step-desc">{step.desc}</p>
+          <p class="step-note">{step.note}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="hiw-cta" data-reveal style="--reveal-index: 3">
+      <a href="#contact" class="btn btn-primary">Start your intake — it takes 60 seconds</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .hiw-section {
+    background-color: var(--bg-canvas);
+    border-top: var(--sheet-border);
+    border-bottom: var(--sheet-border);
+  }
+
+  /* ── Header ────────────────────────────── */
+  .hiw-header {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: var(--space-xl);
+    align-items: end;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
+    border-bottom: var(--sheet-border);
+  }
+
+  .hiw-kicker {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent-teal);
+    margin-bottom: var(--space-xs);
+  }
+
+  .hiw-title {
+    font-size: var(--fs-2xl);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .hiw-title em {
+    font-style: italic;
+    color: var(--accent-teal);
+  }
+
+  .hiw-intro-text {
+    font-size: var(--fs-base);
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 52ch;
+    align-self: end;
+  }
+
+  /* ── Steps ─────────────────────────────── */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .step-card {
+    background-color: var(--bg-surface);
+    border: var(--sheet-border);
+    border-radius: 20px;
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    position: relative;
+    transition: var(--transition-smooth);
+  }
+
+  .step-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--color-teal);
+  }
+
+  /* Number row + arrow */
+  .step-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .step-num {
+    font-family: var(--font-heading);
+    font-size: var(--fs-2xl);
+    color: var(--color-dark-teal, var(--accent-teal));
+    opacity: 0.25;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    transition: var(--transition-fast);
+  }
+
+  .step-card:hover .step-num {
+    opacity: 0.7;
+    color: var(--accent-teal);
+  }
+
+  .step-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--color-teal);
+    opacity: 0.5;
+    transition: var(--transition-fast);
+  }
+
+  .step-arrow svg {
+    width: 32px;
+    height: 11px;
+  }
+
+  .step-card:hover .step-arrow {
+    opacity: 1;
+    color: var(--accent-teal);
+  }
+
+  .step-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-md);
+    color: var(--text-main);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .step-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.65;
+    flex-grow: 1;
+  }
+
+  .step-note {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: var(--accent-teal);
+    font-style: italic;
+    line-height: 1.5;
+    padding-top: var(--space-2xs);
+    border-top: 1px solid oklch(90% 0.006 150);
+    margin-top: auto;
+  }
+
+  /* ── Bottom CTA ─────────────────────────── */
+  .hiw-cta {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* ── Responsive ─────────────────────────── */
+  @media (max-width: 968px) {
+    .hiw-header {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+      align-items: start;
+    }
+
+    .hiw-intro-text {
+      max-width: 100%;
+    }
+
+    .steps-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .step-arrow {
+      display: none; /* arrows don't read on vertical stack */
+    }
+  }
+
+  @media (min-width: 600px) and (max-width: 968px) {
+    .steps-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* hide arrow on the even card in a 2-col layout */
+    .step-card:nth-child(2) .step-arrow {
+      display: none;
+    }
+  }
+</style>
