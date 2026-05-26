@@ -1,66 +1,113 @@
 ---
+const stats = [
+  { value: 'Est. 2018', label: 'Founded in Brampton' },
+  { value: '100+', label: 'Active Ontario clients' },
+  { value: '98.2%', label: 'Client retention rate' },
+];
+
+const communities = [
+  {
+    name: 'Black immigrant families',
+    desc: 'Where our Brampton practice began — built on referrals from family and friends.',
+    image: '/community-black-families.webp',
+    position: 'center 20%',
+    alt: 'Black parents with their children in a family portrait',
+  },
+  {
+    name: 'Asian newcomers',
+    desc: 'PR holders and graduates filing in Canada for the first time.',
+    image: '/community-asian-newcomers.webp',
+    position: 'center',
+    alt: 'Asian family of four playing a board game together in their living room',
+  },
+  {
+    name: 'Filipino families',
+    desc: 'Household benefit planning, dual-income filings, and year-round support.',
+    image: '/community-filipino-families.webp',
+    position: 'center',
+    alt: 'Filipino family sharing a meal together at the dining table',
+  },
+  {
+    name: 'Small business owners',
+    desc: 'Incorporations, payroll, HST, and bookkeeping under one CPA roof.',
+    image: '/community-small-business.webp',
+    position: 'center 15%',
+    alt: 'Small business owner helping a customer at the front counter',
+  },
+];
 ---
 <section class="about-section section-padding" id="about">
-  <div class="container about-grid">
+  <div class="container">
 
-    <!-- Left: Editorial Story Copy -->
-    <div class="about-copy">
-      <span class="about-kicker" data-reveal style="--reveal-index: 0">Our Story</span>
-      <h2 class="about-title" data-reveal style="--reveal-index: 1">
-        Built for the journey<br />you're <em>already on.</em>
-      </h2>
-      <p class="about-lead" data-reveal style="--reveal-index: 2">
-        Lakingz Services was founded in 2018 by Oluwakemi Olobade — a Chartered Accountant who saw firsthand how Canada's tax system creates unnecessary barriers for newcomers who simply haven't had time to learn it yet.
-      </p>
-      <p class="about-body" data-reveal style="--reveal-index: 3">
-        What began as a part-time practice in Brampton has grown into a year-round accounting firm serving over 100 active clients across Ontario. Nearly all of our growth comes through referrals — clients recommending us to family members, friends, and colleagues who need the same clarity they found here.
-      </p>
-      <p class="about-body" data-reveal style="--reveal-index: 4">
-        We started by serving Black immigrant families and small business owners, and have since expanded to support newcomers from across the world — Asian, Filipino, and many other communities — all navigating the same unfamiliar system, all deserving the same quality of support.
-      </p>
+    <div class="about-story-grid">
+      <div class="about-visual" data-reveal="left" style="--reveal-index: 0">
+        <img
+          src="/about-consultation.webp"
+          alt="Professional advisor and client meeting to review financial plans together"
+          class="about-photo-main"
+          loading="lazy"
+        />
+        <img
+          src="/about-documents.webp"
+          alt="Tax documents and forms reviewed during a client consultation"
+          class="about-photo-inset"
+          loading="lazy"
+        />
+        <p class="about-location">Brampton, Ontario · Est. 2018</p>
+      </div>
+
+      <div class="about-copy">
+        <span class="about-kicker" data-reveal style="--reveal-index: 0">Our Story</span>
+        <h2 class="about-title" data-reveal style="--reveal-index: 1">
+          Built for the journey<br />you're <em>already on.</em>
+        </h2>
+        <p class="about-lead" data-reveal style="--reveal-index: 2">
+          Lakingz Services was founded in 2018 by Oluwakemi Olobade — a Chartered Accountant who saw firsthand how Canada's tax system creates unnecessary barriers for newcomers who simply haven't had time to learn it yet.
+        </p>
+        <p class="about-body" data-reveal style="--reveal-index: 3">
+          What began as a part-time practice in Brampton has grown into a year-round accounting firm serving over 100 active clients across Ontario. Nearly all of our growth comes through referrals — clients recommending us to family members, friends, and colleagues who need the same clarity they found here.
+        </p>
+        <p class="about-body" data-reveal style="--reveal-index: 4">
+          We started by serving Black immigrant families and small business owners, and have since expanded to support newcomers from across the world — Asian, Filipino, and many other communities — all navigating the same unfamiliar system, all deserving the same quality of support.
+        </p>
+
+        <dl class="about-stats" data-reveal style="--reveal-index: 5">
+          {stats.map((item) => (
+            <div class="about-stat">
+              <dt class="stat-value">{item.value}</dt>
+              <dd class="stat-label">{item.label}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </div>
 
-    <!-- Right: Company Fact Sheet Card -->
-    <div class="about-datacard" data-reveal="right" style="--reveal-index: 2">
-
-      <div class="datacard-entry">
-        <span class="dc-index">01</span>
-        <div class="dc-body">
-          <span class="dc-value">Est. 2018</span>
-          <span class="dc-label">Founded in Brampton, Ontario — grown from a one-person practice to a year-round firm</span>
-        </div>
+    <div class="community-band">
+      <div class="community-header">
+        <span class="community-kicker" data-reveal style="--reveal-index: 0">Communities we serve</span>
+        <h3 class="community-title" data-reveal style="--reveal-index: 1">One firm, <em>many journeys.</em></h3>
+        <p class="community-intro" data-reveal style="--reveal-index: 2">
+          From first-year personal returns to growing incorporated businesses — the same CPA standards, tailored to the community you belong to.
+        </p>
       </div>
 
-      <div class="dc-divider"></div>
-
-      <div class="datacard-entry">
-        <span class="dc-index">02</span>
-        <div class="dc-body">
-          <span class="dc-value">100+</span>
-          <span class="dc-label">Active clients across Ontario, with most new clients arriving through word-of-mouth referrals</span>
-        </div>
+      <div class="community-grid">
+        {communities.map((item, idx) => (
+          <figure class="community-tile" data-reveal style={`--reveal-index: ${idx + 1}`}>
+            <img
+              src={item.image}
+              alt={item.alt}
+              class="community-photo"
+              style={`object-position: ${item.position}`}
+              loading="lazy"
+            />
+            <figcaption class="community-caption">
+              <span class="community-name">{item.name}</span>
+              <span class="community-desc">{item.desc}</span>
+            </figcaption>
+          </figure>
+        ))}
       </div>
-
-      <div class="dc-divider"></div>
-
-      <div class="datacard-entry">
-        <span class="dc-index">03</span>
-        <div class="dc-body">
-          <span class="dc-value">98.2%</span>
-          <span class="dc-label">Client retention — our relationships don't end after tax season</span>
-        </div>
-      </div>
-
-      <div class="dc-divider"></div>
-
-      <div class="datacard-entry">
-        <span class="dc-index">04</span>
-        <div class="dc-body">
-          <span class="dc-value">Multi-community</span>
-          <span class="dc-label">Serving Black, Asian, Filipino, and diverse newcomer communities across the GTA and Ontario</span>
-        </div>
-      </div>
-
     </div>
 
   </div>
@@ -73,14 +120,59 @@
     border-bottom: var(--sheet-border);
   }
 
-  .about-grid {
+  .about-story-grid {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: 0.95fr 1.05fr;
     gap: var(--space-xl);
     align-items: center;
+    margin-bottom: var(--space-2xl);
   }
 
-  /* ── Left Copy ─────────────────────────── */
+  .about-visual {
+    position: relative;
+    min-height: 520px;
+  }
+
+  .about-photo-main {
+    width: 88%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center 15%;
+    border-radius: 24px;
+    box-shadow: var(--shadow-medium);
+    display: block;
+  }
+
+  .about-photo-inset {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 46%;
+    aspect-ratio: 0.85;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 20px;
+    border: 4px solid var(--bg-surface);
+    box-shadow: var(--shadow-subtle);
+  }
+
+  .about-location {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-main);
+    background-color: oklch(99% 0.003 145 / 92%);
+    backdrop-filter: blur(8px);
+    padding: 0.55em 1em;
+    border-radius: 999px;
+    border: var(--sheet-border);
+  }
+
   .about-kicker {
     display: block;
     font-family: var(--font-body);
@@ -99,7 +191,8 @@
     margin-bottom: var(--space-md);
   }
 
-  .about-title em {
+  .about-title em,
+  .community-title em {
     font-style: italic;
     color: var(--accent-mint);
   }
@@ -120,71 +213,168 @@
     max-width: 56ch;
   }
 
-  /* ── Right Data Card ──────────────────── */
-  .about-datacard {
-    background-color: var(--bg-canvas);
-    border: var(--sheet-border);
-    border-radius: 24px;
-    padding: var(--space-md);
+  .about-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid oklch(90% 0.006 150);
+  }
+
+  .about-stat {
     display: flex;
     flex-direction: column;
+    gap: 4px;
+    min-width: 120px;
   }
 
-  .datacard-entry {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-sm);
-    padding: var(--space-sm) 0;
-  }
-
-  .dc-index {
-    font-family: var(--font-body);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--accent-mint);
-    padding-top: 7px;
-    flex-shrink: 0;
-    min-width: 20px;
-  }
-
-  .dc-body {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .dc-value {
+  .stat-value {
     font-family: var(--font-heading);
     font-size: var(--fs-lg);
     color: var(--text-main);
     line-height: 1.1;
-    letter-spacing: -0.015em;
   }
 
-  .dc-label {
+  .stat-label {
     font-family: var(--font-body);
     font-size: var(--fs-xs);
     color: var(--text-muted);
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
-  .dc-divider {
-    height: 1px;
-    background-color: oklch(90% 0.006 150);
+  .community-band {
+    padding-top: var(--space-xl);
+    border-top: var(--sheet-border);
+  }
+
+  .community-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    align-items: end;
+    margin-bottom: var(--space-lg);
+  }
+
+  .community-kicker {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent-blue);
+    margin-bottom: var(--space-xs);
+  }
+
+  .community-title {
+    font-size: var(--fs-xl);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .community-intro {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 42ch;
+    justify-self: end;
+  }
+
+  .community-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .community-tile {
+    position: relative;
     margin: 0;
+    overflow: hidden;
+    border-radius: 20px;
+    aspect-ratio: 3 / 4;
+    min-height: 280px;
   }
 
-  /* ── Responsive ───────────────────────── */
+  .community-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s var(--ease-expo);
+  }
+
+  .community-tile:hover .community-photo {
+    transform: scale(1.04);
+  }
+
+  .community-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: var(--space-md) var(--space-sm) var(--space-sm);
+    background: linear-gradient(
+      to top,
+      oklch(14% 0.012 160 / 88%) 0%,
+      oklch(14% 0.012 160 / 55%) 55%,
+      transparent 100%
+    );
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .community-name {
+    font-family: var(--font-heading);
+    font-size: var(--fs-md);
+    color: var(--text-inverse);
+    line-height: 1.2;
+  }
+
+  .community-desc {
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    color: oklch(88% 0.01 145);
+    line-height: 1.45;
+  }
+
+  @media (max-width: 1100px) {
+    .community-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 968px) {
-    .about-grid {
+    .about-story-grid,
+    .community-header {
       grid-template-columns: 1fr;
       gap: var(--space-lg);
     }
 
+    .about-visual {
+      min-height: auto;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
     .about-lead,
-    .about-body {
+    .about-body,
+    .community-intro {
       max-width: 100%;
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .community-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-photo-main {
+      width: 100%;
+    }
+
+    .about-photo-inset {
+      width: 42%;
     }
   }
 </style>

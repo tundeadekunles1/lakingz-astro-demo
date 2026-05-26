@@ -13,20 +13,31 @@
       </p>
       
       <!-- Minimalist Newsletter Form (Fixed Layout) -->
-      <form class="footer-newsletter-form" onsubmit="event.preventDefault();">
-        <label for="footer-email" class="sr-only">Email Address</label>
-        <input 
-          type="email" 
-          id="footer-email" 
-          placeholder="your.email@domain.ca" 
-          class="newsletter-input" 
-          required 
-        />
-        <button type="submit" class="newsletter-submit-btn" aria-label="Subscribe">
-          <span>Subscribe</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="newsletter-arrow"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </button>
-      </form>
+      <div class="footer-newsletter-field">
+        <form class="footer-newsletter-form" id="footer-newsletter-form" novalidate>
+          <label for="footer-email" class="sr-only">Email Address</label>
+          <input
+            type="email"
+            id="footer-email"
+            name="email"
+            placeholder="your.email@domain.ca"
+            class="newsletter-input"
+            autocomplete="email"
+            inputmode="email"
+            aria-required="true"
+            aria-describedby="footer-email-error footer-newsletter-success"
+            aria-invalid="false"
+            required
+          />
+          <button type="submit" class="newsletter-submit-btn" aria-label="Subscribe to newsletter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="newsletter-check" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span class="newsletter-btn-text">Subscribe</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="newsletter-arrow" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </form>
+        <span class="newsletter-feedback newsletter-feedback--error" id="footer-email-error" role="alert" aria-live="polite">Please enter a valid email address.</span>
+        <p class="newsletter-feedback newsletter-feedback--success" id="footer-newsletter-success" aria-live="polite" hidden>Thanks! Curated tax updates are on their way to your inbox.</p>
+      </div>
     </div>
 
     <!-- Right Brand & Contacts Box -->
@@ -149,12 +160,17 @@
     max-width: 48ch;
   }
 
+  .footer-newsletter-field {
+    width: 100%;
+    max-width: 440px;
+  }
+
   /* Fixed Newsletter CTA Input Styling */
   .footer-newsletter-form {
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 440px;
+    max-width: none;
     background-color: var(--bg-surface);
     border: var(--sheet-border);
     border-radius: 14px;
@@ -167,6 +183,20 @@
   .footer-newsletter-form:focus-within {
     border-color: var(--accent-teal);
     box-shadow: 0 0 12px oklch(50% 0.10 195 / 8%);
+  }
+
+  .footer-newsletter-form.is-invalid {
+    border-color: oklch(72% 0.12 25);
+    box-shadow: 0 0 12px oklch(60% 0.15 20 / 6%);
+  }
+
+  .footer-newsletter-form.is-success {
+    border-color: var(--accent-mint);
+    box-shadow: 0 0 14px oklch(55% 0.12 145 / 10%);
+  }
+
+  .newsletter-input.is-invalid {
+    color: var(--text-main);
   }
 
   .newsletter-input {
@@ -189,6 +219,11 @@
     opacity: 0.5;
   }
 
+  .newsletter-input:disabled {
+    opacity: 0.72;
+    cursor: default;
+  }
+
   .newsletter-submit-btn {
     display: inline-flex;
     align-items: center;
@@ -205,11 +240,83 @@
     cursor: pointer;
     transition: var(--transition-smooth);
     flex-shrink: 0;
+    position: relative;
   }
 
   .newsletter-submit-btn:hover {
     background-color: var(--accent-teal);
     color: var(--text-inverse);
+  }
+
+  .newsletter-submit-btn:disabled {
+    cursor: wait;
+    opacity: 0.85;
+  }
+
+  .newsletter-submit-btn.is-loading .newsletter-arrow {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+
+  .newsletter-submit-btn.is-success {
+    background-color: var(--accent-mint);
+    pointer-events: none;
+  }
+
+  .newsletter-submit-btn.is-success:hover {
+    background-color: var(--accent-mint);
+  }
+
+  .newsletter-check {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    display: none;
+  }
+
+  .newsletter-submit-btn.is-success .newsletter-check {
+    display: block;
+  }
+
+  .newsletter-submit-btn.is-success .newsletter-arrow {
+    display: none;
+  }
+
+  .newsletter-feedback {
+    font-family: var(--font-body);
+    font-size: 11px;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+
+  .newsletter-feedback--error {
+    display: none;
+    color: oklch(60% 0.15 20);
+  }
+
+  .footer-newsletter-field.is-invalid .newsletter-feedback--error {
+    display: block;
+  }
+
+  .newsletter-feedback--success {
+    color: var(--accent-mint);
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: var(--transition-fast);
+  }
+
+  .newsletter-feedback--success.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .newsletter-feedback--success[hidden] {
+    display: none;
+  }
+
+  .newsletter-feedback--success.is-visible[hidden] {
+    display: block;
   }
 
   .newsletter-arrow {
@@ -430,3 +537,90 @@
     }
   }
 </style>
+
+<script>
+  const newsletterForm = document.getElementById('footer-newsletter-form') as HTMLFormElement | null;
+  const newsletterField = document.querySelector('.footer-newsletter-field');
+  const emailInput = document.getElementById('footer-email') as HTMLInputElement | null;
+  const submitBtn = newsletterForm?.querySelector('.newsletter-submit-btn') as HTMLButtonElement | null;
+  const btnText = submitBtn?.querySelector('.newsletter-btn-text');
+  const successMsg = document.getElementById('footer-newsletter-success');
+
+  const successBtnLabel = "You're subscribed";
+  const loadingBtnLabel = 'Sending…';
+
+  function clearNewsletterError() {
+    newsletterField?.classList.remove('is-invalid');
+    newsletterForm?.classList.remove('is-invalid');
+    emailInput?.classList.remove('is-invalid');
+    emailInput?.setAttribute('aria-invalid', 'false');
+  }
+
+  function showNewsletterError() {
+    newsletterField?.classList.add('is-invalid');
+    newsletterForm?.classList.add('is-invalid');
+    emailInput?.classList.add('is-invalid');
+    emailInput?.setAttribute('aria-invalid', 'true');
+    emailInput?.focus();
+  }
+
+  function showNewsletterSuccess() {
+    clearNewsletterError();
+    newsletterForm?.classList.add('is-success');
+    submitBtn?.classList.remove('is-loading');
+    submitBtn?.classList.add('is-success');
+    submitBtn?.setAttribute('aria-label', 'Subscribed to newsletter');
+    if (btnText) btnText.textContent = successBtnLabel;
+
+    emailInput?.setAttribute('aria-invalid', 'false');
+    if (emailInput) emailInput.disabled = true;
+    submitBtn?.setAttribute('disabled', 'true');
+
+    if (successMsg) {
+      successMsg.hidden = false;
+      requestAnimationFrame(() => {
+        successMsg.classList.add('is-visible');
+      });
+    }
+  }
+
+  function isValidNewsletterEmail(value: string): boolean {
+    const trimmed = value.trim();
+    if (!trimmed) return false;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+  }
+
+  if (newsletterForm && emailInput && submitBtn && btnText) {
+    emailInput.addEventListener('input', () => {
+      if (newsletterField?.classList.contains('is-invalid')) {
+        clearNewsletterError();
+      }
+    });
+
+    newsletterForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (newsletterForm.classList.contains('is-success')) return;
+
+      clearNewsletterError();
+      successMsg?.classList.remove('is-visible');
+      if (successMsg) successMsg.hidden = true;
+
+      const emailValue = emailInput.value.trim();
+      emailInput.value = emailValue;
+
+      if (!isValidNewsletterEmail(emailValue)) {
+        showNewsletterError();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('is-loading');
+      btnText.textContent = loadingBtnLabel;
+
+      window.setTimeout(() => {
+        showNewsletterSuccess();
+      }, 450);
+    });
+  }
+</script>
