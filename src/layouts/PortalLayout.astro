@@ -1,0 +1,51 @@
+---
+import '../styles/index.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Lakingz Client Portal',
+  description = 'Secure prototype view of your Lakingz Services account.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/png" href="/lkzfavicon.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="portal-body">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  .portal-body {
+    background-color: var(--bg-canvas);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .portal-main {
+    flex: 1;
+    padding: var(--space-xl) 0 var(--space-2xl);
+  }
+
+  .portal-container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+  }
+</style>

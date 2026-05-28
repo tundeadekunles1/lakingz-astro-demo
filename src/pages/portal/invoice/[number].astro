@@ -1,0 +1,539 @@
+---
+import { invoices, client, firm, formatCurrency, calcTax, calcTotal, HST_RATE } from '../../../data/portal/invoices';
+
+export function getStaticPaths() {
+  return invoices
+    .filter((inv) => inv.status !== 'DRAFT')
+    .map((inv) => ({ params: { number: inv.number } }));
+}
+
+const { number } = Astro.params;
+const invoice = invoices.find((inv) => inv.number === number);
+
+if (!invoice) {
+  return Astro.redirect('/portal/invoices');
+}
+
+const subtotal = invoice.amount;
+const tax      = calcTax(subtotal);
+const total    = calcTotal(subtotal);
+
+const statusLabel: Record<string, string> = {
+  PAID:    'Paid',
+  SENT:    'Due',
+  OVERDUE: 'Overdue',
+  DRAFT:   'Draft',
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Invoice {invoice.number} — Lakingz Services</title>
+  <link rel="icon" type="image/png" href="/lkzfavicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Prata&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Screen-only toolbar -->
+  <div class="toolbar no-print">
+    <a href="/portal/invoices" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to invoices
+    </a>
+    <button class="print-btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Save as PDF
+    </button>
+  </div>
+
+  <!-- Invoice document -->
+  <div class:list={['invoice-page', { 'invoice-page--paid': invoice.status === 'PAID' }]}>
+
+    <!-- Header -->
+    <header class="inv-header">
+      <div class="inv-brand">
+        <img src="/LKZlogo.webp" alt="Lakingz Services" class="inv-logo" />
+        <div>
+          <p class="inv-firm-name">{firm.name}</p>
+          <p class="inv-firm-tagline">{firm.tagline}</p>
+        </div>
+      </div>
+      <div class="inv-meta">
+        <p class="inv-label">Invoice</p>
+        <p class="inv-number">#{invoice.number}</p>
+        <span class:list={['inv-status-badge', `inv-status--${invoice.status.toLowerCase()}`]}>
+          {statusLabel[invoice.status]}
+        </span>
+      </div>
+    </header>
+
+    <div class="inv-divider"></div>
+
+    <!-- Parties -->
+    <div class="inv-parties">
+      <div class="inv-party">
+        <p class="inv-party-label">From</p>
+        <p class="inv-party-name">{firm.name}</p>
+        <p class="inv-party-detail">{firm.address}</p>
+        <p class="inv-party-detail">{firm.email}</p>
+        <p class="inv-party-detail">{firm.phone}</p>
+        <p class="inv-party-detail">{firm.hstNumber}</p>
+      </div>
+      <div class="inv-party inv-party--right">
+        <p class="inv-party-label">Bill To</p>
+        <p class="inv-party-name">{client.name}</p>
+        <p class="inv-party-detail">{client.address}</p>
+        <div class="inv-dates">
+          {invoice.issued && (
+            <div class="inv-date-row">
+              <span class="inv-date-label">Issued</span>
+              <span>{invoice.issued}</span>
+            </div>
+          )}
+          {invoice.due && (
+            <div class="inv-date-row">
+              <span class="inv-date-label">Due</span>
+              <span class:list={{ 'inv-overdue': invoice.status === 'OVERDUE' }}>{invoice.due}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- Line items -->
+    <table class="inv-table">
+      <thead>
+        <tr>
+          <th class="col-desc">Description</th>
+          <th class="col-qty">Qty</th>
+          <th class="col-rate">Rate</th>
+          <th class="col-amount">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {invoice.lineItems.map((item) => (
+          <tr>
+            <td class="col-desc">{item.description}</td>
+            <td class="col-qty">{item.qty}</td>
+            <td class="col-rate">{formatCurrency(item.rate)}</td>
+            <td class="col-amount">{formatCurrency(item.qty * item.rate)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <!-- Totals -->
+    <div class="inv-totals-wrap">
+    {invoice.status === 'PAID' && (
+      <div class="paid-watermark" aria-hidden="true">PAID</div>
+    )}
+    <div class="inv-totals">
+      <div class="inv-totals-inner">
+        <div class="totals-row">
+          <span>Subtotal</span>
+          <span>{formatCurrency(subtotal)}</span>
+        </div>
+        <div class="totals-row">
+          <span>HST ({(HST_RATE * 100).toFixed(0)}%)</span>
+          <span>{formatCurrency(tax)}</span>
+        </div>
+        <div class="totals-divider"></div>
+        <div class="totals-row totals-row--total">
+          <span>Total</span>
+          <span>{formatCurrency(total)}</span>
+        </div>
+        {invoice.status === 'PAID' && (
+          <div class="totals-row totals-row--paid">
+            <span>Amount Paid</span>
+            <span>−{formatCurrency(total)}</span>
+          </div>
+        )}
+        {invoice.status === 'PAID' && (
+          <div class="totals-row totals-row--balance">
+            <span>Balance Due</span>
+            <span>{formatCurrency(0)}</span>
+          </div>
+        )}
+      </div>
+    </div>
+    </div><!-- /inv-totals-wrap -->
+
+    <!-- Notes -->
+    {invoice.notes && (
+      <div class="inv-notes">
+        <p class="inv-notes-label">Notes</p>
+        <p class="inv-notes-text">{invoice.notes}</p>
+      </div>
+    )}
+
+    <!-- Footer -->
+    <footer class="inv-footer">
+      <p>Thank you for choosing {firm.name}.</p>
+      <p>{firm.email} · {firm.phone}</p>
+    </footer>
+
+  </div>
+</body>
+</html>
+
+<style>
+  /* ── Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --text-main:    oklch(20% 0.018 160);
+    --text-muted:   oklch(42% 0.012 160);
+    --text-inverse: oklch(98% 0.003 145);
+    --color-mint:   oklch(88% 0.08 145);
+    --accent-mint:  oklch(55% 0.12 145);
+    --bg-footer:    oklch(14% 0.012 160);
+    --bg-canvas:    oklch(98.8% 0.003 145);
+    --sheet-border: 1px solid oklch(90% 0.006 150);
+    --font-heading: 'Prata', serif;
+    --font-body:    'Lexend', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-main);
+    background-color: oklch(93% 0.003 145);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+
+  /* ── Screen toolbar ── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 16px 24px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--text-main); }
+
+  .print-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0.55em 1.4em;
+    background-color: var(--text-main);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 9999px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .print-btn:hover { opacity: 0.85; }
+
+  /* ── Invoice page ── */
+  .invoice-page {
+    max-width: 860px;
+    margin: 0 auto 48px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 56px 64px;
+    box-shadow: 0 8px 48px oklch(0% 0 0 / 6%);
+    border-top: 4px solid oklch(55% 0.12 145);
+  }
+
+  /* Header */
+  .inv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .inv-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .inv-logo {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .inv-firm-name {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--text-main);
+    line-height: 1.1;
+  }
+
+  .inv-firm-tagline {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .inv-meta {
+    text-align: right;
+  }
+
+  .inv-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .inv-number {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--text-main);
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  /* Status badge */
+  .inv-status-badge {
+    display: inline-block;
+    padding: 0.3em 0.9em;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .inv-status--paid    { background: var(--color-mint); color: oklch(22% 0.02 145); }
+  .inv-status--sent    { background: var(--bg-footer);  color: var(--text-inverse); }
+  .inv-status--overdue { background: oklch(85% 0.08 25); color: oklch(28% 0.06 25); }
+  .inv-status--draft   { background: oklch(92% 0.004 150); color: var(--text-muted); }
+
+  /* Divider */
+  .inv-divider { border: none; border-top: var(--sheet-border); margin-bottom: 32px; }
+
+  /* Parties */
+  .inv-parties {
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .inv-party-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent-mint);
+    margin-bottom: 8px;
+  }
+
+  .inv-party-name {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-main);
+    margin-bottom: 4px;
+  }
+
+  .inv-party-detail {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .inv-party--right { text-align: right; }
+
+  .inv-dates { margin-top: 14px; }
+
+  .inv-date-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .inv-date-label {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 11px;
+  }
+
+  .inv-overdue { color: oklch(42% 0.1 25); font-weight: 500; }
+
+  /* Line items table */
+  .inv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+  }
+
+  .inv-table thead {
+    border-top: var(--sheet-border);
+    border-bottom: var(--sheet-border);
+  }
+
+  .inv-table th {
+    padding: 10px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  .inv-table td {
+    padding: 14px 12px;
+    font-size: 13.5px;
+    color: var(--text-main);
+    border-bottom: var(--sheet-border);
+    vertical-align: top;
+  }
+
+  .col-desc { width: 55%; }
+  .col-qty, .col-rate, .col-amount { text-align: right; }
+
+  /* Totals */
+  .inv-totals-wrap {
+    position: relative;
+    margin-bottom: 32px;
+  }
+
+  /* PAID diagonal watermark */
+  .paid-watermark {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%) rotate(-18deg);
+    font-family: 'Prata', serif;
+    font-size: 5rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: oklch(55% 0.12 145);
+    opacity: 0.08;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .inv-totals {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .inv-totals-inner {
+    min-width: 280px;
+  }
+
+  .totals-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+    padding: 6px 0;
+    font-size: 13.5px;
+    color: var(--text-muted);
+  }
+
+  .totals-divider {
+    border-top: var(--sheet-border);
+    margin: 8px 0;
+  }
+
+  .totals-row--total {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-main);
+  }
+
+  .totals-row--paid { color: var(--accent-mint); }
+
+  .totals-row--balance {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-main);
+    padding-top: 10px;
+    border-top: 2px solid var(--text-main);
+    margin-top: 2px;
+  }
+
+  /* Notes */
+  .inv-notes {
+    background-color: oklch(97% 0.004 145);
+    border: var(--sheet-border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 40px;
+  }
+
+  .inv-notes-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .inv-notes-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 100%;
+  }
+
+  /* Footer */
+  .inv-footer {
+    border-top: var(--sheet-border);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ── Print styles ── */
+  @media print {
+    .no-print { display: none !important; }
+
+    body { background: #fff; }
+
+    .invoice-page {
+      max-width: 100%;
+      margin: 0;
+      padding: 32px 40px;
+      box-shadow: none;
+      border-radius: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .invoice-page { padding: 28px 20px; }
+    .inv-parties { flex-direction: column; gap: 24px; }
+    .inv-party--right { text-align: left; }
+    .inv-date-row { justify-content: flex-start; }
+    .toolbar { padding: 12px 16px; }
+  }
+</style>

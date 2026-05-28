@@ -1,0 +1,82 @@
+---
+interface Props {
+  label: string;
+  value: string;
+  variant?: 'outstanding' | 'paid' | 'neutral';
+}
+
+const { label, value, variant = 'neutral' } = Astro.props;
+---
+
+<div class:list={['stat-card', `stat-card--${variant}`]}>
+  <span class="stat-label">{label}</span>
+  <span class="stat-value">{value}</span>
+</div>
+
+<style>
+  .stat-card {
+    background-color: var(--bg-surface);
+    border: var(--sheet-border);
+    border-radius: 16px;
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  /* ── Outstanding — red, needs action ── */
+  .stat-card--outstanding {
+    border-color: oklch(65% 0.15 25 / 35%);
+    border-left: 3px solid oklch(52% 0.18 25);
+    background-color: oklch(85% 0.08 25 / 5%);
+  }
+
+  .stat-card--outstanding .stat-dot {
+    background-color: oklch(52% 0.18 25);
+  }
+
+  .stat-card--outstanding .stat-value {
+    font-size: var(--fs-3xl);
+    color: oklch(45% 0.16 25);
+  }
+
+  /* ── Paid to Date — mint green, positive ── */
+  .stat-card--paid {
+    border-color: oklch(55% 0.12 145 / 30%);
+    border-left: 3px solid var(--accent-mint);
+    background-color: oklch(88% 0.08 145 / 6%);
+  }
+
+  .stat-card--paid .stat-dot {
+    background-color: var(--accent-mint);
+  }
+
+  .stat-card--paid .stat-value {
+    color: var(--accent-mint);
+  }
+
+  /* ── Neutral ── */
+  .stat-card--neutral .stat-value {
+    color: var(--text-main);
+  }
+
+  /* ── Shared ── */
+  .stat-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text-muted);
+  }
+
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: var(--fs-2xl);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+</style>

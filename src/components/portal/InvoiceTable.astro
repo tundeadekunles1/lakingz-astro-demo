@@ -1,0 +1,258 @@
+---
+import type { Invoice } from '../../data/portal/invoices';
+import { formatCurrency } from '../../data/portal/invoices';
+import StatusBadge from './StatusBadge.astro';
+
+interface Props {
+  invoices: Invoice[];
+}
+
+const { invoices } = Astro.props;
+
+const DownloadIcon = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+---
+
+<!-- Desktop table -->
+<div class="table-wrap">
+  <table class="invoice-table">
+    <thead>
+      <tr>
+        <th>Invoice #</th>
+        <th>For</th>
+        <th>Issued</th>
+        <th>Due</th>
+        <th class="col-amount">Amount</th>
+        <th>Status</th>
+        <th class="col-action"><span class="sr-only">Download</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {invoices.map((inv) => (
+        <tr class:list={{ 'row--overdue': inv.status === 'OVERDUE' }}>
+          <td class="cell-number">{inv.number}</td>
+          <td class="cell-desc">{inv.description}</td>
+          <td class="cell-muted">{inv.issued ?? '—'}</td>
+          <td class="cell-muted">{inv.due ?? '—'}</td>
+          <td class="col-amount cell-amount">{formatCurrency(inv.amount)}</td>
+          <td><StatusBadge status={inv.status} /></td>
+          <td class="col-action">
+            {inv.status !== 'DRAFT' ? (
+              <a
+                href={inv.pdfUrl}
+                class="pdf-link"
+                aria-label={`View invoice ${inv.number}`}
+                target="_blank"
+                rel="noopener"
+              >
+                <Fragment set:html={DownloadIcon} />
+                <span>PDF</span>
+              </a>
+            ) : (
+              <span class="pdf-link pdf-link--disabled" aria-hidden="true">
+                <Fragment set:html={DownloadIcon} />
+                <span>PDF</span>
+              </span>
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<!-- Mobile cards (same data, stacked layout) -->
+<ul class="invoice-cards">
+  {invoices.map((inv) => (
+    <li class:list={['invoice-card', { 'invoice-card--overdue': inv.status === 'OVERDUE' }]}>
+      <div class="card-header">
+        <span class="card-number">{inv.number}</span>
+        <StatusBadge status={inv.status} />
+      </div>
+      <p class="card-desc">{inv.description}</p>
+      <div class="card-meta">
+        <span><span class="meta-label">Issued</span> {inv.issued ?? '—'}</span>
+        <span><span class="meta-label">Due</span> {inv.due ?? '—'}</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-amount">{formatCurrency(inv.amount)}</span>
+        {inv.status !== 'DRAFT' && (
+          <a href={inv.pdfUrl} class="pdf-link" aria-label={`View invoice ${inv.number}`} target="_blank" rel="noopener">
+            <Fragment set:html={DownloadIcon} />
+            <span>PDF</span>
+          </a>
+        )}
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  /* ── Desktop table ── */
+  .table-wrap {
+    overflow-x: auto;
+    border: var(--sheet-border);
+    border-radius: 16px;
+    background-color: var(--bg-surface);
+  }
+
+  .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+  }
+
+  thead {
+    border-bottom: var(--sheet-border);
+  }
+
+  th {
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: var(--space-sm) var(--space-md);
+    color: var(--text-main);
+    vertical-align: middle;
+    border-top: var(--sheet-border);
+  }
+
+  tr:first-child td { border-top: none; }
+
+  tbody tr {
+    transition: background-color 0.15s ease;
+  }
+
+  tbody tr:hover td {
+    background-color: oklch(97% 0.004 145);
+  }
+
+  .row--overdue td { background-color: oklch(85% 0.08 25 / 5%); }
+
+  .row--overdue td:first-child {
+    border-left: 3px solid oklch(70% 0.1 25);
+    padding-left: calc(var(--space-md) - 3px);
+  }
+
+  .row--overdue:hover td {
+    background-color: oklch(92% 0.06 25 / 10%);
+  }
+
+  .cell-number {
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.04em;
+  }
+
+  .cell-desc { color: var(--text-main); }
+
+  .cell-muted { color: var(--text-muted); white-space: nowrap; }
+
+  .col-amount { text-align: right; }
+
+  .cell-amount {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .col-action { text-align: right; width: 90px; }
+
+  /* PDF download link */
+  .pdf-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: var(--transition-fast);
+  }
+
+  .pdf-link:hover { color: var(--accent-mint); }
+
+  .pdf-link--disabled {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* ── Mobile cards ── */
+  .invoice-cards { display: none; }
+
+  @media (max-width: 680px) {
+    .table-wrap { display: none; }
+
+    .invoice-cards {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .invoice-card {
+      background-color: var(--bg-surface);
+      border: var(--sheet-border);
+      border-radius: 14px;
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .invoice-card--overdue { border-color: oklch(80% 0.08 25 / 50%); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-number {
+      font-size: var(--fs-xs);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .card-desc {
+      font-size: var(--fs-sm);
+      color: var(--text-main);
+      max-width: none;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: var(--space-md);
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+    }
+
+    .meta-label {
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-right: 0.3em;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--space-xs);
+      border-top: var(--sheet-border);
+    }
+
+    .card-amount {
+      font-family: var(--font-heading);
+      font-size: var(--fs-md);
+      color: var(--text-main);
+    }
+  }
+</style>

@@ -1,0 +1,146 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import PortalNav from '../../components/portal/PortalNav.astro';
+import StatCard from '../../components/portal/StatCard.astro';
+import InvoiceTable from '../../components/portal/InvoiceTable.astro';
+import { invoices, summary, client, formatCurrency } from '../../data/portal/invoices';
+---
+
+<PortalLayout title="Invoices — Lakingz Client Portal">
+  <PortalNav />
+
+  <main class="portal-main">
+    <div class="portal-container">
+
+      <!-- Page heading -->
+      <header class="page-header" data-reveal>
+        <p class="page-greeting" id="portal-greeting" aria-live="polite"></p>
+        <h1 class="page-title">
+          <span class="title-muted">Your</span> invoices.
+        </h1>
+        <p class="page-subtitle">
+          A running record of what you've been billed and what's outstanding.
+          To settle an invoice, e-transfer to{' '}
+          <strong>{client.remittanceEmail}</strong>.
+        </p>
+      </header>
+
+      <!-- Summary stats -->
+      <div class="stats-grid" data-reveal>
+        <StatCard
+          label="Outstanding"
+          value={formatCurrency(summary.outstanding)}
+          variant={summary.outstanding > 0 ? 'outstanding' : 'neutral'}
+        />
+        <StatCard
+          label="Invoices on File"
+          value={String(summary.onFile)}
+          variant="neutral"
+        />
+        <StatCard
+          label="Paid to Date"
+          value={formatCurrency(summary.paidToDate)}
+          variant="paid"
+        />
+      </div>
+
+      <!-- Invoice list -->
+      <div class="table-section" data-reveal>
+        <InvoiceTable invoices={invoices} />
+      </div>
+
+    </div>
+  </main>
+</PortalLayout>
+
+<style>
+  .page-header {
+    margin-bottom: var(--space-lg);
+    max-width: 640px;
+  }
+
+  .page-greeting {
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.01em;
+    margin-bottom: var(--space-2xs);
+    min-height: 1.4em; /* reserve space while JS sets the text */
+  }
+
+  .page-title {
+    font-size: var(--fs-3xl);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: var(--space-xs);
+  }
+
+  /* "Your" in muted — mirrors the two-tone heading in the reference screenshot */
+  .title-muted {
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+  }
+
+  .page-subtitle {
+    font-size: var(--fs-base);
+    color: var(--text-muted);
+    max-width: 58ch;
+    line-height: 1.6;
+  }
+
+  .page-subtitle strong {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+  }
+
+  .table-section {
+    /* breathing room so the table doesn't feel cramped below the cards */
+  }
+
+  @media (max-width: 680px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 681px) and (max-width: 860px) {
+    .stats-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+<script>
+  /* Time-of-day greeting */
+  const hour = new Date().getHours();
+  const salutation = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const greetingEl = document.getElementById('portal-greeting');
+  if (greetingEl) greetingEl.textContent = `${salutation}, Adaeze.`;
+
+  /* Re-use the same scroll-reveal observer from the marketing site */
+  const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  if (revealEls.length && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    revealEls.forEach((el) => observer.observe(el));
+  } else {
+    revealEls.forEach((el) => el.classList.add('is-visible'));
+  }
+</script>
