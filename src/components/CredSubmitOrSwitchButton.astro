@@ -8,16 +8,22 @@ const { buttonType} = Astro.props;
 const buttonText = buttonType === 'login' ? 'Login' : 'Signup';
 ---
 <button class="cred-submit-or-switch-button">
-    <span class="cred-submit-or-switch-button-text">{buttonText}</span>
+    <p>{buttonText}</p>
 </button>
 <style>
     .cred-submit-or-switch-button {
         /* width and height are adjustable*/
+        
         width: 90px;
         height: 50px;
         background-color: white;
         border-radius: 10px;
         border: 1px solid black;
         padding: 10px;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        color: black;
+        justify-content: center;
     }
 </style>

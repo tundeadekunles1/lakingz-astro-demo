@@ -33,10 +33,9 @@ import CredSubmitOrSwitchButton from './CredSubmitOrSwitchButton.astro';
        /* the height is supposed to be 85% of the credentials container in the login or signup layout*/
        /* TODO create a variable for the width and height of the credentials container in the login or signup layout*/
        /* TODO create a variable for the background color of the login container*/
-        width: 440px;
+        width: inherit;
         height: 298px;
-        --login-background-color: oklch(98.8% 0.003 145);
-        background-color: var(--login-background-color);
+        background-color: inherit;
         text-align: center;
         
     }
@@ -77,14 +76,7 @@ import CredSubmitOrSwitchButton from './CredSubmitOrSwitchButton.astro';
         gap: 9px;
     }
     .login-button-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 1fr;
-        grid-template-areas:
-            "login-button space-between-buttons signup-button";
-        
-        /* gap should be enought to make the buttong edges align with the 
-        cred input boxes edges*/
-           
+        display: flex;
+        justify-content: flex-end;  
     }
 </style>

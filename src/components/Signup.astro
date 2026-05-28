@@ -1,0 +1,62 @@
+---
+import CredInputBox from './CredInputBox.astro';
+import CredSubmitOrSwitchButton from './CredSubmitOrSwitchButton.astro';
+---
+
+<div class="login-container signup-container">
+  <span class="login-container-title signup-container-title">Create your account</span>
+  <p class="signup-helper-text">
+    Start your secure Lakingz Services profile for onboarding, documents, and advisory updates.
+  </p>
+
+  <div class="login-cred-and-button-container signup-cred-and-button-container">
+    <div class="login-cred-input-container signup-cred-input-container">
+      <CredInputBox type="text" placeholder="full name" />
+      <CredInputBox type="email" placeholder="email address" />
+      <CredInputBox type="password" placeholder="password" />
+      <CredInputBox type="password" placeholder="confirm password" />
+    </div>
+
+    <div class="login-button-container signup-button-container">
+      <CredSubmitOrSwitchButton buttonType="signup" />
+      <div class="space-between-buttons"></div>
+      <CredSubmitOrSwitchButton buttonType="login" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .signup-container {
+    width: inherit;
+    height: auto;
+    background-color: inherit;
+  }
+
+  .signup-helper-text {
+    margin: -0.4rem 0 1rem;
+    color: oklch(42% 0.012 160);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .signup-cred-and-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+  }
+
+  .signup-cred-input-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .signup-button-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+</style>
