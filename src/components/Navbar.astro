@@ -23,7 +23,7 @@
         <li><a href="#faq" class="nav-link">FAQ</a></li>
       </ul>
       <div class="nav-cta-wrapper">
-        <a href="/login" class="nav-link nav-login-link">Client login</a>
+        <a href="/login" class="btn btn-secondary nav-login">Client login</a>
         <a href="#contact" class="btn btn-primary nav-cta">Book Consultation</a>
       </div>
     </nav>
@@ -123,8 +123,21 @@
     transform-origin: left;
   }
 
+  .nav-cta-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .nav-login,
   .nav-cta {
-    padding: 0.7em 1.6em;
+    padding: 0.7em 1.35em;
+    white-space: nowrap;
+  }
+
+  .nav-login {
+    font-weight: 500;
   }
 
   /* Hamburger Toggle */
@@ -189,6 +202,16 @@
       font-size: var(--fs-md);
     }
 
+    .nav-cta-wrapper {
+      flex-direction: column;
+      width: 100%;
+      gap: var(--space-sm);
+    }
+
+    .nav-cta-wrapper .btn {
+      width: min(100%, 18rem);
+    }
+
     /* Menu open toggle button transform */
     .menu-toggle[aria-expanded="true"] .toggle-bar:nth-child(1) {
       transform: translateY(8px) rotate(45deg);
@@ -214,7 +237,7 @@
     });
 
     // Close menu when clicking link
-    const links = navMenu.querySelectorAll('.nav-link, .nav-cta');
+    const links = navMenu.querySelectorAll('.nav-link, .btn');
     links.forEach(link => {
       link.addEventListener('click', () => {
         menuBtn.setAttribute('aria-expanded', 'false');
