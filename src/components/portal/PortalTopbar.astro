@@ -1,0 +1,29 @@
+---
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const labels: Record<string, string> = {
+  portal: 'Dashboard',
+  appointments: 'Meetings',
+  book: 'Book a meeting',
+  invoices: 'Invoices',
+  invoice: 'Invoice detail',
+  engagements: 'Engagement',
+};
+
+const segments = currentPath.replace(/^\/portal\/?/, '').split('/').filter(Boolean);
+const pageLabel = segments.length === 0
+  ? labels.portal
+  : labels[segments[0]] ?? segments[0];
+---
+
+<header class="portal-topbar">
+  <div class="portal-topbar-title">{pageLabel}</div>
+  <div class="portal-topbar-actions">
+    <a href="/" class="proto-link" style="font-size: var(--fs-xs);">View site</a>
+    <a href="/login" class="proto-btn proto-btn--ghost portal-topbar-signout">Sign out</a>
+  </div>
+</header>

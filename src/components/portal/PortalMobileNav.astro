@@ -1,0 +1,21 @@
+---
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const links = [
+  { href: '/portal', label: 'Dashboard', match: (path: string) => path === '/portal' || path === '/portal/' || path.startsWith('/portal/engagements') },
+  { href: '/portal/appointments', label: 'Meetings', match: (path: string) => path.startsWith('/portal/appointments') || path.startsWith('/portal/book') },
+  { href: '/portal/invoices', label: 'Invoices', match: (path: string) => path.startsWith('/portal/invoices') || path.startsWith('/portal/invoice') },
+];
+---
+
+<div class="portal-mobile-nav">
+  {
+    links.map((link) => (
+      <a href={link.href} class:list={[{ 'is-active': link.match(currentPath) }]}>{link.label}</a>
+    ))
+  }
+</div>

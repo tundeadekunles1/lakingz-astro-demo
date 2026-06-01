@@ -1,0 +1,57 @@
+---
+import { clientUser, clientEngagements, firm } from '../../data/mock/prototype';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const navItems = [
+  { href: '/portal', label: 'Dashboard', match: (path: string) => path === '/portal' || path === '/portal/' || path.startsWith('/portal/engagements') },
+  { href: '/portal/appointments', label: 'Meetings', match: (path: string) => path.startsWith('/portal/appointments') || path.startsWith('/portal/book') },
+  { href: '/portal/invoices', label: 'Invoices', match: (path: string) => path.startsWith('/portal/invoices') || path.startsWith('/portal/invoice') },
+];
+---
+
+<aside class="portal-sidebar">
+  <a href="/portal" class="portal-sidebar-brand" aria-label="Lakingz client portal home">
+    <div class="portal-sidebar-brand-icon" aria-hidden="true">L</div>
+    <div>
+      <div class="portal-sidebar-brand-name">{firm.name}</div>
+      <div class="portal-sidebar-brand-sub">Client Portal</div>
+    </div>
+  </a>
+
+  <nav class="portal-sidebar-nav" aria-label="Portal navigation">
+    <div class="portal-nav-section">
+      <div class="portal-nav-label">Menu</div>
+      {
+        navItems.map((item) => (
+          <a href={item.href} class:list={['portal-sidebar-link', { 'is-active': item.match(currentPath) }]}>
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="portal-nav-section">
+      <div class="portal-nav-label">Quick actions</div>
+      <a href={`/portal/engagements/${clientEngagements[0]?.id ?? 'eng-2026-156'}`} class="portal-sidebar-link">
+        Upload documents
+      </a>
+      <a href="/portal/book" class="portal-sidebar-link">Book a meeting</a>
+    </div>
+  </nav>
+
+  <div class="portal-sidebar-footer">
+    <div class="portal-sidebar-user">
+      <div class="portal-avatar" aria-hidden="true">{clientUser.initials}</div>
+      <div>
+        <strong>{clientUser.name}</strong>
+        <div class="portal-sidebar-user-role">{clientUser.role}</div>
+      </div>
+    </div>
+    <a href="/login" class="portal-sidebar-signout">Sign out</a>
+  </div>
+</aside>

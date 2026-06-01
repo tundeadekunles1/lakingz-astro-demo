@@ -1,6 +1,9 @@
 ---
 import '../styles/index.css';
 import '../styles/portal.css';
+import PortalSidebar from '../components/portal/PortalSidebar.astro';
+import PortalMobileNav from '../components/portal/PortalMobileNav.astro';
+import PortalTopbar from '../components/portal/PortalTopbar.astro';
 
 interface Props {
   title?: string;
@@ -11,10 +14,9 @@ interface Props {
 const {
   title = 'Client Portal — Lakingz Services',
   description = 'Prototype client portal for Lakingz Services.',
-  activeNav = 'dashboard',
 } = Astro.props;
 
-import { clientUser, firm } from '../data/mock/prototype';
+const currentPath = Astro.url.pathname;
 ---
 
 <!DOCTYPE html>
@@ -29,38 +31,17 @@ import { clientUser, firm } from '../data/mock/prototype';
     <meta name="description" content={description} />
   </head>
   <body class="portal-body">
-    <header class="portal-header">
-      <div class="portal-header-inner">
-        <a href="/portal" class="portal-brand" aria-label="Lakingz client portal home">
-          <span class="portal-brand-name">{firm.name}</span>
-          <span class="portal-brand-sub">Client Portal</span>
-        </a>
-
-        <nav class="portal-nav" aria-label="Portal sections">
-          <a href="/portal" class:list={['portal-nav-link', { 'is-active': activeNav === 'dashboard' }]}>
-            Dashboard
-          </a>
-          <a href="/portal/appointments" class:list={['portal-nav-link', { 'is-active': activeNav === 'appointments' }]}>
-            Meetings
-          </a>
-          <a href="/portal/invoices" class:list={['portal-nav-link', { 'is-active': activeNav === 'invoices' }]}>
-            Invoices
-          </a>
-        </nav>
-
-        <div class="portal-account">
-          <div class="portal-avatar" aria-hidden="true">{clientUser.initials}</div>
-          <div class="portal-account-meta">
-            <span class="portal-account-name">{clientUser.name}</span>
-            <span class="portal-account-role">{clientUser.role}</span>
+    <div class="portal-shell">
+      <PortalSidebar currentPath={currentPath} />
+      <div class="portal-content">
+        <PortalMobileNav currentPath={currentPath} />
+        <PortalTopbar currentPath={currentPath} />
+        <main class="portal-main">
+          <div class="portal-main-inner">
+            <slot />
           </div>
-          <a href="/login" class="portal-signout">Sign out</a>
-        </div>
+        </main>
       </div>
-    </header>
-
-    <main class="portal-main">
-      <slot />
-    </main>
+    </div>
   </body>
 </html>
