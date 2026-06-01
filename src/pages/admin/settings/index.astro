@@ -1,0 +1,31 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { firm } from '../../../data/mock/prototype';
+---
+
+<AdminLayout
+  title="Settings — Lakingz Admin"
+  pageTitle="Settings"
+  pageDescription="Firm profile, billing defaults, and prototype configuration."
+>
+  <form class="proto-card proto-card-pad" style="max-width: 40rem; display: grid; gap: 1rem;">
+    <label style="display: grid; gap: 0.35rem;">
+      <span class="proto-eyebrow">Firm name</span>
+      <input type="text" value={firm.name} readonly style="min-height: 42px; padding: 0 0.75rem; border-radius: 10px; border: var(--sheet-border);" />
+    </label>
+    <label style="display: grid; gap: 0.35rem;">
+      <span class="proto-eyebrow">Support email</span>
+      <input type="email" value={firm.email} readonly style="min-height: 42px; padding: 0 0.75rem; border-radius: 10px; border: var(--sheet-border);" />
+    </label>
+    <label style="display: grid; gap: 0.35rem;">
+      <span class="proto-eyebrow">Office address</span>
+      <textarea readonly rows="3" style="padding: 0.75rem; border-radius: 10px; border: var(--sheet-border);">{firm.address}</textarea>
+    </label>
+    <label style="display: grid; gap: 0.35rem;">
+      <span class="proto-eyebrow">Default hourly rate (CAD)</span>
+      <input type="text" value="200" readonly style="min-height: 42px; padding: 0 0.75rem; border-radius: 10px; border: var(--sheet-border);" />
+    </label>
+    <p class="proto-muted" style="font-size: var(--fs-xs);">Settings are read-only in this prototype.</p>
+    <button type="button" class="proto-btn proto-btn--ghost" style="justify-self: start;">Save changes (prototype)</button>
+  </form>
+</AdminLayout>

@@ -1,0 +1,39 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import StatusBadge from '../../../components/shared/StatusBadge.astro';
+import { newsletterCampaigns } from '../../../data/mock/prototype';
+---
+
+<AdminLayout
+  title="Newsletter — Lakingz Admin"
+  pageTitle="Newsletter"
+  pageDescription="Campaigns and subscriber outreach (prototype data)."
+>
+  <div class="proto-table-wrap">
+    <table class="proto-table">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Status</th>
+          <th>Sent</th>
+          <th>Recipients</th>
+          <th>Open rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          newsletterCampaigns.map((campaign) => (
+            <tr>
+              <td>{campaign.subject}</td>
+              <td><StatusBadge status={campaign.status} /></td>
+              <td class="proto-muted">{campaign.sent ?? '—'}</td>
+              <td>{campaign.recipients}</td>
+              <td class="proto-muted">{campaign.openRate ? `${Math.round(campaign.openRate * 100)}%` : '—'}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <button type="button" class="proto-btn proto-btn--primary" style="margin-top: 1rem;">Compose campaign (prototype)</button>
+</AdminLayout>

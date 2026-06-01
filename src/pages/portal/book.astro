@@ -1,0 +1,73 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import { bookingSlots, firm, staffOptions } from '../../data/mock/prototype';
+---
+
+<PortalLayout title="Book a meeting — Lakingz Client Portal" activeNav="appointments">
+  <div style="margin-bottom: 2rem;">
+    <a href="/portal/appointments" class="proto-link" style="font-size: var(--fs-xs); letter-spacing: 0.08em; text-transform: uppercase;">← Back to meetings</a>
+    <h1 class="proto-display proto-display-xl" style="margin-top: 1rem;">
+      <span class="proto-display-quiet">Book a</span> meeting.
+    </h1>
+    <p class="proto-muted" style="margin-top: 0.75rem; max-width: 42ch;">
+      Choose a CPA, date, and time for a 30-minute review. This prototype confirms locally — no backend required.
+    </p>
+  </div>
+
+  <form class="proto-card proto-card-pad" style="max-width: 42rem; display: grid; gap: 1.25rem;" id="booking-form">
+    <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));">
+      <label style="display: grid; gap: 0.35rem;">
+        <span class="proto-eyebrow">Date</span>
+        <input type="date" name="date" required style="min-height: 42px; padding: 0 0.75rem; border-radius: 10px; border: var(--sheet-border);" />
+      </label>
+      <label style="display: grid; gap: 0.35rem;">
+        <span class="proto-eyebrow">Meeting with</span>
+        <select name="staff" required style="min-height: 42px; padding: 0 0.75rem; border-radius: 10px; border: var(--sheet-border);">
+          {staffOptions.map((staff) => <option value={staff.id}>{staff.name}</option>)}
+        </select>
+      </label>
+    </div>
+
+    <label style="display: grid; gap: 0.35rem;">
+      <span class="proto-eyebrow">What's this meeting about?</span>
+      <input type="text" name="title" value="Tax planning chat" required style="min-height: 42px; padding: 0 0.75rem; border-radius: 10px; border: var(--sheet-border);" />
+    </label>
+
+    <fieldset style="border: 0; padding: 0; display: grid; gap: 0.65rem;">
+      <legend class="proto-eyebrow">Available times</legend>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        {
+          bookingSlots.map((slot) => (
+            <label style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.75rem; border: var(--sheet-border); border-radius: 999px; cursor: pointer;">
+              <input type="radio" name="slot" value={slot} required />
+              <span style="font-size: var(--fs-sm);">{slot}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+
+    <button type="submit" class="proto-btn proto-btn--primary" style="justify-self: start;">Confirm booking</button>
+    <p id="booking-message" class="proto-muted" style="font-size: var(--fs-sm);"></p>
+  </form>
+
+  <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 1rem;">
+    Questions? Email {firm.email} and we'll set up your first meeting manually.
+  </p>
+</PortalLayout>
+
+<script>
+  const form = document.getElementById('booking-form') as HTMLFormElement | null;
+  const message = document.getElementById('booking-message');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (message) {
+      message.textContent = 'Booked (prototype). Redirecting to your meetings…';
+      message.style.color = 'var(--accent-mint)';
+    }
+    window.setTimeout(() => {
+      window.location.href = '/portal/appointments';
+    }, 900);
+  });
+</script>

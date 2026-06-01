@@ -1,0 +1,66 @@
+---
+import '../styles/index.css';
+import '../styles/portal.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  activeNav?: 'dashboard' | 'appointments' | 'invoices';
+}
+
+const {
+  title = 'Client Portal — Lakingz Services',
+  description = 'Prototype client portal for Lakingz Services.',
+  activeNav = 'dashboard',
+} = Astro.props;
+
+import { clientUser, firm } from '../data/mock/prototype';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/png" href="/lkzfavicon.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="portal-body">
+    <header class="portal-header">
+      <div class="portal-header-inner">
+        <a href="/portal" class="portal-brand" aria-label="Lakingz client portal home">
+          <span class="portal-brand-name">{firm.name}</span>
+          <span class="portal-brand-sub">Client Portal</span>
+        </a>
+
+        <nav class="portal-nav" aria-label="Portal sections">
+          <a href="/portal" class:list={['portal-nav-link', { 'is-active': activeNav === 'dashboard' }]}>
+            Dashboard
+          </a>
+          <a href="/portal/appointments" class:list={['portal-nav-link', { 'is-active': activeNav === 'appointments' }]}>
+            Meetings
+          </a>
+          <a href="/portal/invoices" class:list={['portal-nav-link', { 'is-active': activeNav === 'invoices' }]}>
+            Invoices
+          </a>
+        </nav>
+
+        <div class="portal-account">
+          <div class="portal-avatar" aria-hidden="true">{clientUser.initials}</div>
+          <div class="portal-account-meta">
+            <span class="portal-account-name">{clientUser.name}</span>
+            <span class="portal-account-role">{clientUser.role}</span>
+          </div>
+          <a href="/login" class="portal-signout">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="portal-main">
+      <slot />
+    </main>
+  </body>
+</html>

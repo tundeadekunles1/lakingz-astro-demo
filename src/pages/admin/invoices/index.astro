@@ -1,0 +1,148 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import StatusBadge from '../../../components/shared/StatusBadge.astro';
+import { invoices, formatCurrency, formatDate } from '../../../data/mock/prototype';
+
+const draftStartNumber = 45;
+---
+
+<AdminLayout
+  title="Invoices — Lakingz Admin"
+  pageTitle="Invoices"
+  pageDescription="Draft, send, and track client billing."
+>
+  <div style="margin-bottom: 1rem;">
+    <button type="button" class="proto-btn proto-btn--primary" id="new-invoice-btn">
+      New invoice (prototype)
+    </button>
+  </div>
+
+  <div class="proto-table-wrap">
+    <table class="proto-table" id="invoices-table">
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Client / engagement</th>
+          <th>Issued</th>
+          <th>Due</th>
+          <th>Status</th>
+          <th style="text-align: right;">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="invoices-body">
+        {
+          invoices.map((invoice) => (
+            <tr>
+              <td>{invoice.number}</td>
+              <td>{invoice.engagementTitle ?? invoice.description}</td>
+              <td class="proto-muted">{formatDate(invoice.issued)}</td>
+              <td class="proto-muted">{formatDate(invoice.due)}</td>
+              <td><StatusBadge status={invoice.status} /></td>
+              <td style="text-align: right;">{formatCurrency(invoice.amount)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="proto-modal-backdrop" id="invoice-modal" role="dialog" aria-modal="true" aria-labelledby="invoice-modal-title" aria-hidden="true">
+    <div class="proto-modal">
+      <div class="proto-modal-header">
+        <div>
+          <h2 id="invoice-modal-title">New invoice</h2>
+          <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.35rem;">Prototype — adds a draft row to the table.</p>
+        </div>
+        <button type="button" class="proto-modal-close" id="invoice-modal-close" aria-label="Close">×</button>
+      </div>
+      <form id="invoice-form">
+        <div class="proto-modal-body">
+          <div class="proto-field">
+            <label for="invoice-client">Client / engagement</label>
+            <input type="text" id="invoice-client" name="client" placeholder="e.g. Greenleaf Wellness — Q3 bookkeeping" required />
+          </div>
+          <div class="proto-field">
+            <label for="invoice-amount">Amount (CAD)</label>
+            <input type="number" id="invoice-amount" name="amount" min="0" step="0.01" placeholder="450.00" required />
+          </div>
+        </div>
+        <div class="proto-modal-footer">
+          <button type="button" class="proto-btn proto-btn--ghost" id="invoice-cancel">Cancel</button>
+          <button type="submit" class="proto-btn proto-btn--primary">Create draft</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="proto-toast" id="invoice-toast" role="status" aria-live="polite"></div>
+
+  <script define:vars={{ draftStartNumber }}>
+    const modal = document.getElementById('invoice-modal');
+    const openBtn = document.getElementById('new-invoice-btn');
+    const closeBtn = document.getElementById('invoice-modal-close');
+    const cancelBtn = document.getElementById('invoice-cancel');
+    const form = document.getElementById('invoice-form');
+    const tbody = document.getElementById('invoices-body');
+    const toast = document.getElementById('invoice-toast');
+    let draftCounter = draftStartNumber;
+
+    function openModal() {
+      modal.setAttribute('aria-hidden', 'false');
+      modal.classList.add('is-open');
+      document.getElementById('invoice-client')?.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      form.reset();
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('is-visible');
+      window.setTimeout(() => toast.classList.remove('is-visible'), 3200);
+    }
+
+    function formatMoney(amount) {
+      return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(amount);
+    }
+
+    openBtn?.addEventListener('click', openModal);
+    closeBtn?.addEventListener('click', closeModal);
+    cancelBtn?.addEventListener('click', closeModal);
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal?.classList.contains('is-open')) closeModal();
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const client = document.getElementById('invoice-client').value.trim();
+      const amount = parseFloat(document.getElementById('invoice-amount').value);
+
+      if (!client || Number.isNaN(amount)) return;
+
+      const number = `2026-${String(draftCounter).padStart(4, '0')}`;
+      draftCounter += 1;
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${number}</td>
+        <td>${client}</td>
+        <td class="proto-muted">—</td>
+        <td class="proto-muted">—</td>
+        <td><span class="proto-badge proto-badge--draft">draft</span></td>
+        <td style="text-align: right;">${formatMoney(amount)}</td>
+      `;
+      tbody?.prepend(row);
+
+      closeModal();
+      showToast(`Draft ${number} created`);
+    });
+  </script>
+</AdminLayout>

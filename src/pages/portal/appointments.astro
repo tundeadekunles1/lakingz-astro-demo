@@ -1,0 +1,72 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import StatusBadge from '../../components/shared/StatusBadge.astro';
+import { clientAppointments, formatDateTime } from '../../data/mock/prototype';
+
+const now = Date.now();
+const upcoming = clientAppointments.filter((a) => new Date(a.startAt).getTime() >= now);
+const past = clientAppointments.filter((a) => new Date(a.startAt).getTime() < now);
+---
+
+<PortalLayout title="Meetings — Lakingz Client Portal" activeNav="appointments">
+  <div style="display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 2.5rem;">
+    <div>
+      <h1 class="proto-display proto-display-xl">
+        <span class="proto-display-quiet">Your</span> meetings.
+      </h1>
+      <p class="proto-muted" style="margin-top: 0.75rem; max-width: 42ch;">
+        See what's booked. Need a new meeting? Pick a time on the booking page.
+      </p>
+    </div>
+    <a href="/portal/book" class="proto-btn proto-btn--primary">Book a new meeting →</a>
+  </div>
+
+  <h2 class="proto-display proto-display-md" style="margin-bottom: 0.75rem;">Upcoming</h2>
+  {
+    upcoming.length === 0 ? (
+      <div class="proto-card proto-card-pad" style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+        Nothing on the calendar. Book your next meeting from the button above.
+      </div>
+    ) : (
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2.5rem;">
+        {upcoming.map((appt) => (
+          <article class="proto-card proto-card-pad" style="display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center;">
+            <div style="text-align: center; min-width: 3.5rem;">
+              <div class="proto-display" style="font-size: var(--fs-2xl); line-height: 1;">{new Date(appt.startAt).getDate()}</div>
+              <div class="proto-eyebrow" style="margin-top: 0.25rem;">
+                {new Date(appt.startAt).toLocaleDateString('en-CA', { month: 'short' })}
+              </div>
+            </div>
+            <div style="flex: 1; min-width: 12rem;">
+              <h3 class="proto-display" style="font-size: var(--fs-lg);">{appt.title}</h3>
+              <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.35rem;">
+                {formatDateTime(appt.startAt)} · with {appt.staffName}
+              </p>
+            </div>
+            {appt.meetingUrl ? (
+              <a href={appt.meetingUrl} class="proto-btn proto-btn--ghost" target="_blank" rel="noopener">Join meeting</a>
+            ) : (
+              <StatusBadge status={appt.status} />
+            )}
+          </article>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    past.length > 0 && (
+      <>
+        <h2 class="proto-display proto-display-md" style="margin-bottom: 0.75rem;">Past</h2>
+        <div class="proto-card">
+          {past.map((appt) => (
+            <div style="display: flex; justify-content: space-between; gap: 1rem; padding: 0.85rem 1rem; border-bottom: var(--sheet-border); font-size: var(--fs-sm);">
+              <span>{appt.title}</span>
+              <span class="proto-muted">{formatDateTime(appt.startAt)}</span>
+            </div>
+          ))}
+        </div>
+      </>
+    )
+  }
+</PortalLayout>

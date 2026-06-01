@@ -1,0 +1,39 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { documents } from '../../../data/mock/prototype';
+---
+
+<AdminLayout
+  title="Documents — Lakingz Admin"
+  pageTitle="Documents"
+  pageDescription="Firm-wide document library grouped by engagement."
+>
+  <div class="proto-table-wrap">
+    <table class="proto-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Engagement</th>
+          <th>Author</th>
+          <th>Updated</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          documents.map((doc) => (
+            <tr>
+              <td>{doc.name}</td>
+              <td class="proto-muted">{doc.type}</td>
+              <td>{doc.engagementId}</td>
+              <td class="proto-muted">{doc.author}</td>
+              <td class="proto-muted">{doc.updated}</td>
+              <td class="proto-muted">{doc.size}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</AdminLayout>

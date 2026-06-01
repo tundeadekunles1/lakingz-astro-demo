@@ -1,0 +1,171 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { calendarEvents } from '../../../data/mock/prototype';
+
+const eventsJson = JSON.stringify(calendarEvents);
+const initialYear = 2026;
+const initialMonth = 5; // June (0-indexed)
+---
+
+<AdminLayout
+  title="Calendar — Lakingz Admin"
+  pageTitle="Calendar"
+  pageDescription="Appointments, filing deadlines, and internal team events."
+>
+  <div class="admin-calendar-layout">
+    <section class="admin-calendar-card" aria-label="Month calendar">
+      <div class="admin-calendar-toolbar">
+        <div class="admin-calendar-nav">
+          <button type="button" class="admin-calendar-nav-btn" id="cal-prev" aria-label="Previous month">‹</button>
+          <div class="admin-calendar-month" id="cal-month-label">June 2026</div>
+          <button type="button" class="admin-calendar-nav-btn" id="cal-next" aria-label="Next month">›</button>
+        </div>
+        <div class="admin-calendar-meta" id="cal-event-count">{calendarEvents.length} events this month</div>
+      </div>
+
+      <div class="admin-calendar-weekdays" aria-hidden="true">
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+          <div class="admin-calendar-weekday">{day}</div>
+        ))}
+      </div>
+
+      <div class="admin-calendar-grid" id="cal-grid"></div>
+
+      <div class="admin-calendar-legend">
+        <span class="admin-calendar-legend-item">
+          <span class="admin-calendar-legend-dot" style="background: oklch(55% 0.12 145);"></span>
+          Client
+        </span>
+        <span class="admin-calendar-legend-item">
+          <span class="admin-calendar-legend-dot" style="background: oklch(52% 0.18 25);"></span>
+          Deadline
+        </span>
+        <span class="admin-calendar-legend-item">
+          <span class="admin-calendar-legend-dot" style="background: oklch(68% 0.02 160);"></span>
+          Internal
+        </span>
+      </div>
+    </section>
+
+    <aside class="admin-calendar-agenda" aria-label="Upcoming events">
+      <div class="admin-calendar-agenda-header">
+        <h2>Upcoming</h2>
+        <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.35rem;">Next appointments and deadlines</p>
+      </div>
+      <div class="admin-calendar-agenda-list">
+        {
+          calendarEvents.map((event) => {
+            const day = event.date.split('-')[2];
+            const typeClass = event.type.toLowerCase() === 'deadline' ? 'is-deadline' : '';
+            return (
+              <article class="admin-calendar-agenda-item">
+                <div class="admin-calendar-agenda-date">{day}</div>
+                <div>
+                  <div class:list={['admin-calendar-agenda-type', typeClass]}>
+                    {event.time} · {event.type}
+                  </div>
+                  <h3 class="admin-calendar-agenda-title">{event.title}</h3>
+                  {event.location && (
+                    <p class="admin-calendar-agenda-meta">{event.location}</p>
+                  )}
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </aside>
+  </div>
+
+  <script define:vars={{ eventsJson, initialYear, initialMonth }}>
+    const events = JSON.parse(eventsJson);
+    const today = new Date(2026, 5, 1); // prototype anchor: June 2026
+    let cursorYear = initialYear;
+    let cursorMonth = initialMonth;
+
+    const monthLabel = document.getElementById('cal-month-label');
+    const eventCount = document.getElementById('cal-event-count');
+    const grid = document.getElementById('cal-grid');
+    const prevBtn = document.getElementById('cal-prev');
+    const nextBtn = document.getElementById('cal-next');
+
+    function chipClass(type) {
+      const t = type.toLowerCase();
+      if (t === 'deadline') return 'admin-calendar-chip--deadline';
+      if (t === 'internal') return 'admin-calendar-chip--internal';
+      return 'admin-calendar-chip--client';
+    }
+
+    function eventsForDay(year, month, day) {
+      const key = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      return events.filter((e) => e.date === key);
+    }
+
+    function render() {
+      const first = new Date(cursorYear, cursorMonth, 1);
+      const daysInMonth = new Date(cursorYear, cursorMonth + 1, 0).getDate();
+      const startWeekday = first.getDay();
+
+      monthLabel.textContent = first.toLocaleDateString('en-CA', { month: 'long', year: 'numeric' });
+
+      const monthEvents = events.filter((e) => {
+        const d = new Date(e.date + 'T12:00:00');
+        return d.getFullYear() === cursorYear && d.getMonth() === cursorMonth;
+      });
+      eventCount.textContent = `${monthEvents.length} event${monthEvents.length === 1 ? '' : 's'} this month`;
+
+      const cells = [];
+      for (let i = 0; i < startWeekday; i++) cells.push(null);
+      for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+      while (cells.length % 7 !== 0) cells.push(null);
+
+      grid.innerHTML = cells
+        .map((day) => {
+          if (!day) {
+            return '<div class="admin-calendar-cell is-empty"></div>';
+          }
+
+          const dayEvents = eventsForDay(cursorYear, cursorMonth, day);
+          const isToday =
+            day === today.getDate() &&
+            cursorMonth === today.getMonth() &&
+            cursorYear === today.getFullYear();
+
+          const chips = dayEvents
+            .map(
+              (e) =>
+                `<div class="admin-calendar-chip ${chipClass(e.type)}" title="${e.title}">${e.time} ${e.title}</div>`,
+            )
+            .join('');
+
+          return `
+            <div class="admin-calendar-cell${isToday ? ' is-today' : ''}">
+              <span class="admin-calendar-day">${day}</span>
+              <div class="admin-calendar-events">${chips}</div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      cursorMonth -= 1;
+      if (cursorMonth < 0) {
+        cursorMonth = 11;
+        cursorYear -= 1;
+      }
+      render();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      cursorMonth += 1;
+      if (cursorMonth > 11) {
+        cursorMonth = 0;
+        cursorYear += 1;
+      }
+      render();
+    });
+
+    render();
+  </script>
+</AdminLayout>

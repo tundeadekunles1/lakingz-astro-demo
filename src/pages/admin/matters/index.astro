@@ -1,0 +1,44 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import StatusBadge from '../../../components/shared/StatusBadge.astro';
+import { allEngagements, TYPE_LABEL, formatCurrency } from '../../../data/mock/prototype';
+---
+
+<AdminLayout
+  title="Engagements — Lakingz Admin"
+  pageTitle="Engagements"
+  pageDescription="Open, pending, and closed client files across the practice."
+>
+  <div class="proto-table-wrap">
+    <table class="proto-table">
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>Client</th>
+          <th>Engagement</th>
+          <th>Type</th>
+          <th>Preparer</th>
+          <th>Status</th>
+          <th style="text-align: right;">Billed YTD</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          allEngagements.map((engagement) => (
+            <tr>
+              <td>{engagement.fileNumber}</td>
+              <td>{engagement.clientName}</td>
+              <td>
+                <a href={`/admin/engagements/${engagement.id}`} class="proto-link">{engagement.title}</a>
+              </td>
+              <td class="proto-muted">{TYPE_LABEL[engagement.type]}</td>
+              <td>{engagement.owner}</td>
+              <td><StatusBadge status={engagement.status} /></td>
+              <td style="text-align: right;">{formatCurrency(engagement.billedYtd)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</AdminLayout>

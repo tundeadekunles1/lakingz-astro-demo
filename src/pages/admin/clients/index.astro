@@ -1,0 +1,39 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { clients, formatCurrency } from '../../../data/mock/prototype';
+---
+
+<AdminLayout
+  title="Clients — Lakingz Admin"
+  pageTitle="Clients"
+  pageDescription="Directory of active and archived client relationships."
+>
+  <div class="proto-table-wrap">
+    <table class="proto-table">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Type</th>
+          <th>Primary contact</th>
+          <th>Email</th>
+          <th>Active matters</th>
+          <th style="text-align: right;">Lifetime billed</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          clients.map((client) => (
+            <tr>
+              <td><strong>{client.name}</strong></td>
+              <td class="proto-muted">{client.type}</td>
+              <td>{client.primaryContact}</td>
+              <td class="proto-muted">{client.email}</td>
+              <td>{client.activeMatters}</td>
+              <td style="text-align: right;">{formatCurrency(client.lifetimeBilled)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</AdminLayout>

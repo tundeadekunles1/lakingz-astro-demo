@@ -1,0 +1,85 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import StatusBadge from '../../components/shared/StatusBadge.astro';
+import {
+  clientInvoices,
+  firm,
+  formatCurrency,
+  formatDate,
+  invoiceSummary,
+} from '../../data/mock/prototype';
+
+const summary = invoiceSummary(clientInvoices);
+---
+
+<PortalLayout title="Invoices — Lakingz Client Portal" activeNav="invoices">
+  <div style="margin-bottom: 2.5rem;">
+    <h1 class="proto-display proto-display-xl">
+      <span class="proto-display-quiet">Your</span> invoices.
+    </h1>
+    <p class="proto-muted" style="margin-top: 0.75rem; max-width: 42ch; line-height: 1.6;">
+      A running record of what you've been billed and what's outstanding. To settle an invoice, e-transfer to
+      <strong style="color: var(--text-main);">{firm.email}</strong>.
+    </p>
+  </div>
+
+  <div class="proto-kpi-grid" style="margin-bottom: 2rem; grid-template-columns: repeat(3, minmax(0, 1fr));">
+    <div class="proto-kpi proto-kpi--warn">
+      <div class="proto-eyebrow">Outstanding</div>
+      <div class="proto-kpi-value">{formatCurrency(summary.outstanding)}</div>
+    </div>
+    <div class="proto-kpi">
+      <div class="proto-eyebrow">Invoices on file</div>
+      <div class="proto-kpi-value">{summary.count}</div>
+    </div>
+    <div class="proto-kpi">
+      <div class="proto-eyebrow">Paid to date</div>
+      <div class="proto-kpi-value" style="color: var(--accent-mint);">{formatCurrency(summary.paid)}</div>
+    </div>
+  </div>
+
+  <div class="proto-table-wrap">
+    <table class="proto-table">
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>For</th>
+          <th>Issued</th>
+          <th>Due</th>
+          <th style="text-align: right;">Amount</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          clientInvoices.map((invoice) => (
+            <tr>
+              <td>{invoice.number}</td>
+              <td>{invoice.engagementTitle ?? invoice.description}</td>
+              <td class="proto-muted">{formatDate(invoice.issued)}</td>
+              <td class="proto-muted">{formatDate(invoice.due)}</td>
+              <td style="text-align: right; font-weight: 600;">{formatCurrency(invoice.amount)}</td>
+              <td><StatusBadge status={invoice.status} /></td>
+              <td style="text-align: right;">
+                {invoice.status !== 'DRAFT' ? (
+                  <a href={`/portal/invoice/${invoice.number}`} class="proto-link" style="font-size: var(--fs-xs);">PDF</a>
+                ) : (
+                  <span class="proto-muted" style="font-size: var(--fs-xs);">—</span>
+                )}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</PortalLayout>
+
+<style>
+  @media (max-width: 680px) {
+    .proto-kpi-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

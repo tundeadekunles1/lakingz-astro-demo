@@ -1,0 +1,43 @@
+---
+interface Props {
+  status: string;
+}
+
+const { status } = Astro.props;
+
+const normalized = status.toUpperCase().replace(/\s+/g, '_');
+
+const variantMap: Record<string, string> = {
+  PAID: 'paid',
+  OPEN: 'open',
+  SENT: 'sent',
+  OVERDUE: 'overdue',
+  DRAFT: 'draft',
+  PENDING: 'pending',
+  ON_HOLD: 'hold',
+  CLOSED: 'closed',
+  NEW: 'new',
+  ASSIGNED: 'assigned',
+  CONFLICTS_CLEARED: 'assigned',
+  RETAINER_SENT: 'sent',
+  DECLINED: 'destructive',
+  SCHEDULED: 'sent',
+  COMPLETED: 'paid',
+  CATEGORIZED: 'paid',
+  'NEEDS_REVIEW': 'overdue',
+  PROCESSING: 'pending',
+  REIMBURSED: 'outline',
+};
+
+const labelMap: Record<string, string> = {
+  ON_HOLD: 'On hold',
+  NEEDS_REVIEW: 'Needs review',
+  CONFLICTS_CLEARED: 'Conflicts cleared',
+  RETAINER_SENT: 'Retainer sent',
+};
+
+const variant = variantMap[normalized] ?? 'outline';
+const label = labelMap[normalized] ?? status.replace(/_/g, ' ').toLowerCase();
+---
+
+<span class={`proto-badge proto-badge--${variant}`}>{label}</span>

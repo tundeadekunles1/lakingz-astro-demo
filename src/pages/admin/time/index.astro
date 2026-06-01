@@ -1,0 +1,49 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { timeEntries, getEngagement, formatCurrency } from '../../../data/mock/prototype';
+---
+
+<AdminLayout
+  title="Time Entries — Lakingz Admin"
+  pageTitle="Time Entries"
+  pageDescription="Billable hours tracked against engagements."
+>
+  <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+    <button type="button" class="proto-btn proto-btn--primary">Start timer (prototype)</button>
+    <button type="button" class="proto-btn proto-btn--ghost">Add manual entry</button>
+  </div>
+
+  <div class="proto-table-wrap">
+    <table class="proto-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Engagement</th>
+          <th>Staff</th>
+          <th>Hours</th>
+          <th>Rate</th>
+          <th>Description</th>
+          <th style="text-align: right;">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          timeEntries.map((entry) => {
+            const engagement = getEngagement(entry.engagementId);
+            return (
+              <tr>
+                <td>{entry.date}</td>
+                <td>{engagement?.title ?? entry.engagementId}</td>
+                <td>{entry.staff}</td>
+                <td>{entry.hours}</td>
+                <td>{formatCurrency(entry.rate)}</td>
+                <td class="proto-muted">{entry.description}</td>
+                <td style="text-align: right;">{formatCurrency(entry.hours * entry.rate)}</td>
+              </tr>
+            );
+          })
+        }
+      </tbody>
+    </table>
+  </div>
+</AdminLayout>
