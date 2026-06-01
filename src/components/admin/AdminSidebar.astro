@@ -1,0 +1,85 @@
+---
+import { adminBadges } from '../../data/mock/prototype';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const badges = adminBadges();
+
+const sections = [
+  {
+    label: 'Overview',
+    items: [{ href: '/admin', label: 'Dashboard' }],
+  },
+  {
+    label: 'Practice',
+    items: [
+      { href: '/admin/matters', label: 'Engagements', badge: badges.openEngagements },
+      { href: '/admin/clients', label: 'Clients' },
+      { href: '/admin/calendar', label: 'Calendar' },
+      { href: '/admin/documents', label: 'Documents' },
+    ],
+  },
+  {
+    label: 'Financial',
+    items: [
+      { href: '/admin/time', label: 'Time Entries' },
+      { href: '/admin/receipts', label: 'Receipts & OCR', badge: badges.receiptsNeedingReview },
+      { href: '/admin/invoices', label: 'Invoices' },
+    ],
+  },
+  {
+    label: 'Marketing',
+    items: [
+      { href: '/admin/newsletter', label: 'Newsletter' },
+      { href: '/admin/submissions', label: 'Form Submissions', badge: badges.newSubmissions },
+    ],
+  },
+  {
+    label: 'System',
+    items: [{ href: '/admin/settings', label: 'Settings' }],
+  },
+];
+
+function isActive(href: string) {
+  if (href === '/admin') return currentPath === '/admin' || currentPath === '/admin/';
+  return currentPath.startsWith(href);
+}
+---
+
+<aside class="admin-sidebar">
+  <div class="admin-sidebar-brand">
+    <div class="admin-sidebar-brand-icon" aria-hidden="true">L</div>
+    <div>
+      <div class="admin-sidebar-brand-name">Lakingz Services</div>
+      <div class="admin-sidebar-brand-sub">Admin Console</div>
+    </div>
+  </div>
+
+  <div class="admin-sidebar-search">
+    <input type="search" placeholder="Search engagements, clients…" aria-label="Search admin console" />
+  </div>
+
+  <nav class="admin-sidebar-nav" aria-label="Admin navigation">
+    {
+      sections.map((section) => (
+        <div class="admin-nav-section">
+          <div class="admin-nav-label">{section.label}</div>
+          {section.items.map((item) => (
+            <a href={item.href} class:list={['admin-nav-link', { 'is-active': isActive(item.href) }]}>
+              <span>{item.label}</span>
+              {item.badge ? <span class="admin-nav-badge">{item.badge}</span> : null}
+            </a>
+          ))}
+        </div>
+      ))
+    }
+  </nav>
+
+  <div class="admin-sidebar-footer">
+    <strong>Kemi Olugbade</strong>
+    <div class="admin-sidebar-footer-role">Staff</div>
+  </div>
+</aside>

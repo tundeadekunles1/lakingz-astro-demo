@@ -1,0 +1,42 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import StatusBadge from '../../../components/shared/StatusBadge.astro';
+import { receipts, formatCurrency } from '../../../data/mock/prototype';
+---
+
+<AdminLayout
+  title="Receipts & OCR — Lakingz Admin"
+  pageTitle="Receipts & OCR"
+  pageDescription="Review client uploads, OCR extraction, and categorization."
+>
+  <div class="proto-table-wrap">
+    <table class="proto-table">
+      <thead>
+        <tr>
+          <th>Vendor</th>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Submitted by</th>
+          <th>OCR</th>
+          <th>Status</th>
+          <th style="text-align: right;">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          receipts.map((receipt) => (
+            <tr>
+              <td>{receipt.vendor}</td>
+              <td class="proto-muted">{receipt.date}</td>
+              <td>{receipt.category}</td>
+              <td class="proto-muted">{receipt.submittedBy}</td>
+              <td class="proto-muted">{Math.round(receipt.ocrConfidence * 100)}%</td>
+              <td><StatusBadge status={receipt.status} /></td>
+              <td style="text-align: right;">{formatCurrency(receipt.amount)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</AdminLayout>

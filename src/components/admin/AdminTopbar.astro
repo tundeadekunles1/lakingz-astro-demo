@@ -1,0 +1,64 @@
+---
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const labels: Record<string, string> = {
+  admin: 'Dashboard',
+  matters: 'Engagements',
+  clients: 'Clients',
+  calendar: 'Calendar',
+  documents: 'Documents',
+  time: 'Time Entries',
+  receipts: 'Receipts & OCR',
+  invoices: 'Invoices',
+  newsletter: 'Newsletter',
+  submissions: 'Form Submissions',
+  settings: 'Settings',
+  engagements: 'Engagement detail',
+};
+
+const segments = currentPath.replace(/^\/admin\/?/, '').split('/').filter(Boolean);
+const crumbs = [{ href: '/admin', label: 'Dashboard' }];
+
+if (segments.length > 0 && segments[0] !== 'index') {
+  const key = segments[0];
+  crumbs.push({
+    href: `/admin/${key}`,
+    label: labels[key] ?? key,
+  });
+}
+
+if (segments[0] === 'engagements' && segments[1]) {
+  crumbs.push({
+    href: `/admin/engagements/${segments[1]}`,
+    label: segments[1],
+  });
+}
+---
+
+<header class="admin-topbar">
+  <nav class="admin-breadcrumbs" aria-label="Breadcrumb">
+    {
+      crumbs.map((crumb, index) => (
+        <>
+          {index > 0 ? <span aria-hidden="true">/</span> : null}
+          {index === crumbs.length - 1 ? (
+            <span>{crumb.label}</span>
+          ) : (
+            <a href={crumb.href}>{crumb.label}</a>
+          )}
+        </>
+      ))
+    }
+  </nav>
+
+  <div style="display: flex; align-items: center; gap: 0.75rem;">
+    <a href="/" class="proto-link" style="font-size: var(--fs-xs);">View site</a>
+    <a href="/login" class="proto-btn proto-btn--ghost" style="min-height: 34px; padding: 0.4em 0.85em; font-size: var(--fs-xs);">
+      Sign out
+    </a>
+  </div>
+</header>

@@ -1,0 +1,104 @@
+---
+import PortalLayout from '../../../layouts/PortalLayout.astro';
+import StatusBadge from '../../../components/shared/StatusBadge.astro';
+import {
+  getEngagement,
+  engagementDocuments,
+  TYPE_LABEL,
+  formatDate,
+} from '../../../data/mock/prototype';
+
+export function getStaticPaths() {
+  return [
+    { params: { id: 'eng-2026-156' } },
+    { params: { id: 'eng-2026-142' } },
+  ];
+}
+
+const { id } = Astro.params;
+const engagement = getEngagement(id!);
+
+if (!engagement) {
+  return Astro.redirect('/portal');
+}
+
+const docs = engagementDocuments[id!] ?? [];
+---
+
+<PortalLayout title={`${engagement.title} — Lakingz Client Portal`} activeNav="dashboard">
+  <a href="/portal" class="proto-link" style="font-size: var(--fs-xs); letter-spacing: 0.08em; text-transform: uppercase;">← Your dashboard</a>
+
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; margin-top: 1.5rem;">
+    <div>
+      <StatusBadge status={TYPE_LABEL[engagement.type]} />
+      <h1 class="proto-display proto-display-xl" style="margin-top: 0.75rem;">{engagement.title}</h1>
+      <p class="proto-muted" style="margin-top: 0.5rem;">
+        {engagement.clientName} · file {engagement.fileNumber.toUpperCase()}
+      </p>
+    </div>
+    {
+      engagement.nextDeadline && (
+        <div class="proto-card proto-card-pad" style="min-width: 14rem; background: oklch(88% 0.08 145 / 8%);">
+          <div class="proto-eyebrow">Next deadline</div>
+          <div class="proto-display" style="font-size: var(--fs-lg); margin-top: 0.35rem;">{formatDate(engagement.nextDeadline, 'long')}</div>
+          {engagement.deadlineNote && <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.35rem;">{engagement.deadlineNote}</p>}
+        </div>
+      )
+    }
+  </div>
+
+  <section style="margin-top: 2.5rem;">
+    <h2 class="proto-display proto-display-md" style="margin-bottom: 0.75rem;">Secure documents</h2>
+    <p class="proto-muted" style="font-size: var(--fs-sm); margin-bottom: 1rem; max-width: 48ch;">
+      Upload T-slips, receipts, and statements for this engagement. In the prototype, files are not stored — the UI demonstrates the client workflow.
+    </p>
+
+    <div class="proto-card proto-card-pad" style="border-style: dashed; margin-bottom: 1rem; text-align: center;">
+      <p style="font-size: var(--fs-sm); margin-bottom: 0.75rem;">Drag files here or choose from your device</p>
+      <button type="button" class="proto-btn proto-btn--ghost" id="upload-trigger">Choose files</button>
+      <input type="file" id="upload-input" multiple hidden />
+      <p id="upload-status" class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.75rem;"></p>
+    </div>
+
+    <div class="proto-table-wrap">
+      <table class="proto-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Updated</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            docs.map((doc) => (
+              <tr>
+                <td>{doc.name}</td>
+                <td class="proto-muted">{doc.type}</td>
+                <td class="proto-muted">{doc.updated}</td>
+                <td class="proto-muted">{doc.size}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</PortalLayout>
+
+<script>
+  const trigger = document.getElementById('upload-trigger');
+  const input = document.getElementById('upload-input') as HTMLInputElement | null;
+  const status = document.getElementById('upload-status');
+
+  trigger?.addEventListener('click', () => input?.click());
+  input?.addEventListener('change', () => {
+    const count = input.files?.length ?? 0;
+    if (status) {
+      status.textContent = count
+        ? `${count} file${count === 1 ? '' : 's'} selected (prototype — not uploaded).`
+        : '';
+    }
+  });
+</script>

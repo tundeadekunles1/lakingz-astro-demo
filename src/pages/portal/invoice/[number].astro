@@ -1,14 +1,14 @@
 ---
-import { invoices, client, firm, formatCurrency, calcTax, calcTotal, HST_RATE } from '../../../data/portal/invoices';
+import { clientInvoices, clientUser, firm, formatCurrency, calcTax, calcTotal, HST_RATE } from '../../../data/mock/prototype';
 
 export function getStaticPaths() {
-  return invoices
+  return clientInvoices
     .filter((inv) => inv.status !== 'DRAFT')
     .map((inv) => ({ params: { number: inv.number } }));
 }
 
 const { number } = Astro.params;
-const invoice = invoices.find((inv) => inv.number === number);
+const invoice = clientInvoices.find((inv) => inv.number === number);
 
 if (!invoice) {
   return Astro.redirect('/portal/invoices');
@@ -42,6 +42,7 @@ const statusLabel: Record<string, string> = {
 
   <!-- Screen-only toolbar -->
   <div class="toolbar no-print">
+    <a href="/portal/invoices" class="print-btn print-btn--link">← Invoices</a>
     <button class="print-btn" onclick="window.print()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
       Save as PDF
@@ -83,8 +84,8 @@ const statusLabel: Record<string, string> = {
       </div>
       <div class="inv-party inv-party--right">
         <p class="inv-party-label">Bill To</p>
-        <p class="inv-party-name">{client.name}</p>
-        <p class="inv-party-detail">{client.address}</p>
+        <p class="inv-party-name">{clientUser.name}</p>
+        <p class="inv-party-detail">Brampton, ON</p>
         <div class="inv-dates">
           {invoice.issued && (
             <div class="inv-date-row">
@@ -231,6 +232,18 @@ const statusLabel: Record<string, string> = {
   }
   .print-btn:hover { opacity: 0.85; }
 
+  .print-btn--link {
+    background: transparent;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding-left: 0;
+  }
+
+  .print-btn--link:hover {
+    color: var(--text-main);
+    opacity: 1;
+  }
+
   /* ── Invoice page ── */
   .invoice-page {
     max-width: 860px;
@@ -239,7 +252,6 @@ const statusLabel: Record<string, string> = {
     border-radius: 16px;
     padding: 56px 64px;
     box-shadow: 0 8px 48px oklch(0% 0 0 / 6%);
-    border-top: 4px solid oklch(55% 0.12 145);
   }
 
   /* Header */

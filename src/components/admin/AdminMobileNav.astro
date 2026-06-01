@@ -1,0 +1,29 @@
+---
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const links = [
+  { href: '/admin', label: 'Dashboard' },
+  { href: '/admin/matters', label: 'Engagements' },
+  { href: '/admin/clients', label: 'Clients' },
+  { href: '/admin/invoices', label: 'Invoices' },
+  { href: '/admin/submissions', label: 'Submissions' },
+  { href: '/admin/settings', label: 'Settings' },
+];
+
+function isActive(href: string) {
+  if (href === '/admin') return currentPath === '/admin' || currentPath === '/admin/';
+  return currentPath.startsWith(href);
+}
+---
+
+<div class="admin-mobile-nav" style="padding: 0.75rem var(--space-md); background: var(--bg-surface); border-bottom: var(--sheet-border);">
+  {
+    links.map((link) => (
+      <a href={link.href} class:list={[{ 'is-active': isActive(link.href) }]}>{link.label}</a>
+    ))
+  }
+</div>

@@ -1,0 +1,63 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import StatusBadge from '../../../components/shared/StatusBadge.astro';
+import { submissions, formatDateTime } from '../../../data/mock/prototype';
+
+const pipeline = [
+  { label: 'New', count: submissions.filter((s) => s.status === 'NEW').length },
+  { label: 'Assigned', count: submissions.filter((s) => s.status === 'ASSIGNED').length },
+  { label: 'Retainer sent', count: submissions.filter((s) => s.status === 'RETAINER_SENT').length },
+];
+
+function initials(first: string, last: string) {
+  return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
+}
+---
+
+<AdminLayout
+  title="Form Submissions — Lakingz Admin"
+  pageTitle="Form Submissions"
+  pageDescription="Leads from the public contact form and intake pipeline."
+>
+  <div class="submissions-pipeline" aria-label="Pipeline summary">
+    {
+      pipeline.map((stage) => (
+        <div class="submissions-pipeline-chip">
+          <span>{stage.label}</span>
+          <strong>{stage.count}</strong>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="submissions-list">
+    {
+      submissions.map((submission) => (
+        <article class="submission-card">
+          <div class="submission-avatar" aria-hidden="true">
+            {initials(submission.firstName, submission.lastName)}
+          </div>
+
+          <div>
+            <div class="submission-card-head">
+              <span class="submission-card-name">{submission.firstName} {submission.lastName}</span>
+              <StatusBadge status={submission.status} />
+              <span class="submission-practice">{submission.practice}</span>
+            </div>
+            <p class="submission-message">{submission.message}</p>
+            <div class="submission-meta">
+              <span>{submission.email}</span>
+              <span>·</span>
+              <span>{formatDateTime(submission.createdAt)}</span>
+            </div>
+          </div>
+
+          <div class="submission-actions">
+            <button type="button" class="proto-btn proto-btn--ghost">Assign</button>
+            <button type="button" class="proto-btn proto-btn--ghost">Mark retainer sent</button>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</AdminLayout>

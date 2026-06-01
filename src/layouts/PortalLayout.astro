@@ -1,15 +1,20 @@
 ---
 import '../styles/index.css';
+import '../styles/portal.css';
 
 interface Props {
   title?: string;
   description?: string;
+  activeNav?: 'dashboard' | 'appointments' | 'invoices';
 }
 
 const {
-  title = 'Lakingz Client Portal',
-  description = 'Secure prototype view of your Lakingz Services account.',
+  title = 'Client Portal — Lakingz Services',
+  description = 'Prototype client portal for Lakingz Services.',
+  activeNav = 'dashboard',
 } = Astro.props;
+
+import { clientUser, firm } from '../data/mock/prototype';
 ---
 
 <!DOCTYPE html>
@@ -24,28 +29,38 @@ const {
     <meta name="description" content={description} />
   </head>
   <body class="portal-body">
-    <slot />
+    <header class="portal-header">
+      <div class="portal-header-inner">
+        <a href="/portal" class="portal-brand" aria-label="Lakingz client portal home">
+          <span class="portal-brand-name">{firm.name}</span>
+          <span class="portal-brand-sub">Client Portal</span>
+        </a>
+
+        <nav class="portal-nav" aria-label="Portal sections">
+          <a href="/portal" class:list={['portal-nav-link', { 'is-active': activeNav === 'dashboard' }]}>
+            Dashboard
+          </a>
+          <a href="/portal/appointments" class:list={['portal-nav-link', { 'is-active': activeNav === 'appointments' }]}>
+            Meetings
+          </a>
+          <a href="/portal/invoices" class:list={['portal-nav-link', { 'is-active': activeNav === 'invoices' }]}>
+            Invoices
+          </a>
+        </nav>
+
+        <div class="portal-account">
+          <div class="portal-avatar" aria-hidden="true">{clientUser.initials}</div>
+          <div class="portal-account-meta">
+            <span class="portal-account-name">{clientUser.name}</span>
+            <span class="portal-account-role">{clientUser.role}</span>
+          </div>
+          <a href="/login" class="portal-signout">Sign out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="portal-main">
+      <slot />
+    </main>
   </body>
 </html>
-
-<style is:global>
-  .portal-body {
-    background-color: var(--bg-canvas);
-    color: var(--text-main);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .portal-main {
-    flex: 1;
-    padding: var(--space-xl) 0 var(--space-2xl);
-  }
-
-  .portal-container {
-    width: 100%;
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 var(--space-md);
-  }
-</style>

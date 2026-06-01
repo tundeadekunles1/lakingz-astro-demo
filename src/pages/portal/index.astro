@@ -1,4 +1,195 @@
 ---
-// Redirect bare /portal/ to the invoices page
-return Astro.redirect('/portal/invoices', 302);
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import StatusBadge from '../../components/shared/StatusBadge.astro';
+import {
+  clientUser,
+  clientEngagements,
+  clientAppointments,
+  clientInvoices,
+  TYPE_LABEL,
+  formatCurrency,
+  formatDate,
+  formatDateTime,
+  invoiceSummary,
+  firm,
+} from '../../data/mock/prototype';
+
+const now = Date.now();
+const summary = invoiceSummary(clientInvoices);
+const firstName = clientUser.name.split(' ')[0];
+
+const upcomingAppts = clientAppointments
+  .filter((a) => new Date(a.startAt).getTime() > now && a.status === 'SCHEDULED')
+  .sort((a, b) => +new Date(a.startAt) - +new Date(b.startAt));
+const nextAppt = upcomingAppts[0];
+
+const outstandingInvoices = clientInvoices
+  .filter((i) => i.status === 'SENT' || i.status === 'OVERDUE')
+  .sort((a, b) => +new Date(a.due ?? 0) - +new Date(b.due ?? 0));
+
+const deadlineEng = clientEngagements.find((e) => e.nextDeadline);
+const todayPretty = new Date().toLocaleDateString('en-CA', {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
 ---
+
+<PortalLayout title="Dashboard — Lakingz Client Portal" activeNav="dashboard">
+  <div style="display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 3rem;">
+    <h1 class="proto-display proto-display-xl">
+      <span class="proto-display-quiet">Welcome back,</span> {firstName}.
+    </h1>
+    <p class="proto-eyebrow">{todayPretty}</p>
+  </div>
+
+  <div class="portal-stat-strip">
+    <div class="portal-stat-cell">
+      <div class="proto-eyebrow">Next deadline</div>
+      <div class="portal-stat-primary">{deadlineEng?.nextDeadline ? formatDate(deadlineEng.nextDeadline) : 'None scheduled'}</div>
+      <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.35rem;">
+        {deadlineEng?.deadlineNote ?? 'Your CPA will reach out as filings approach.'}
+      </p>
+    </div>
+    <div class="portal-stat-cell">
+      <div class="proto-eyebrow">Upcoming meeting</div>
+      <div class="portal-stat-primary">{nextAppt ? formatDate(nextAppt.startAt) : 'Nothing booked'}</div>
+      <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.35rem;">
+        {nextAppt
+          ? `${formatDateTime(nextAppt.startAt)} with ${nextAppt.staffName.split(',')[0]}`
+          : 'Book a 30-min review with your CPA'}
+      </p>
+    </div>
+    <div class="portal-stat-cell">
+      <div class="proto-eyebrow">Outstanding balance</div>
+      <div class="portal-stat-primary">{summary.outstanding > 0 ? formatCurrency(summary.outstanding) : '$0.00'}</div>
+      <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.35rem;">
+        {outstandingInvoices.length > 0
+          ? `${outstandingInvoices.length} invoice${outstandingInvoices.length === 1 ? '' : 's'} awaiting payment`
+          : "You're all caught up"}
+      </p>
+    </div>
+  </div>
+
+  <div class="portal-action-grid">
+    <a href={`/portal/engagements/${clientEngagements[0]?.id ?? '#'}`} class="portal-action-link">
+      <div>
+        <strong>Upload documents</strong>
+        <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.25rem;">T-slips, receipts, statements</p>
+      </div>
+      <span aria-hidden="true">→</span>
+    </a>
+    <a href="/portal/book" class="portal-action-link">
+      <div>
+        <strong>Book a meeting</strong>
+        <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.25rem;">30-min consult with your CPA</p>
+      </div>
+      <span aria-hidden="true">→</span>
+    </a>
+    <a href="/portal/invoices" class="portal-action-link">
+      <div>
+        <strong>View invoices</strong>
+        <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.25rem;">
+          {outstandingInvoices.length > 0 ? `${outstandingInvoices.length} outstanding` : 'All up to date'}
+        </p>
+      </div>
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <h2 class="proto-display proto-display-md" style="margin-bottom: 1rem;">Your active engagements</h2>
+  <div class="portal-engagement-grid">
+    {
+      clientEngagements.map((engagement) => (
+        <a href={`/portal/engagements/${engagement.id}`} class="portal-engagement-card">
+          <div style="display: flex; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <StatusBadge status={TYPE_LABEL[engagement.type]} />
+            <span aria-hidden="true">↗</span>
+          </div>
+          <h3 class="proto-display" style="font-size: var(--fs-lg);">{engagement.title}</h3>
+          <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.35rem;">
+            {engagement.clientName} · file {engagement.fileNumber.toUpperCase()}
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; padding-top: 1rem; border-top: var(--sheet-border);">
+            <div>
+              <div class="proto-eyebrow">Documents on file</div>
+              <div class="proto-display" style="font-size: var(--fs-lg); margin-top: 0.25rem;">{engagement.documentCount}</div>
+            </div>
+            <div>
+              <div class="proto-eyebrow">Next deadline</div>
+              <div style="margin-top: 0.25rem;">{engagement.nextDeadline ? formatDate(engagement.nextDeadline) : '—'}</div>
+            </div>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+
+  <div class="portal-two-col">
+    <section>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="proto-display proto-display-md">Upcoming meetings</h2>
+        <a href="/portal/appointments" class="proto-link" style="font-size: var(--fs-xs); letter-spacing: 0.08em; text-transform: uppercase;">All meetings →</a>
+      </div>
+      {
+        upcomingAppts.length === 0 ? (
+          <p class="proto-muted" style="font-size: var(--fs-sm); padding-top: 1rem; border-top: var(--sheet-border);">
+            No meetings on the calendar. <a href="/portal/book" class="proto-link">Book one →</a>
+          </p>
+        ) : (
+          <ul style="list-style: none; border-top: var(--sheet-border);">
+            {upcomingAppts.slice(0, 3).map((appt) => (
+              <li style="display: flex; gap: 1rem; padding: 1rem 0; border-bottom: var(--sheet-border);">
+                <div class="proto-display" style="font-size: var(--fs-lg); min-width: 3rem;">
+                  {new Date(appt.startAt).getDate()}
+                </div>
+                <div>
+                  <strong style="font-size: var(--fs-sm);">{appt.title}</strong>
+                  <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.25rem;">
+                    {formatDateTime(appt.startAt)} · {appt.staffName}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+
+    <section>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 class="proto-display proto-display-md">Outstanding invoices</h2>
+        <a href="/portal/invoices" class="proto-link" style="font-size: var(--fs-xs); letter-spacing: 0.08em; text-transform: uppercase;">All invoices →</a>
+      </div>
+      {
+        outstandingInvoices.length === 0 ? (
+          <p class="proto-muted" style="font-size: var(--fs-sm); padding-top: 1rem; border-top: var(--sheet-border);">
+            Nothing outstanding. Thanks for staying on top of things.
+          </p>
+        ) : (
+          <ul style="list-style: none; border-top: var(--sheet-border);">
+            {outstandingInvoices.slice(0, 3).map((invoice) => (
+              <li style="display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: var(--sheet-border);">
+                <div>
+                  <strong style="font-size: var(--fs-sm);">{invoice.engagementTitle ?? invoice.description}</strong>
+                  <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.25rem;">
+                    #{invoice.number} · due {formatDate(invoice.due)}
+                  </p>
+                </div>
+                <div style="text-align: right;">
+                  <div class="proto-display" style="font-size: var(--fs-md);">{formatCurrency(invoice.amount)}</div>
+                  <StatusBadge status={invoice.status} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+  </div>
+
+  <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 2rem;">
+    Prototype portal · settle invoices by e-transfer to {firm.email}
+  </p>
+</PortalLayout>

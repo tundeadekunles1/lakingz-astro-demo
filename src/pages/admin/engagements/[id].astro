@@ -1,0 +1,81 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import StatusBadge from '../../../components/shared/StatusBadge.astro';
+import { getEngagement, engagementDocuments, TYPE_LABEL, formatCurrency, formatDate } from '../../../data/mock/prototype';
+
+export function getStaticPaths() {
+  return [
+    'eng-2026-156',
+    'eng-2026-142',
+    'eng-2026-118',
+    'eng-2026-161',
+    'eng-2026-170',
+    'eng-2026-181',
+    'eng-2025-112',
+  ].map((id) => ({ params: { id } }));
+}
+
+const { id } = Astro.params;
+const engagement = getEngagement(id!);
+if (!engagement) return Astro.redirect('/admin/matters');
+const docs = engagementDocuments[id!] ?? [];
+---
+
+<AdminLayout
+  title={`${engagement.title} — Lakingz Admin`}
+  pageTitle={engagement.title}
+  pageDescription={`${engagement.clientName} · file ${engagement.fileNumber.toUpperCase()}`}
+>
+  <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+    <StatusBadge status={TYPE_LABEL[engagement.type]} />
+    <StatusBadge status={engagement.status} />
+  </div>
+
+  <div class="proto-kpi-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 1.5rem;">
+    <div class="proto-kpi">
+      <div class="proto-eyebrow">Preparer</div>
+      <div class="proto-kpi-value" style="font-size: var(--fs-lg);">{engagement.owner}</div>
+    </div>
+    <div class="proto-kpi">
+      <div class="proto-eyebrow">Billed YTD</div>
+      <div class="proto-kpi-value" style="font-size: var(--fs-lg);">{formatCurrency(engagement.billedYtd)}</div>
+    </div>
+    <div class="proto-kpi">
+      <div class="proto-eyebrow">Next deadline</div>
+      <div class="proto-kpi-value" style="font-size: var(--fs-lg);">{engagement.nextDeadline ? formatDate(engagement.nextDeadline) : '—'}</div>
+    </div>
+  </div>
+
+  <section class="proto-card proto-card-pad">
+    <h2 class="proto-display" style="font-size: var(--fs-lg); margin-bottom: 0.75rem;">Documents on file</h2>
+    {
+      docs.length === 0 ? (
+        <p class="proto-muted">No documents uploaded yet for this engagement.</p>
+      ) : (
+        <div class="proto-table-wrap" style="border: 0;">
+          <table class="proto-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Updated</th>
+                <th>Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              {docs.map((doc) => (
+                <tr>
+                  <td>{doc.name}</td>
+                  <td class="proto-muted">{doc.author}</td>
+                  <td class="proto-muted">{doc.updated}</td>
+                  <td class="proto-muted">{doc.size}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+    <button type="button" class="proto-btn proto-btn--primary" style="margin-top: 1rem;">Upload document (prototype)</button>
+  </section>
+</AdminLayout>

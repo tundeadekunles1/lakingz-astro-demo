@@ -1,0 +1,152 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import StatusBadge from '../../components/shared/StatusBadge.astro';
+import {
+  allEngagements,
+  invoices,
+  submissions,
+  calendarEvents,
+  clients,
+  formatCurrency,
+} from '../../data/mock/prototype';
+
+const now = new Date();
+const openEngagements = allEngagements.filter((e) => e.status === 'OPEN').length;
+const billedYtd = allEngagements.reduce((sum, e) => sum + e.billedYtd, 0);
+const arOutstanding = invoices
+  .filter((i) => i.status === 'SENT' || i.status === 'OVERDUE')
+  .reduce((sum, i) => sum + i.amount, 0);
+const overdueCount = invoices.filter((i) => i.status === 'OVERDUE').length;
+const newSubmissionCount = submissions.filter((s) => s.status === 'NEW').length;
+const greeting = now.getHours() < 12 ? 'Good morning' : now.getHours() < 17 ? 'Good afternoon' : 'Good evening';
+const todayPretty = now.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric' });
+---
+
+<AdminLayout
+  title="Dashboard — Lakingz Admin"
+  pageTitle={`${greeting}, Kemi.`}
+  pageDescription={`${todayPretty} · ${newSubmissionCount} new consultation request${newSubmissionCount === 1 ? '' : 's'}.`}
+>
+  <div class="proto-kpi-grid" style="margin-bottom: 2rem;">
+    <div class="proto-kpi">
+      <div class="proto-eyebrow">Open engagements</div>
+      <div class="proto-kpi-value">{openEngagements}</div>
+      <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.35rem;">{allEngagements.length} total</p>
+    </div>
+    <div class="proto-kpi">
+      <div class="proto-eyebrow">Billed YTD</div>
+      <div class="proto-kpi-value">{formatCurrency(billedYtd)}</div>
+      <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.35rem;">Across all engagements</p>
+    </div>
+    <div class="proto-kpi">
+      <div class="proto-eyebrow">Active clients</div>
+      <div class="proto-kpi-value">{clients.length}</div>
+      <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.35rem;">Non-archived</p>
+    </div>
+    <div class="proto-kpi proto-kpi--warn">
+      <div class="proto-eyebrow">A/R outstanding</div>
+      <div class="proto-kpi-value">{formatCurrency(arOutstanding)}</div>
+      <p class="proto-muted" style="font-size: var(--fs-xs); margin-top: 0.35rem;">{overdueCount} overdue</p>
+    </div>
+  </div>
+
+  <div class="admin-grid-2">
+    <section class="proto-card">
+      <div style="display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 1rem 0;">
+        <div>
+          <h2 class="proto-display" style="font-size: var(--fs-lg);">Active engagements</h2>
+          <p class="proto-muted" style="font-size: var(--fs-sm);">Open, pending, and on-hold files</p>
+        </div>
+        <a href="/admin/matters" class="proto-link" style="font-size: var(--fs-xs);">All engagements →</a>
+      </div>
+      <div class="proto-table-wrap" style="border: 0; border-radius: 0;">
+        <table class="proto-table">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Engagement</th>
+              <th>Preparer</th>
+              <th>Status</th>
+              <th style="text-align: right;">Billed YTD</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              allEngagements.filter((e) => e.status !== 'CLOSED').slice(0, 6).map((e) => (
+                <tr>
+                  <td>{e.fileNumber}</td>
+                  <td>
+                    <a href={`/admin/engagements/${e.id}`} class="proto-link" style="font-weight: 500;">
+                      {e.clientName}
+                    </a>
+                    <div class="proto-muted" style="font-size: var(--fs-xs);">{e.title}</div>
+                  </td>
+                  <td>{e.owner}</td>
+                  <td><StatusBadge status={e.status} /></td>
+                  <td style="text-align: right;">{formatCurrency(e.billedYtd)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="proto-card proto-card-pad">
+      <h2 class="proto-display" style="font-size: var(--fs-lg);">This week</h2>
+      <p class="proto-muted" style="font-size: var(--fs-sm); margin-bottom: 1rem;">Upcoming appointments and deadlines</p>
+      {
+        calendarEvents.slice(0, 4).map((event) => (
+          <div style="display: flex; gap: 1rem; padding: 0.85rem 0; border-bottom: var(--sheet-border);">
+            <div class="proto-display" style="font-size: var(--fs-lg); min-width: 2rem;">{event.date.split('-')[2]}</div>
+            <div>
+              <div class="proto-eyebrow">{event.time} · {event.type}</div>
+              <strong style="font-size: var(--fs-sm);">{event.title}</strong>
+            </div>
+          </div>
+        ))
+      }
+      <a href="/admin/calendar" class="proto-btn proto-btn--ghost" style="width: 100%; margin-top: 1rem;">Open calendar</a>
+    </section>
+  </div>
+
+  <div class="admin-grid-2" style="margin-top: 1rem;">
+    <section class="proto-card proto-card-pad">
+      <div style="display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+          <h2 class="proto-display" style="font-size: var(--fs-lg);">Consultation requests</h2>
+          <p class="proto-muted" style="font-size: var(--fs-sm);">From the public contact form</p>
+        </div>
+        <a href="/admin/submissions" class="proto-link" style="font-size: var(--fs-xs);">All submissions →</a>
+      </div>
+      {
+        submissions.slice(0, 3).map((submission) => (
+          <article style="padding: 0.85rem 0; border-bottom: var(--sheet-border);">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+              <strong style="font-size: var(--fs-sm);">{submission.firstName} {submission.lastName}</strong>
+              <StatusBadge status={submission.status} />
+            </div>
+            <p class="proto-muted" style="font-size: var(--fs-sm); margin-top: 0.35rem;">{submission.message}</p>
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="proto-card proto-card-pad">
+      <h2 class="proto-display" style="font-size: var(--fs-lg);">Recent invoices</h2>
+      <p class="proto-muted" style="font-size: var(--fs-sm); margin-bottom: 1rem;">Latest billing activity</p>
+      {
+        invoices.slice(0, 5).map((invoice) => (
+          <div style="display: flex; justify-content: space-between; gap: 1rem; padding: 0.65rem 0; border-bottom: var(--sheet-border);">
+            <div>
+              <div class="proto-muted" style="font-size: var(--fs-xs);">{invoice.number}</div>
+              <strong>{formatCurrency(invoice.amount)}</strong>
+            </div>
+            <StatusBadge status={invoice.status} />
+          </div>
+        ))
+      }
+      <a href="/admin/invoices" class="proto-btn proto-btn--ghost" style="width: 100%; margin-top: 1rem;">All invoices</a>
+    </section>
+  </div>
+</AdminLayout>
