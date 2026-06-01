@@ -1,0 +1,13 @@
+---
+interface CredSubmitOrSwitchButtonProps {
+  buttonType: 'login' | 'signup';
+  variant?: 'primary' | 'secondary' | 'ghost';
+}
+
+const { buttonType, variant = 'primary' } = Astro.props;
+const buttonText = buttonType === 'login' ? 'Sign in' : 'Create account';
+---
+
+<button type="button" class={`cred-submit-or-switch-button cred-submit-or-switch-button--${variant}`}>
+  {buttonText}
+</button>

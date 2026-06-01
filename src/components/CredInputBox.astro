@@ -1,0 +1,31 @@
+---
+interface CredInputBoxProps {
+  type: string;
+  placeholder: string;
+  label?: string;
+  id?: string;
+  autocomplete?: string;
+}
+
+const {
+  type,
+  placeholder,
+  label,
+  id = placeholder.toLowerCase().replace(/\s+/g, '-'),
+  autocomplete,
+} = Astro.props;
+---
+
+<label class="cred-field" for={id}>
+  {label && <span class="cred-field-label">{label}</span>}
+  <div class="cred-input-box">
+    <input
+      type={type}
+      id={id}
+      name={id}
+      class="cred-input-box-input"
+      placeholder={placeholder}
+      autocomplete={autocomplete}
+    />
+  </div>
+</label>

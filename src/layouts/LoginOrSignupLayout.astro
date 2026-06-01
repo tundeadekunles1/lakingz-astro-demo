@@ -1,0 +1,407 @@
+---
+import '../styles/index.css';
+
+interface Props {
+  title?: string;
+  heading?: string;
+  description?: string;
+}
+
+const {
+  title = 'Sign In | Lakingz Services',
+  heading = 'Sign in to your account',
+  description = 'Access tax documents, onboarding, and advisory updates in one secure workspace.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/png" href="/lkzfavicon.png" />
+  </head>
+  <body>
+    <main class="auth-page">
+      <section class="auth-shell" aria-label="Lakingz account access">
+        <div class="auth-panel">
+          <header class="auth-topbar">
+            <a href="/" class="brand-link" aria-label="Back to Lakingz Services home">
+              <img src="/LKZlogo.webp" alt="" class="brand-logo" />
+              <span class="brand-copy">Lakingz <strong>Services</strong></span>
+            </a>
+            <a href="/" class="back-link">
+              <svg class="back-link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M10 3.5L5.5 8L10 12.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Back to site
+            </a>
+          </header>
+
+          <div class="auth-content">
+            <div class="auth-intro">
+              <h1>{heading}</h1>
+              <p>{description}</p>
+            </div>
+
+            <slot />
+
+            <ul class="trust-list" aria-label="Security highlights">
+              <li>
+                <span class="trust-icon" aria-hidden="true">◆</span>
+                Bank-level encryption
+              </li>
+              <li>
+                <span class="trust-icon" aria-hidden="true">◆</span>
+                CPA-led advisory
+              </li>
+              <li>
+                <span class="trust-icon" aria-hidden="true">◆</span>
+                Ontario-based support
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="auth-visual" aria-label="Lakingz advisory preview">
+          <img
+            src="/login_boilerplate_photo.webp"
+            alt="A Lakingz Services advisor preparing financial documents"
+            class="auth-image"
+          />
+          <div class="visual-overlay">
+            <span class="overlay-kicker">CPA-led guidance</span>
+            <p>Keep filings, documents, and next steps organized in one calm workspace.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <style>
+      .auth-page {
+        min-height: 100vh;
+        width: 100%;
+        display: grid;
+        place-items: center;
+        padding: clamp(1rem, 4vw, 3rem);
+        background:
+          radial-gradient(circle at top left, oklch(88% 0.08 145 / 40%), transparent 28rem),
+          radial-gradient(circle at bottom right, oklch(80% 0.07 240 / 24%), transparent 26rem),
+          var(--bg-canvas);
+      }
+
+      .auth-shell {
+        width: min(1080px, 100%);
+        min-height: min(720px, calc(100vh - 2rem));
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.85fr);
+        overflow: hidden;
+        border: var(--sheet-border);
+        border-radius: 28px;
+        background: var(--bg-surface);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .auth-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(1.25rem, 2.5vw, 2rem);
+        padding: clamp(1.5rem, 4vw, 3.25rem);
+        background:
+          linear-gradient(180deg, oklch(99.8% 0.004 145) 0%, oklch(98.6% 0.006 145) 100%);
+      }
+
+      .auth-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .brand-logo {
+        width: 42px;
+        height: 42px;
+        object-fit: contain;
+        border-radius: 12px;
+        background: white;
+        box-shadow: var(--shadow-subtle);
+      }
+
+      .brand-copy {
+        font-size: var(--fs-sm);
+        letter-spacing: -0.01em;
+      }
+
+      .brand-copy strong {
+        color: var(--accent-mint);
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--text-muted);
+        font-size: var(--fs-xs);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        transition: var(--transition-fast);
+      }
+
+      .back-link-icon {
+        flex-shrink: 0;
+        transition: transform 0.2s var(--ease-expo);
+      }
+
+      .back-link:hover {
+        color: var(--accent-mint);
+      }
+
+      .back-link:hover .back-link-icon {
+        transform: translateX(-2px);
+      }
+
+      .auth-content {
+        width: min(440px, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .auth-intro {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .auth-intro h1 {
+        margin: 0;
+        font-family: var(--font-heading);
+        font-size: clamp(1.75rem, 3vw, 2.35rem);
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+      }
+
+      .auth-intro p {
+        margin: 0.65rem 0 0;
+        max-width: 34ch;
+        color: var(--text-muted);
+        font-size: var(--fs-sm);
+        line-height: 1.65;
+      }
+
+      .trust-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem 1rem;
+        margin: 0.5rem 0 0;
+        padding: 1.25rem 0 0;
+        border-top: 1px solid oklch(92% 0.005 150);
+        list-style: none;
+      }
+
+      .trust-list li {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--text-muted);
+        font-size: var(--fs-xs);
+        font-weight: 500;
+      }
+
+      .trust-icon {
+        color: var(--accent-mint);
+        font-size: 0.55rem;
+      }
+
+      .auth-visual {
+        position: relative;
+        display: grid;
+        min-height: 100%;
+        isolation: isolate;
+        overflow: hidden;
+        background: var(--bg-footer);
+      }
+
+      .auth-visual::before {
+        content: '';
+        grid-area: 1 / 1;
+        z-index: 1;
+        background:
+          linear-gradient(180deg, oklch(14% 0.012 160 / 8%), oklch(14% 0.012 160 / 72%)),
+          radial-gradient(circle at 25% 20%, oklch(88% 0.08 145 / 32%), transparent 18rem);
+      }
+
+      .auth-image {
+        grid-area: 1 / 1;
+        width: 100%;
+        height: 100%;
+        min-height: 720px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .visual-overlay {
+        grid-area: 1 / 1;
+        align-self: center;
+        justify-self: stretch;
+        z-index: 2;
+        margin-inline: clamp(1.25rem, 3vw, 2rem);
+        padding: 1.15rem 1.25rem;
+        border: 1px solid oklch(100% 0 0 / 22%);
+        border-radius: 18px;
+        color: var(--text-inverse);
+        background: oklch(14% 0.012 160 / 52%);
+        backdrop-filter: blur(14px);
+      }
+
+      .overlay-kicker {
+        color: var(--color-mint);
+        font-size: var(--fs-xs);
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .visual-overlay p {
+        margin: 0.55rem 0 0;
+        font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+        line-height: 1.55;
+        color: var(--text-inverse);
+      }
+
+      :global(.cred-field) {
+        display: grid;
+        gap: 0.45rem;
+      }
+
+      :global(.cred-field-label) {
+        color: var(--text-main);
+        font-size: var(--fs-xs);
+        font-weight: 600;
+        letter-spacing: 0.03em;
+      }
+
+      :global(.cred-input-box) {
+        width: 100%;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        border: 1px solid oklch(90% 0.006 150);
+        border-radius: 14px;
+        background: white;
+        padding: 0 0.95rem;
+        transition: var(--transition-fast);
+      }
+
+      :global(.cred-input-box:focus-within) {
+        border-color: var(--accent-mint);
+        box-shadow: 0 0 0 4px oklch(88% 0.08 145 / 28%);
+        background: white;
+      }
+
+      :global(.cred-input-box-input) {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: var(--text-main);
+        font-size: var(--fs-sm);
+      }
+
+      :global(.cred-input-box-input::placeholder) {
+        color: oklch(62% 0.012 160);
+      }
+
+      :global(.cred-submit-or-switch-button) {
+        width: 100%;
+        min-height: 50px;
+        border-radius: 14px;
+        font-size: var(--fs-sm);
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition-fast);
+      }
+
+      :global(.cred-submit-or-switch-button--primary) {
+        border: 1px solid var(--accent-mint);
+        color: white;
+        background: var(--accent-mint);
+      }
+
+      :global(.cred-submit-or-switch-button--primary:hover) {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 28px oklch(55% 0.12 145 / 22%);
+      }
+
+      :global(.cred-submit-or-switch-button--secondary) {
+        border: 1px solid oklch(90% 0.006 150);
+        color: var(--text-main);
+        background: white;
+      }
+
+      :global(.cred-submit-or-switch-button--ghost) {
+        width: auto;
+        min-height: auto;
+        padding: 0;
+        border: 0;
+        color: var(--accent-mint);
+        background: transparent;
+      }
+
+      @media (max-width: 860px) {
+        .auth-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .auth-visual {
+          min-height: 240px;
+          order: -1;
+        }
+
+        .auth-image {
+          min-height: 240px;
+        }
+
+        .auth-content {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .auth-page {
+          padding: 0;
+        }
+
+        .auth-shell {
+          min-height: 100vh;
+          border: 0;
+          border-radius: 0;
+        }
+
+        .auth-panel {
+          padding: 1.15rem;
+        }
+
+        .back-link {
+          font-size: 0.7rem;
+        }
+
+        .trust-list {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </body>
+</html>
