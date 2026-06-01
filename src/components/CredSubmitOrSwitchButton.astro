@@ -1,29 +1,13 @@
 ---
 interface CredSubmitOrSwitchButtonProps {
-    // the button should know the current page state in order to 
-    // choose the correct action between switching or submiting credentials
-    buttonType: 'login' | 'signup';
+  buttonType: 'login' | 'signup';
+  variant?: 'primary' | 'secondary' | 'ghost';
 }
-const { buttonType} = Astro.props;
-const buttonText = buttonType === 'login' ? 'Login' : 'Signup';
+
+const { buttonType, variant = 'primary' } = Astro.props;
+const buttonText = buttonType === 'login' ? 'Sign in' : 'Create account';
 ---
-<button class="cred-submit-or-switch-button">
-    <p>{buttonText}</p>
+
+<button type="button" class={`cred-submit-or-switch-button cred-submit-or-switch-button--${variant}`}>
+  {buttonText}
 </button>
-<style>
-    .cred-submit-or-switch-button {
-        /* width and height are adjustable*/
-        
-        width: 90px;
-        height: 50px;
-        background-color: white;
-        border-radius: 10px;
-        border: 1px solid black;
-        padding: 10px;
-        font-size: 12px;
-        font-weight: bold;
-        text-align: center;
-        color: black;
-        justify-content: center;
-    }
-</style>

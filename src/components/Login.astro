@@ -4,79 +4,170 @@ import CredSubmitOrSwitchButton from './CredSubmitOrSwitchButton.astro';
 ---
 
 <div class="login-container">
-    <span class="login-container-title">Welcome back!</span>
-        <!-- the horizontal space divider was created to avoid using absolute positioning-->
-        <!-- to create space below the title and above the text boxes container -->
-    <div class="space-below-txt"></div>
-    <div class="login-cred-and-button-container">
-        
-        <!-- container for the cred input boxes -->
-        <div class="login-cred-input-container">
-            <CredInputBox type="text" placeholder="username" class="login-page-username-input" />
-            <CredInputBox type="password" placeholder="password" class="login-page-password-input" />
-            
-        </div>
-        <!-- to create space below the text boxes container and above the button container -->
-        <div class="space-above-buttons"></div>
-        <div class="login-button-container">
-        <!-- container for the login and signup buttons -->
-            <CredSubmitOrSwitchButton buttonType="login" class="login-page-login-button" />
-            <div class="space-between-buttons"></div>
-            <CredSubmitOrSwitchButton buttonType="signup" class="login-page-signup-button" />
-        </div>
+  <form class="login-form" action="#" method="post">
+    <div class="login-cred-input-container">
+      <CredInputBox
+        type="email"
+        label="Email"
+        placeholder="you@example.com"
+        autocomplete="email"
+      />
+      <CredInputBox
+        type="password"
+        label="Password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+      />
     </div>
+
+    <div class="login-form-meta">
+      <label class="remember-me">
+        <input type="checkbox" name="remember" />
+        <span>Remember me</span>
+      </label>
+      <a href="#" class="forgot-link">Forgot password?</a>
+    </div>
+
+    <CredSubmitOrSwitchButton buttonType="login" variant="primary" />
+
+    <div class="social-divider" aria-hidden="true">
+      <span>or continue with</span>
+    </div>
+
+    <div class="social-auth">
+      <button type="button" class="social-button" aria-label="Continue with Google">
+        <img src="/google-logo-transparent.png" alt="" width="20" height="20" />
+        <span>Google</span>
+      </button>
+      <button type="button" class="social-button" aria-label="Continue with Facebook">
+        <img src="/facebook-icon-transparent.webp" alt="" width="20" height="20" />
+        <span>Facebook</span>
+      </button>
+    </div>
+  </form>
+
+  <p class="login-switch">
+    New to Lakingz? <a href="#" class="login-switch-link">Create an account</a>
+  </p>
 </div>
+
 <style>
+  .login-container {
+    width: 100%;
+  }
 
-    .login-container {
-       /* the width is supposed to be 55% the credentials container in the login or signup layout*/
-       /* the height is supposed to be 85% of the credentials container in the login or signup layout*/
-       /* TODO create a variable for the width and height of the credentials container in the login or signup layout*/
-       /* TODO create a variable for the background color of the login container*/
-        width: inherit;
-        height: 298px;
-        background-color: inherit;
-        text-align: center;
-        
-    }
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
 
-    .login-cred-and-button-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    .login-container-title {
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-    }
-    .space-below-txt {
+  .login-cred-input-container {
+    display: grid;
+    gap: 1rem;
+  }
 
-        width: 100%;
-        /* the height is supposed to be a percentage of the login container*/
-        height: 10px;
-        /* TODO background color of this element should be same as the login container background color*/
-        background-color: var(--login-background-color);
-    }
+  .login-form-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: -0.15rem;
+  }
 
-    .space-above-buttons {
-        width: 100%;
-        /* the height is supposed to be a percentage of the login container*/
-        height: 10px;
-        /* TODO background color of this element should be same as the login container background color*/
-        background-color: var(--login-background-color);
-    }
+  .remember-me {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    cursor: pointer;
+  }
 
-    .login-cred-input-container {
-        display: grid;
-        align-items: center;
-        grid-template-columns: 1fr;
-        justify-content: center;
-        gap: 9px;
-    }
-    .login-button-container {
-        display: flex;
-        justify-content: flex-end;  
-    }
+  .remember-me input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--accent-mint);
+  }
+
+  .forgot-link {
+    color: var(--accent-mint);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .forgot-link:hover {
+    text-decoration: underline;
+  }
+
+  .social-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .social-divider::before,
+  .social-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: oklch(90% 0.006 150);
+  }
+
+  .social-auth {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .social-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 48px;
+    border: 1px solid oklch(90% 0.006 150);
+    border-radius: 14px;
+    background: white;
+    color: var(--text-main);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .social-button img {
+    display: block;
+    object-fit: contain;
+  }
+
+  .social-button:hover {
+    border-color: oklch(82% 0.04 145);
+    box-shadow: var(--shadow-subtle);
+    transform: translateY(-1px);
+  }
+
+  .login-switch {
+    margin: 1.35rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid oklch(92% 0.005 150);
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    text-align: center;
+  }
+
+  .login-switch-link {
+    color: var(--accent-mint);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .login-switch-link:hover {
+    text-decoration: underline;
+  }
 </style>
